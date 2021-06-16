@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { apiUrl } from 'src/environments/environment';
+import { apiUrl } from 'src/api';
 import { DeleteModel } from '../models/deleteModel';
 import { OperationClaimAddModel } from '../models/operation-claim/operationClaimAddModel';
 import { OperationClaimModel } from '../models/operation-claim/operationClaimModel';

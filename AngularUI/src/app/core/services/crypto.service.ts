@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AES, enc } from 'crypto-js';
-import { token } from 'src/environments/environment';
+import { token } from 'src/api';
 
 @Injectable({
   providedIn: 'root',

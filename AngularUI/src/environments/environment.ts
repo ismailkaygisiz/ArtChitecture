@@ -6,9 +6,6 @@ export const environment = {
   production: false,
 };
 
-export const apiUrl = 'https://localhost:5001/api/';
-export const imageUrl = 'https://localhost:5001/';
-export const token = 'Qa12WascxAEFia65s4s1aQKasL9';
 
 /*
  * For easier debugging in development mode, you can import the following file

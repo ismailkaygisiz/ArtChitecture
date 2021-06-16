@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { apiUrl } from 'src/environments/environment';
+import { apiUrl } from 'src/api';
 import { DeleteModel } from '../models/deleteModel';
 import { ListResponseModel } from '../models/response/listResponseModel';
 import { ResponseModel } from '../models/response/responseModel';
