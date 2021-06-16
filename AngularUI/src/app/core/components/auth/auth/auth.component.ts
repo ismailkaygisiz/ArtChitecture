@@ -1,5 +1,7 @@
+import { ToastrService } from 'ngx-toastr';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { RouterService } from 'src/app/core/services/router.service';
 
 @Component({
   selector: 'app-auth',
@@ -7,9 +9,9 @@ import { Router } from '@angular/router';
   styleUrls: ['./auth.component.css'],
 })
 export class AuthComponent implements OnInit {
-  constructor(private router: Router) {}
+  constructor(private routerService: RouterService) {}
 
   ngOnInit(): void {
-    this.router.navigate(['']);
+    this.routerService.pageNotFoundRoute();
   }
 }

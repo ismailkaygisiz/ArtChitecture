@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { RouterService } from '../../services/router.service';
 
 @Component({
   selector: 'app-error',
@@ -8,11 +9,9 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./error.component.css'],
 })
 export class ErrorComponent implements OnInit {
-  constructor(private toastrService: ToastrService, private router: Router) {}
+  constructor(private routerService: RouterService) {}
 
   ngOnInit(): void {
-    this.router.navigate(['']).then(() => {
-      this.toastrService.error('Sayfa Bulunamadı', 'HATA');
-    });
+    this.routerService.pageNotFoundRoute();
   }
 }

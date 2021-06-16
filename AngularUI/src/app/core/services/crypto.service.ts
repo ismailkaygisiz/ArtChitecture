@@ -9,14 +9,22 @@ export class CryptoService {
   constructor() {}
 
   set(value: any) {
-    var encrypted = AES.encrypt(value, token);
+    if (value != null) {
+      var encrypted = AES.encrypt(value, token);
 
-    return encrypted.toString();
+      return encrypted.toString();
+    }
+
+    return null;
   }
 
   get(value: any) {
-    var decrypted = AES.decrypt(value, token);
+    if (value != null) {
+      var decrypted = AES.decrypt(value, token);
 
-    return decrypted.toString(enc.Utf8);
+      return decrypted.toString(enc.Utf8);
+    }
+
+    return null;
   }
 }

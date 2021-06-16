@@ -23,12 +23,20 @@ export class LocalStorageService {
     this.localStorage.removeItem(key);
   }
 
+  getToken() {
+    return this.getItem('token');
+  }
+
+  setToken(token: string) {
+    this.setItem('token', token);
+  }
+
   clearAll() {
     localStorage.clear();
   }
 
   controlItem(key: string) {
-    if (this.localStorage.getItem(key)) {
+    if (this.localStorage.getItem(key) != null) {
       return true;
     }
 

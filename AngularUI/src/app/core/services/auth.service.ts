@@ -1,3 +1,4 @@
+import { JwtHelperService } from '@auth0/angular-jwt';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
@@ -12,6 +13,8 @@ import { LocalStorageService } from './local-storage.service';
   providedIn: 'root',
 })
 export class AuthService {
+  private jwtHelperService: JwtHelperService = new JwtHelperService();
+
   constructor(
     private httpClient: HttpClient,
     private localStorageService: LocalStorageService
@@ -30,26 +33,27 @@ export class AuthService {
   }
 
   logout() {
-    if (
-      this.localStorageService.getItem('token') &&
-      this.localStorageService.getItem('email')
-    ) {
+    if (this.isAuthenticated()) {
       this.localStorageService.removeItem('token');
-      this.localStorageService.removeItem('email');
       return true;
     }
 
     return false;
   }
 
-  isAuthenticated() {
-    if (
-      this.localStorageService.controlItem('token') &&
-      this.localStorageService.controlItem('email')
-    ) {
+  isAuthenticated(): boolean {
+    if (this.localStorageService.controlItem('token')) {
       return true;
     }
 
     return false;
+  }
+
+  isTokenExpired(): boolean {
+    let isExpired = this.jwtHelperService.isTokenExpired(
+      this.localStorageService.getToken()
+    );
+
+    return isExpired != null ? isExpired : true;
   }
 }

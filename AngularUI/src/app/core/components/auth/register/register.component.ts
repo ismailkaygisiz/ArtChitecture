@@ -14,15 +14,13 @@ import { UserService } from 'src/app/core/services/user.service';
 })
 export class RegisterComponent implements OnInit {
   registerForm: FormGroup;
-  user: UserModel;
 
   constructor(
     private formBuilder: FormBuilder,
     private toastrService: ToastrService,
     private authService: AuthService,
     private localStorageService: LocalStorageService,
-    private router: Router,
-    private userService: UserService
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -45,22 +43,16 @@ export class RegisterComponent implements OnInit {
 
       this.authService.register(registerModel).subscribe(
         (response) => {
-          this.localStorageService.setItem('email', registerModel.email);
-          this.localStorageService.setItem('token', response.data.token);
+          this.localStorageService.setToken(response.data.token);
 
-          this.userService
-            .getUserByMailUseLocalStorage()
-            .subscribe((responseUser) => {
-              this.user = responseUser.data;
-              this.router.navigate(['']);
-            });
+          this.router.navigate(['']);
         },
         (responseError) => {
-          this.toastrService.error(responseError.error.message);
+          this.toastrService.error(responseError.error.message, "Hata");
         }
       );
     } else {
-      this.toastrService.error('Anlaşılan Formunuz Tamamlanmamış', 'HATA');
+      this.toastrService.error('Anlaşılan Formunuz Tamamlanmamış', 'Hata');
     }
   }
 }

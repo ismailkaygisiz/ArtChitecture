@@ -14,14 +14,12 @@ import { UserService } from 'src/app/core/services/user.service';
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
-  user: UserModel;
 
   constructor(
     private formBuilder: FormBuilder,
     private toastrService: ToastrService,
     private authService: AuthService,
     private localStorageService: LocalStorageService,
-    private userService: UserService,
     private router: Router
   ) {}
 
@@ -42,28 +40,18 @@ export class LoginComponent implements OnInit {
 
       this.authService.login(loginModel).subscribe(
         (response) => {
-          this.localStorageService.setItem('email', loginModel.email);
-          this.localStorageService.setItem('token', response.data.token);
+          this.localStorageService.setToken(response.data.token);
 
-          this.getUser();
           this.router.navigate(['']).then((c) => {
             window.location.reload();
           });
         },
         (responseError) => {
-          console.log(responseError);
-
           this.toastrService.error(responseError.error.message, 'Hata');
         }
       );
     } else {
-      this.toastrService.error('Anlaşılan Formunuz Tamamlanmamış', 'HATA');
+      this.toastrService.error('Anlaşılan Formunuz Tamamlanmamış', 'Hata');
     }
-  }
-
-  getUser() {
-    this.userService.getUserByMailUseLocalStorage().subscribe((response) => {
-      this.user = response.data;
-    });
   }
 }
