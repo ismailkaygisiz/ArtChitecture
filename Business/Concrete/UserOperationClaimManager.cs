@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using Business.Abstract;
 using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Authorization;
+using Core.Aspects.Autofac.Transaction;
 using Core.Aspects.Autofac.Validation;
 using Core.Business;
 using Core.Entities.Concrete;
@@ -19,6 +21,8 @@ namespace Business.Concrete
             _userOperationClaimDal = userOperationClaimDal;
         }
 
+        [TransactionScopeAspect]
+        [SecuredOperation("Admin")]
         [ValidationAspect(typeof(UserOperationClaimValidator))]
         public IResult Add(UserOperationClaim entity)
         {
@@ -33,6 +37,8 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
+        [TransactionScopeAspect]
+        [SecuredOperation("Admin")]
         public IResult Delete(UserOperationClaim entity)
         {
             IResult result = BusinessRules.Run();
@@ -48,6 +54,8 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
+        [TransactionScopeAspect]
+        [SecuredOperation("Admin")]
         [ValidationAspect(typeof(UserOperationClaimValidator))]
         public IResult Update(UserOperationClaim entity)
         {
@@ -62,22 +70,26 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
+        [SecuredOperation("Admin")]
         public IDataResult<UserOperationClaim> GetById(int id)
         {
             return new SuccessDataResult<UserOperationClaim>(_userOperationClaimDal.Get(u => u.Id == id));
         }
 
+        [SecuredOperation("Admin")]
         public IDataResult<List<UserOperationClaim>> GetAll()
         {
             return new SuccessDataResult<List<UserOperationClaim>>(_userOperationClaimDal.GetAll());
         }
 
+        [SecuredOperation("Admin")]
         public IDataResult<List<UserOperationClaim>> GetByClaimId(int claimId)
         {
             return new SuccessDataResult<List<UserOperationClaim>>(
                 _userOperationClaimDal.GetAll(u => u.OperationClaimId == claimId));
         }
 
+        [SecuredOperation("Admin")]
         public IDataResult<List<UserOperationClaim>> GetByUserId(int userId)
         {
             return new SuccessDataResult<List<UserOperationClaim>>(

@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using Business.Abstract;
 using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Authorization;
+using Core.Aspects.Autofac.Transaction;
 using Core.Aspects.Autofac.Validation;
 using Core.Business;
 using Core.Entities.Concrete;
@@ -20,6 +22,7 @@ namespace Business.Concrete
             _userDal = userDal;
         }
 
+        [TransactionScopeAspect]
         [ValidationAspect(typeof(UserValidator))]
         public IResult Add(User entity)
         {
@@ -34,6 +37,7 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
+        [TransactionScopeAspect]
         public IResult Delete(User entity)
         {
             IResult result = BusinessRules.Run();
@@ -49,6 +53,7 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
+        [TransactionScopeAspect]
         [ValidationAspect(typeof(UserValidator))]
         public IResult Update(User entity)
         {
@@ -68,21 +73,25 @@ namespace Business.Concrete
             return new SuccessDataResult<User>(_userDal.Get(u => u.Id == id));
         }
 
+        [SecuredOperation("Admin")]
         public IDataResult<List<User>> GetAll()
         {
             return new SuccessDataResult<List<User>>(_userDal.GetAll());
         }
 
+        [SecuredOperation("Admin")]
         public IDataResult<List<User>> GetByFirstName(string firstName)
         {
             return new SuccessDataResult<List<User>>(_userDal.GetAll(u => u.FirstName == firstName));
         }
 
+        [SecuredOperation("Admin")]
         public IDataResult<List<User>> GetByLastName(string lastName)
         {
             return new SuccessDataResult<List<User>>(_userDal.GetAll(u => u.LastName == lastName));
         }
 
+        [SecuredOperation("Admin")]
         public IDataResult<List<User>> GetByStatus(bool status)
         {
             return new SuccessDataResult<List<User>>(_userDal.GetAll(u => u.Status == status));
@@ -93,6 +102,7 @@ namespace Business.Concrete
             return new SuccessDataResult<User>(_userDal.Get(u => u.Email == email));
         }
 
+        [SecuredOperation("Admin")]
         public IDataResult<UserOperationClaimDetailDto> GetUserOperationClaims(int userId)
         {
             return new SuccessDataResult<UserOperationClaimDetailDto>(_userDal.GetUserOperationClaimsDetails(userId));

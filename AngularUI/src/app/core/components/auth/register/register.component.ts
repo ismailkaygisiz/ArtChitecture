@@ -47,6 +47,7 @@ export class RegisterComponent implements OnInit {
         (response) => {
           this.localStorageService.setToken(response.data.token);
 
+          this.toastrService.success('Kayıt Başarılı', 'Başarı');
           this.router.navigate(['']);
         },
         (responseError) => {

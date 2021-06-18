@@ -7,6 +7,7 @@ namespace Business.ValidationRules.FluentValidation
     {
         public OperationClaimValidator()
         {
+            RuleFor(o => o.Name).MinimumLength(2).WithMessage("Rol Adı Minimum 2 Karakter Uzunluğunda Olmalıdır");
         }
     }
 }

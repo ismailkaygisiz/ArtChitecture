@@ -7,6 +7,7 @@ namespace Business.ValidationRules.FluentValidation
     {
         public LoginValidator()
         {
+            RuleFor(u => u.Email).EmailAddress().WithMessage("Email Gerçek Bir Email Adresi Değil");
         }
     }
 }

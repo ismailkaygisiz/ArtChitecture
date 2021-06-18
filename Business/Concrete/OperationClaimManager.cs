@@ -2,6 +2,7 @@
 using Business.Abstract;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Authorization;
+using Core.Aspects.Autofac.Transaction;
 using Core.Aspects.Autofac.Validation;
 using Core.Business;
 using Core.Entities.Concrete;
@@ -20,6 +21,7 @@ namespace Business.Concrete
             _operationClaimDal = operationClaimDal;
         }
 
+        [TransactionScopeAspect]
         [SecuredOperation("Admin")]
         [ValidationAspect(typeof(OperationClaimValidator))]
         public IResult Add(OperationClaim entity)
@@ -35,6 +37,8 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
+        [TransactionScopeAspect]
+        [SecuredOperation("Admin")]
         public IResult Delete(OperationClaim entity)
         {
             IResult result = BusinessRules.Run();
@@ -50,6 +54,8 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
+        [TransactionScopeAspect]
+        [SecuredOperation("Admin")]
         [ValidationAspect(typeof(OperationClaimValidator))]
         public IResult Update(OperationClaim entity)
         {
@@ -64,16 +70,19 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
+        [SecuredOperation("Admin")]
         public IDataResult<OperationClaim> GetById(int id)
         {
             return new SuccessDataResult<OperationClaim>(_operationClaimDal.Get(o => o.Id == id));
         }
 
+        [SecuredOperation("Admin")]
         public IDataResult<List<OperationClaim>> GetAll()
         {
             return new SuccessDataResult<List<OperationClaim>>(_operationClaimDal.GetAll());
         }
 
+        [SecuredOperation("Admin")]
         public IDataResult<OperationClaim> GetByName(string operationClaimName)
         {
             return new SuccessDataResult<OperationClaim>(_operationClaimDal.Get(o => o.Name == operationClaimName));

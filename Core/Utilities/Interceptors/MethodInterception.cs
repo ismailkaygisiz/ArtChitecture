@@ -5,6 +5,7 @@ namespace Core.Utilities.Interceptors
 {
     public abstract class MethodInterception : MethodInterceptionBaseAttribute
     {
+        protected bool Invoke = true;
         protected virtual void OnBefore(IInvocation invocation) { }
         protected virtual void OnAfter(IInvocation invocation) { }
         protected virtual void OnException(IInvocation invocation, System.Exception e) { }
@@ -15,7 +16,10 @@ namespace Core.Utilities.Interceptors
             OnBefore(invocation);
             try
             {
-                invocation.Proceed();
+                if (Invoke)
+                {
+                    invocation.Proceed();
+                }
             }
             catch (Exception e)
             {

@@ -18,6 +18,7 @@ namespace Business.Concrete
     {
         private IUserService _userService;
         private ITokenHelper _tokenHelper;
+        private User _user;
 
         public AuthManager(IUserService userService, ITokenHelper tokenHelper)
         {
@@ -33,9 +34,48 @@ namespace Business.Concrete
             return new SuccessDataResult<AccessToken>(accessToken);
         }
 
-        [ValidationAspect(typeof(LoginValidator))]
         [TransactionScopeAspect]
-        public IDataResult<AccessToken> Login(UserForLoginDto userForLoginDto)
+        [ValidationAspect(typeof(LoginValidator))]
+        public IResult ChangePassword(UserForLoginDto userForLoginDto, string newPassword)
+        {
+            IResult result = BusinessRules.Run(
+                CheckIfUserPasswordIsNotTrue(userForLoginDto.Email, userForLoginDto.Password),
+                CheckIfNewPasswordIsEqualsOldPassword(userForLoginDto, newPassword));
+
+            if (result != null)
+            {
+                return result;
+            }
+
+            byte[] passwordHash;
+            byte[] passwordSalt;
+            HashingHelper.CreatePasswordHash(newPassword, out passwordHash, out passwordSalt);
+
+            var oldUser = _userService.GetByEmail(userForLoginDto.Email).Data;
+
+            User user = new User
+            {
+                Id = oldUser.Id,
+                Email = oldUser.Email,
+                FirstName = oldUser.FirstName,
+                LastName = oldUser.LastName,
+                PasswordHash = passwordHash,
+                PasswordSalt = passwordSalt,
+                Status = true
+            };
+
+            _userService.Update(user);
+            return new SuccessResult(Messages.PasswordChanged);
+        }
+
+        public IDataResult<User> GetUser()
+        {
+            return new SuccessDataResult<User>(_user);
+        }
+
+        [TransactionScopeAspect]
+        [ValidationAspect(typeof(LoginValidator))]
+        public IResult Login(UserForLoginDto userForLoginDto)
         {
             IResult result = BusinessRules.Run(
                 CheckIfUserIsNotExists(userForLoginDto.Email),
@@ -44,18 +84,17 @@ namespace Business.Concrete
 
             if (result != null)
             {
-                return new ErrorDataResult<AccessToken>(result.Message);
+                return result;
             }
 
-            var user = _userService.GetByEmail(userForLoginDto.Email);
+            _user = _userService.GetByEmail(userForLoginDto.Email).Data;
 
-            var accessToken = CreateAccessToken(user.Data);
-            return new SuccessDataResult<AccessToken>(accessToken.Data);
+            return new SuccessResult();
         }
 
-        [ValidationAspect(typeof(RegisterValidator))]
         [TransactionScopeAspect]
-        public IDataResult<AccessToken> Register(UserForRegisterDto userForRegisterDto, string password)
+        [ValidationAspect(typeof(RegisterValidator))]
+        public IResult Register(UserForRegisterDto userForRegisterDto, string password)
         {
             IResult result = BusinessRules.Run(
                 CheckIfUserIsAlreadyExists(userForRegisterDto.Email)
@@ -63,14 +102,14 @@ namespace Business.Concrete
 
             if (result != null)
             {
-                return new ErrorDataResult<AccessToken>(result.Message);
+                return result;
             }
 
             User user = CreateUser(userForRegisterDto, password).Data;
             _userService.Add(user);
 
-            var accessToken = CreateAccessToken(user);
-            return new SuccessDataResult<AccessToken>(accessToken.Data);
+            _user = user;
+            return new SuccessResult();
         }
 
         private IResult CheckIfUserIsAlreadyExists(string email)
@@ -103,6 +142,16 @@ namespace Business.Concrete
                 {
                     return new ErrorResult(Messages.PasswordIsNotTrue);
                 }
+            }
+
+            return new SuccessResult();
+        }
+
+        private IResult CheckIfNewPasswordIsEqualsOldPassword(UserForLoginDto userForLoginDto, string newPassword)
+        {
+            if (userForLoginDto.Password == newPassword)
+            {
+                return new ErrorResult(Messages.NewPasswordCannotBeTheSameAsTheOldPassword);
             }
 
             return new SuccessResult();

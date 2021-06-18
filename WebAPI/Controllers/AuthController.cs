@@ -16,9 +16,15 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("login")]
-        public ActionResult Login(UserForLoginDto userForLoginDto)
+        public IActionResult Login(UserForLoginDto userForLoginDto)
         {
-            var result = _authService.Login(userForLoginDto);
+            var userToLogin = _authService.Login(userForLoginDto);
+            if (!userToLogin.Success)
+            {
+                return BadRequest(userToLogin);
+            }
+
+            var result = _authService.CreateAccessToken(_authService.GetUser().Data);
             if (result.Success)
             {
                 return Ok(result);
@@ -28,9 +34,27 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("register")]
-        public ActionResult Register(UserForRegisterDto userForRegisterDto)
+        public IActionResult Register(UserForRegisterDto userForRegisterDto)
         {
-            var result = _authService.Register(userForRegisterDto, userForRegisterDto.Password);
+            var registerResult = _authService.Register(userForRegisterDto, userForRegisterDto.Password);
+            if (!registerResult.Success)
+            {
+                return BadRequest(registerResult);
+            }
+
+            var result = _authService.CreateAccessToken(_authService.GetUser().Data);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest(result);
+        }
+
+        [HttpPost("changepassword")]
+        public IActionResult ChangePassword(UserForLoginDto userForLoginDto, string newPassword)
+        {
+            var result = _authService.ChangePassword(userForLoginDto, newPassword);
             if (result.Success)
             {
                 return Ok(result);

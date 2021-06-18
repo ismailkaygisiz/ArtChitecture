@@ -3,7 +3,9 @@
     public static class Messages
     {
         public static string UserIsAlreadyExists = "Kullanıcı Zaten Mevcut";
-        public static string UserIsNotExists = "Kullanıcı Mevcut Değil";
-        public static string PasswordIsNotTrue = "Parola Doğru Değil";
+        public static string UserIsNotExists = "Email veya Parola Hatalı";
+        public static string PasswordIsNotTrue = "Email veya Parola Hatalı";
+        public static string PasswordChanged = "Parola Değiştirildi";
+        public static string NewPasswordCannotBeTheSameAsTheOldPassword = "Yeni Şifre Eskisiyle Aynı Olamaz";
     }
 }

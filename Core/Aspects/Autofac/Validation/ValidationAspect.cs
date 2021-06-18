@@ -38,6 +38,11 @@ namespace Core.Aspects.Autofac.Validation
             {
                 _errors = ValidationTool.Validate(validator, entity);
             }
+
+            if (_errors != null)
+            {
+                Invoke = false;
+            }
         }
 
         protected override void OnAfter(IInvocation invocation)
@@ -66,6 +71,8 @@ namespace Core.Aspects.Autofac.Validation
 
                 invocation.ReturnValue =
                     new ErrorDataResult<dynamic>(new {validationErrors = validationErrors}, "Doğrulama Hatası");
+
+                Invoke = true;
             }
         }
     }
