@@ -7,7 +7,6 @@ namespace Business.ValidationRules.FluentValidation
     {
         public OperationClaimValidator()
         {
-            RuleFor(o => o.Name).MinimumLength(1).WithMessage("HATA KARAKTER UZUNLUĞU EN AZ 2 OLACAK").EmailAddress().WithMessage("EMAİL OLACAK");
         }
     }
 }

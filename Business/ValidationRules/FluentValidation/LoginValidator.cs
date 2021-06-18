@@ -7,7 +7,6 @@ namespace Business.ValidationRules.FluentValidation
     {
         public LoginValidator()
         {
-            RuleFor(u=>u.Email).MinimumLength(50).WithMessage("MAL");
         }
     }
 }
