@@ -3,6 +3,7 @@ using Business.Abstract;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Authorization;
 using Core.Aspects.Autofac.Validation;
+using Core.Business;
 using Core.Entities.Concrete;
 using Core.Utilities.Results.Abstract;
 using Core.Utilities.Results.Concrete;
@@ -23,12 +24,26 @@ namespace Business.Concrete
         [ValidationAspect(typeof(OperationClaimValidator))]
         public IResult Add(OperationClaim entity)
         {
+            IResult result = BusinessRules.Run();
+
+            if (result != null)
+            {
+                return result;
+            }
+
             _operationClaimDal.Add(entity);
             return new SuccessResult();
         }
 
         public IResult Delete(OperationClaim entity)
         {
+            IResult result = BusinessRules.Run();
+
+            if (result != null)
+            {
+                return result;
+            }
+
             var entityToDelete = GetById(entity.Id).Data;
 
             _operationClaimDal.Delete(entityToDelete);
@@ -38,6 +53,13 @@ namespace Business.Concrete
         [ValidationAspect(typeof(OperationClaimValidator))]
         public IResult Update(OperationClaim entity)
         {
+            IResult result = BusinessRules.Run();
+
+            if (result != null)
+            {
+                return result;
+            }
+
             _operationClaimDal.Update(entity);
             return new SuccessResult();
         }

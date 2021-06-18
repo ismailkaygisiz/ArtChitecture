@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Business.Constants;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Authorization;
 using Core.Aspects.Autofac.Transaction;
@@ -28,12 +29,13 @@ namespace Business.Concrete
         {
             var roles = _userService.GetClaims(user).Data;
             var accessToken = _tokenHelper.CreateToken(user, roles);
+
             return new SuccessDataResult<AccessToken>(accessToken);
         }
 
         [ValidationAspect(typeof(LoginValidator))]
         [TransactionScopeAspect]
-        public IDataResult<User> Login(UserForLoginDto userForLoginDto)
+        public IDataResult<AccessToken> Login(UserForLoginDto userForLoginDto)
         {
             IResult result = BusinessRules.Run(
                 CheckIfUserIsNotExists(userForLoginDto.Email),
@@ -42,15 +44,18 @@ namespace Business.Concrete
 
             if (result != null)
             {
-                return new ErrorDataResult<User>(result.Message);
+                return new ErrorDataResult<AccessToken>(result.Message);
             }
 
             var user = _userService.GetByEmail(userForLoginDto.Email);
-            return new SuccessDataResult<User>(user.Data);
+
+            var accessToken = CreateAccessToken(user.Data);
+            return new SuccessDataResult<AccessToken>(accessToken.Data);
         }
 
+        [ValidationAspect(typeof(RegisterValidator))]
         [TransactionScopeAspect]
-        public IDataResult<User> Register(UserForRegisterDto userForRegisterDto, string password)
+        public IDataResult<AccessToken> Register(UserForRegisterDto userForRegisterDto, string password)
         {
             IResult result = BusinessRules.Run(
                 CheckIfUserIsAlreadyExists(userForRegisterDto.Email)
@@ -58,19 +63,21 @@ namespace Business.Concrete
 
             if (result != null)
             {
-                return new ErrorDataResult<User>(result.Message);
+                return new ErrorDataResult<AccessToken>(result.Message);
             }
 
             User user = CreateUser(userForRegisterDto, password).Data;
             _userService.Add(user);
-            return new SuccessDataResult<User>(user);
+
+            var accessToken = CreateAccessToken(user);
+            return new SuccessDataResult<AccessToken>(accessToken.Data);
         }
 
         private IResult CheckIfUserIsAlreadyExists(string email)
         {
             if (_userService.GetByEmail(email).Data != null)
             {
-                return new ErrorResult("Kullanıcı zaten var");
+                return new ErrorResult(Messages.UserIsAlreadyExists);
             }
 
             return new SuccessResult();
@@ -81,7 +88,7 @@ namespace Business.Concrete
             var user = _userService.GetByEmail(email).Data;
             if (user == null)
             {
-                return new ErrorResult("Kullanıcı Yok");
+                return new ErrorResult(Messages.UserIsNotExists);
             }
 
             return new SuccessResult();
@@ -94,7 +101,7 @@ namespace Business.Concrete
             {
                 if (!HashingHelper.VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
                 {
-                    return new ErrorResult("Parola Hatalı");
+                    return new ErrorResult(Messages.PasswordIsNotTrue);
                 }
             }
 

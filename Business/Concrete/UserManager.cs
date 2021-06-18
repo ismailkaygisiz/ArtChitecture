@@ -1,5 +1,8 @@
 ﻿using System.Collections.Generic;
 using Business.Abstract;
+using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Validation;
+using Core.Business;
 using Core.Entities.Concrete;
 using Core.Entities.DTOs;
 using Core.Utilities.Results.Abstract;
@@ -17,22 +20,45 @@ namespace Business.Concrete
             _userDal = userDal;
         }
 
+        [ValidationAspect(typeof(UserValidator))]
         public IResult Add(User entity)
         {
+            IResult result = BusinessRules.Run();
+
+            if (result != null)
+            {
+                return result;
+            }
+
             _userDal.Add(entity);
             return new SuccessResult();
         }
 
         public IResult Delete(User entity)
         {
+            IResult result = BusinessRules.Run();
+
+            if (result != null)
+            {
+                return result;
+            }
+
             var entityToDelete = GetById(entity.Id).Data;
 
             _userDal.Delete(entityToDelete);
             return new SuccessResult();
         }
 
+        [ValidationAspect(typeof(UserValidator))]
         public IResult Update(User entity)
         {
+            IResult result = BusinessRules.Run();
+
+            if (result != null)
+            {
+                return result;
+            }
+
             _userDal.Update(entity);
             return new SuccessResult();
         }

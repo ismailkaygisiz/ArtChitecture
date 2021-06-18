@@ -1,5 +1,8 @@
 ﻿using System.Collections.Generic;
 using Business.Abstract;
+using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Validation;
+using Core.Business;
 using Core.Entities.Concrete;
 using Core.Utilities.Results.Abstract;
 using Core.Utilities.Results.Concrete;
@@ -16,22 +19,45 @@ namespace Business.Concrete
             _userOperationClaimDal = userOperationClaimDal;
         }
 
+        [ValidationAspect(typeof(UserOperationClaimValidator))]
         public IResult Add(UserOperationClaim entity)
         {
+            IResult result = BusinessRules.Run();
+
+            if (result != null)
+            {
+                return result;
+            }
+
             _userOperationClaimDal.Add(entity);
             return new SuccessResult();
         }
 
         public IResult Delete(UserOperationClaim entity)
         {
+            IResult result = BusinessRules.Run();
+
+            if (result != null)
+            {
+                return result;
+            }
+
             var entityToDelete = GetById(entity.Id).Data;
 
             _userOperationClaimDal.Delete(entityToDelete);
             return new SuccessResult();
         }
 
+        [ValidationAspect(typeof(UserOperationClaimValidator))]
         public IResult Update(UserOperationClaim entity)
         {
+            IResult result = BusinessRules.Run();
+
+            if (result != null)
+            {
+                return result;
+            }
+
             _userOperationClaimDal.Update(entity);
             return new SuccessResult();
         }

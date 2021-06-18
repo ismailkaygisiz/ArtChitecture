@@ -7,7 +7,7 @@ import { Injectable } from '@angular/core';
 export class ValidationService {
   constructor(private toastrService: ToastrService) {}
 
-  validate() {
+  bootstrapValidate() {
     var forms = document.querySelectorAll('.needs-validation');
 
     Array.prototype.slice.call(forms).forEach(function (form) {

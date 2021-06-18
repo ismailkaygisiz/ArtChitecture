@@ -8,7 +8,7 @@ namespace DataAccess.Concrete.EntityFramework
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(
-                @"Data Source=(localdb)\MSSQLLocalDB;Database=ProjectDB;Trusted_Connection=true");
+                @"Data Source=(localdb)\MSSQLLocalDB;Database=ReCapProject;Trusted_Connection=true");
         }
 
         public DbSet<User> Users { get; set; }
