@@ -1,5 +1,8 @@
 ﻿using System.Collections.Generic;
 using Business.Abstract;
+using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Authorization;
+using Core.Aspects.Autofac.Validation;
 using Core.Entities.Concrete;
 using Core.Utilities.Results.Abstract;
 using Core.Utilities.Results.Concrete;
@@ -16,6 +19,8 @@ namespace Business.Concrete
             _operationClaimDal = operationClaimDal;
         }
 
+        [SecuredOperation("Admin")]
+        [ValidationAspect(typeof(OperationClaimValidator))]
         public IResult Add(OperationClaim entity)
         {
             _operationClaimDal.Add(entity);
@@ -30,6 +35,7 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
+        [ValidationAspect(typeof(OperationClaimValidator))]
         public IResult Update(OperationClaim entity)
         {
             _operationClaimDal.Update(entity);

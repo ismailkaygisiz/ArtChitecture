@@ -1,18 +1,22 @@
-﻿using FluentValidation;
+﻿using System.Collections.Generic;
+using FluentValidation;
+using FluentValidation.Results;
 
 namespace Core.CrossCuttingConcerns.Validation
 {
     public static class ValidationTool
     {
-        public static void Validate(IValidator validator, object entity)
+        public static List<ValidationFailure> Validate(IValidator validator, object entity)
         {
             var context = new ValidationContext<object>(entity);
             var result = validator.Validate(context);
 
             if (!result.IsValid)
             {
-                throw new ValidationException(result.Errors);
+                return (List<ValidationFailure>)result.Errors;
             }
+
+            return null;
         }
     }
 }

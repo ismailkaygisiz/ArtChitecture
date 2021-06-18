@@ -1,11 +1,10 @@
+import { ValidationService } from './../../../services/validation.service';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { UserModel } from 'src/app/core/models/user/userModel';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { LocalStorageService } from 'src/app/core/services/local-storage.service';
-import { UserService } from 'src/app/core/services/user.service';
 
 @Component({
   selector: 'app-login',
@@ -20,7 +19,8 @@ export class LoginComponent implements OnInit {
     private toastrService: ToastrService,
     private authService: AuthService,
     private localStorageService: LocalStorageService,
-    private router: Router
+    private router: Router,
+    private validationService: ValidationService
   ) {}
 
   ngOnInit(): void {
@@ -42,12 +42,10 @@ export class LoginComponent implements OnInit {
         (response) => {
           this.localStorageService.setToken(response.data.token);
 
-          this.router.navigate(['']).then((c) => {
-            window.location.reload();
-          });
+          this.router.navigate(['']);
         },
         (responseError) => {
-          this.toastrService.error(responseError.error.message, 'Hata');
+          this.validationService.showErrors(responseError);
         }
       );
     } else {

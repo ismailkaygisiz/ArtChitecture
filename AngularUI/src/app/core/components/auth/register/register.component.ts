@@ -1,3 +1,4 @@
+import { ValidationService } from './../../../services/validation.service';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -20,7 +21,8 @@ export class RegisterComponent implements OnInit {
     private toastrService: ToastrService,
     private authService: AuthService,
     private localStorageService: LocalStorageService,
-    private router: Router
+    private router: Router,
+    private validationService: ValidationService
   ) {}
 
   ngOnInit(): void {
@@ -48,7 +50,7 @@ export class RegisterComponent implements OnInit {
           this.router.navigate(['']);
         },
         (responseError) => {
-          this.toastrService.error(responseError.error.message, "Hata");
+          this.validationService.showErrors(responseError);
         }
       );
     } else {

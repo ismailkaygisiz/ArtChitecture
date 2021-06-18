@@ -1,5 +1,8 @@
 ﻿using Business.Abstract;
+using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Authorization;
 using Core.Aspects.Autofac.Transaction;
+using Core.Aspects.Autofac.Validation;
 using Core.Business;
 using Core.Entities.Concrete;
 using Core.Entities.DTOs;
@@ -28,6 +31,7 @@ namespace Business.Concrete
             return new SuccessDataResult<AccessToken>(accessToken);
         }
 
+        [ValidationAspect(typeof(LoginValidator))]
         [TransactionScopeAspect]
         public IDataResult<User> Login(UserForLoginDto userForLoginDto)
         {
