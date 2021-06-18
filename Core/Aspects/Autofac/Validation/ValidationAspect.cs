@@ -49,6 +49,8 @@ namespace Core.Aspects.Autofac.Validation
         {
             if (_errors != null)
             {
+                Invoke = true;
+
                 var validationErrors = new List<string>();
 
                 foreach (ValidationFailure error in _errors)
@@ -58,12 +60,8 @@ namespace Core.Aspects.Autofac.Validation
 
                 if (invocation.MethodInvocationTarget.ReturnType.GenericTypeArguments.Length > 0)
                 {
-                    var methodName = invocation.MethodInvocationTarget.ReturnType.GenericTypeArguments[0].FullName;
-                    Assembly assembly = Assembly.GetExecutingAssembly();
-                    var genericType = assembly.GetType(methodName);
-                    var type = typeof(ErrorDataResult<>).MakeGenericType(genericType);
-                    var result = Activator.CreateInstance(type, null,
-                        "Doğrulama Hatası");
+                    var type = typeof(ErrorDataResult<>).MakeGenericType(invocation.Method.ReturnType.GenericTypeArguments[0]);
+                    var result = Activator.CreateInstance(type, null, "Doğrulama Hatası");
 
                     invocation.ReturnValue = result;
                     return;
@@ -71,8 +69,7 @@ namespace Core.Aspects.Autofac.Validation
 
                 invocation.ReturnValue =
                     new ErrorDataResult<dynamic>(new {validationErrors = validationErrors}, "Doğrulama Hatası");
-
-                Invoke = true;
+                return;
             }
         }
     }

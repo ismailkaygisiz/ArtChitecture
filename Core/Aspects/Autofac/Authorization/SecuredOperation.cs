@@ -43,25 +43,21 @@ namespace Core.Aspects.Autofac.Authorization
         {
             if (_error)
             {
+                Invoke = true;
+                _error = false;
+
                 if (invocation.MethodInvocationTarget.ReturnType.GenericTypeArguments.Length > 0)
                 {
-                    // var methodName = invocation.MethodInvocationTarget.ReturnType.GenericTypeArguments[0].FullName;
-                    // Assembly assembly = Assembly.GetExecutingAssembly();
-
-                    // var genericType = assembly.GetType(methodName);
-
-                    var type = typeof(ErrorDataResult<>).MakeGenericType(invocation.Method.ReturnType.GenericTypeArguments[0]);
-                    var result = Activator.CreateInstance(type,null, "Yetkiniz Yok");
+                    var type = typeof(ErrorDataResult<>).MakeGenericType(invocation.Method.ReturnType
+                        .GenericTypeArguments[0]);
+                    var result = Activator.CreateInstance(type, null, "Yetkiniz Yok");
 
                     invocation.ReturnValue = result;
-                    _error = false;
-                    Invoke = true;
                     return;
                 }
 
-                invocation.ReturnValue = new ErrorDataResult<dynamic>(null,"Yetkiniz Yok");
-                _error = false;
-                Invoke = true;
+                invocation.ReturnValue = new ErrorDataResult<dynamic>(null, "Yetkiniz Yok");
+                return;
             }
         }
     }
