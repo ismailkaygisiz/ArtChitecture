@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using System;
 using System.Reflection;
 using Core.Entities.Concrete;
+using Core.Utilities.Constants;
 using Core.Utilities.Results.Abstract;
 using Core.Utilities.Results.Concrete;
 
@@ -49,13 +50,13 @@ namespace Core.Aspects.Autofac.Authorization
                 {
                     var type = typeof(ErrorDataResult<>).MakeGenericType(invocation.Method.ReturnType
                         .GenericTypeArguments[0]);
-                    var result = Activator.CreateInstance(type, null, "Yetkiniz Yok");
+                    var result = Activator.CreateInstance(type, null, CoreMessages.AuthorizationDenied);
 
                     invocation.ReturnValue = result;
                     return;
                 }
 
-                invocation.ReturnValue = new ErrorDataResult<dynamic>(null, "Yetkiniz Yok");
+                invocation.ReturnValue = new ErrorDataResult<dynamic>(null, CoreMessages.AuthorizationDenied);
                 return;
             }
         }

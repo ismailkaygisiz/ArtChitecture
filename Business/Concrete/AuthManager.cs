@@ -1,6 +1,7 @@
 ﻿using Business.Abstract;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac;
 using Core.Aspects.Autofac.Authorization;
 using Core.Aspects.Autofac.Transaction;
 using Core.Aspects.Autofac.Validation;
@@ -18,7 +19,6 @@ namespace Business.Concrete
     {
         private IUserService _userService;
         private ITokenHelper _tokenHelper;
-        private User _user;
 
         public AuthManager(IUserService userService, ITokenHelper tokenHelper)
         {
@@ -36,7 +36,7 @@ namespace Business.Concrete
 
         [TransactionScopeAspect]
         [ValidationAspect(typeof(LoginValidator))]
-        public IResult ChangePassword(UserForLoginDto userForLoginDto, string newPassword)
+        public IDataResult<AccessToken> ChangePassword(UserForLoginDto userForLoginDto, string newPassword)
         {
             IResult result = BusinessRules.Run(
                 CheckIfUserPasswordIsNotTrue(userForLoginDto.Email, userForLoginDto.Password),
@@ -44,7 +44,7 @@ namespace Business.Concrete
 
             if (result != null)
             {
-                return result;
+                return new ErrorDataResult<AccessToken>(result.Message);
             }
 
             byte[] passwordHash;
@@ -65,19 +65,12 @@ namespace Business.Concrete
             };
 
             _userService.Update(user);
-            _user = user;
-
-            return new SuccessResult(Messages.PasswordChanged);
-        }
-
-        public IDataResult<User> GetUser()
-        {
-            return new SuccessDataResult<User>(_user);
+            return new SuccessDataResult<AccessToken>(CreateAccessToken(user).Data, Messages.PasswordChanged);
         }
 
         [TransactionScopeAspect]
         [ValidationAspect(typeof(LoginValidator))]
-        public IResult Login(UserForLoginDto userForLoginDto)
+        public IDataResult<AccessToken> Login(UserForLoginDto userForLoginDto)
         {
             IResult result = BusinessRules.Run(
                 CheckIfUserIsNotExists(userForLoginDto.Email),
@@ -86,17 +79,16 @@ namespace Business.Concrete
 
             if (result != null)
             {
-                return result;
+                return new ErrorDataResult<AccessToken>(result.Message);
             }
 
-            _user = _userService.GetByEmail(userForLoginDto.Email).Data;
-
-            return new SuccessResult();
+            User user = _userService.GetByEmail(userForLoginDto.Email).Data;
+            return new SuccessDataResult<AccessToken>(CreateAccessToken(user).Data, Messages.SuccessfulLogin);
         }
 
         [TransactionScopeAspect]
         [ValidationAspect(typeof(RegisterValidator))]
-        public IResult Register(UserForRegisterDto userForRegisterDto, string password)
+        public IDataResult<AccessToken> Register(UserForRegisterDto userForRegisterDto, string password)
         {
             IResult result = BusinessRules.Run(
                 CheckIfUserIsAlreadyExists(userForRegisterDto.Email)
@@ -104,14 +96,12 @@ namespace Business.Concrete
 
             if (result != null)
             {
-                return result;
+                return new ErrorDataResult<AccessToken>(result.Message);
             }
 
             User user = CreateUser(userForRegisterDto, password).Data;
             _userService.Add(user);
-
-            _user = user;
-            return new SuccessResult();
+            return new SuccessDataResult<AccessToken>(CreateAccessToken(user).Data, Messages.SuccessfulRegister);
         }
 
         private IResult CheckIfUserIsAlreadyExists(string email)

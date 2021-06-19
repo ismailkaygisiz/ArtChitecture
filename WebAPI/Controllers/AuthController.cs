@@ -21,7 +21,7 @@ namespace WebAPI.Controllers
             var result = _authService.Login(userForLoginDto);
             if (result.Success)
             {
-                return Ok(_authService.CreateAccessToken(_authService.GetUser().Data));
+                return Ok(result);
             }
 
             return BadRequest(result);
@@ -33,7 +33,7 @@ namespace WebAPI.Controllers
             var result = _authService.Register(userForRegisterDto, userForRegisterDto.Password);
             if (result.Success)
             {
-                return Ok(_authService.CreateAccessToken(_authService.GetUser().Data));
+                return Ok(result);
             }
 
             return BadRequest(result);
@@ -45,7 +45,7 @@ namespace WebAPI.Controllers
             var result = _authService.ChangePassword(userForLoginDto, newPassword);
             if (result.Success)
             {
-                return Ok(_authService.CreateAccessToken(_authService.GetUser().Data));
+                return Ok(result);
             }
 
             return BadRequest(result);

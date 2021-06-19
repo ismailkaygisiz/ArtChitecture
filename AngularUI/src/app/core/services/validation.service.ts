@@ -28,14 +28,12 @@ export class ValidationService {
 
   showErrors(response: any) {
     if (response.error != null) {
-      if (response.error.data != null) {
-        if (response.error.data.validationErrors != null) {
-          response.error.data.validationErrors.forEach((error: any) => {
-            this.toastrService.error(error, response.error.message);
-          });
+      if (response.error.validationErrors != null) {
+        response.error.validationErrors.forEach((error: any) => {
+          this.toastrService.error(error, response.error.message);
+        });
 
-          return true;
-        }
+        return true;
       } else if (response.error.message != null) {
         this.toastrService.error(response.error.message, 'Hata');
 

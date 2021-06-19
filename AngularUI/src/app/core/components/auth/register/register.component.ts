@@ -40,14 +40,13 @@ export class RegisterComponent implements OnInit {
 
   register() {
     if (this.registerForm.valid) {
-      console.log(this.registerForm.value);
       let registerModel = Object.assign({}, this.registerForm.value);
 
       this.authService.register(registerModel).subscribe(
         (response) => {
           this.localStorageService.setToken(response.data.token);
 
-          this.toastrService.success('Kayıt Başarılı', 'Başarı');
+          this.toastrService.success(response.message, 'İşlem Başarılı');
           this.router.navigate(['']);
         },
         (responseError) => {

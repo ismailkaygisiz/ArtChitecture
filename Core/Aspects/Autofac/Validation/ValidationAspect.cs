@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Core.Extensions;
+using Core.Utilities.Constants;
 using Core.Utilities.Results.Concrete;
 using FluentValidation.Results;
 
@@ -21,7 +22,7 @@ namespace Core.Aspects.Autofac.Validation
         {
             if (!typeof(IValidator).IsAssignableFrom(validatorType))
             {
-                throw new System.Exception("This is not a validation class");
+                throw new System.Exception(CoreMessages.IsNotAValidationClass);
             }
 
             _validatorType = validatorType;
@@ -59,15 +60,16 @@ namespace Core.Aspects.Autofac.Validation
 
                 if (invocation.MethodInvocationTarget.ReturnType.GenericTypeArguments.Length > 0)
                 {
-                    var type = typeof(ErrorDataResult<>).MakeGenericType(invocation.Method.ReturnType.GenericTypeArguments[0]);
-                    var result = Activator.CreateInstance(type, null, "Doğrulama Hatası");
+                    var type = typeof(ValidationErrorDataResult<>).MakeGenericType(invocation.Method.ReturnType
+                        .GenericTypeArguments[0]);
+                    var result = Activator.CreateInstance(type, validationErrors, CoreMessages.ValidationError);
 
                     invocation.ReturnValue = result;
                     return;
                 }
 
                 invocation.ReturnValue =
-                    new ErrorDataResult<dynamic>(new {validationErrors = validationErrors}, "Doğrulama Hatası");
+                    new ValidationErrorDataResult<dynamic>(validationErrors, CoreMessages.ValidationError);
                 return;
             }
         }
