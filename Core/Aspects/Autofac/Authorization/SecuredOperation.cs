@@ -41,11 +41,10 @@ namespace Core.Aspects.Autofac.Authorization
 
         protected override void OnAfter(IInvocation invocation)
         {
+            Invoke = true;
             if (_error)
             {
-                Invoke = true;
                 _error = false;
-
                 if (invocation.MethodInvocationTarget.ReturnType.GenericTypeArguments.Length > 0)
                 {
                     var type = typeof(ErrorDataResult<>).MakeGenericType(invocation.Method.ReturnType

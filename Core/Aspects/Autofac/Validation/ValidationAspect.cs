@@ -47,10 +47,9 @@ namespace Core.Aspects.Autofac.Validation
 
         protected override void OnAfter(IInvocation invocation)
         {
+            Invoke = true;
             if (_errors != null)
             {
-                Invoke = true;
-
                 var validationErrors = new List<string>();
 
                 foreach (ValidationFailure error in _errors)
