@@ -1,3 +1,4 @@
+import { TokenService } from './../../../services/token.service';
 import { ValidationService } from './../../../services/validation.service';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
@@ -20,7 +21,7 @@ export class RegisterComponent implements OnInit {
     private formBuilder: FormBuilder,
     private toastrService: ToastrService,
     private authService: AuthService,
-    private localStorageService: LocalStorageService,
+    private tokenService: TokenService,
     private router: Router,
     private validationService: ValidationService
   ) {}
@@ -44,7 +45,7 @@ export class RegisterComponent implements OnInit {
 
       this.authService.register(registerModel).subscribe(
         (response) => {
-          this.localStorageService.setToken(response.data.token);
+          this.tokenService.setToken(response.data.token);
 
           this.toastrService.success(response.message, 'İşlem Başarılı');
           this.router.navigate(['']);

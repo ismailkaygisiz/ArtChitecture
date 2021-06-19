@@ -1,3 +1,4 @@
+import { TokenService } from './core/services/token.service';
 import { UserService } from 'src/app/core/services/user.service';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { Component } from '@angular/core';
@@ -10,8 +11,11 @@ import { Component } from '@angular/core';
 export class AppComponent {
   title = 'AngularUI';
 
-  constructor(private authService: AuthService) {
-    if (authService.isTokenExpired()) {
+  constructor(
+    private tokenService: TokenService,
+    private authService: AuthService
+  ) {
+    if (tokenService.isTokenExpired()) {
       authService.logout();
     }
   }

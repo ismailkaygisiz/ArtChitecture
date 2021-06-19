@@ -1,7 +1,6 @@
-import { AuthService } from './auth.service';
+import { TokenService } from './token.service';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { JwtHelperService } from '@auth0/angular-jwt';
 import { Observable } from 'rxjs';
 import { apiUrl } from 'src/api';
 import { DeleteModel } from '../models/deleteModel';
@@ -10,23 +9,19 @@ import { ListResponseModel } from '../models/response/listResponseModel';
 import { ResponseModel } from '../models/response/responseModel';
 import { SingleResponseModel } from '../models/response/singleResponseModel';
 import { UserModel } from '../models/user/userModel';
-import { LocalStorageService } from './local-storage.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
-  private jwtHelperService: JwtHelperService = new JwtHelperService();
-
   constructor(
-    private localStorageService: LocalStorageService,
     private httpClient: HttpClient,
-    private authService: AuthService
+    private tokenService: TokenService
   ) {}
 
   getUserByEmailUseLocalStorage(): Observable<SingleResponseModel<UserModel>> {
-    let email = this.jwtHelperService.decodeToken(
-      this.localStorageService.getToken()
+    let email = this.tokenService.decodeToken(
+      this.tokenService.getToken()
     ).email;
 
     let newPath = apiUrl + 'users/getbyemail?email=' + email;
@@ -72,27 +67,5 @@ export class UserService {
     return this.httpClient.post<
       SingleResponseModel<OperationClaimDetailsModel>
     >(newPath, user);
-  }
-
-  getUserRolesWithJWT(): string[] {
-    let token = this.jwtHelperService.decodeToken(
-      this.localStorageService.getToken()
-    );
-
-    if (token != null) {
-      let roles =
-        token['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
-
-      if (!Array.isArray(roles)) {
-        let array = new Array();
-        array.push(roles);
-
-        return array;
-      }
-
-      return roles;
-    }
-
-    return [];
   }
 }

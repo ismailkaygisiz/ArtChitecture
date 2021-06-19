@@ -1,4 +1,4 @@
-import { JwtHelperService } from '@auth0/angular-jwt';
+import { TokenService } from './token.service';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
@@ -13,11 +13,10 @@ import { LocalStorageService } from './local-storage.service';
   providedIn: 'root',
 })
 export class AuthService {
-  private jwtHelperService: JwtHelperService = new JwtHelperService();
-
   constructor(
     private httpClient: HttpClient,
-    private localStorageService: LocalStorageService
+    private localStorageService: LocalStorageService,
+    private tokenService: TokenService
   ) {}
 
   login(user: LoginModel): Observable<SingleResponseModel<TokenModel>> {
@@ -34,7 +33,7 @@ export class AuthService {
 
   logout() {
     if (this.isAuthenticated()) {
-      this.localStorageService.removeItem('token');
+      this.tokenService.removeToken();
       return true;
     }
 
@@ -49,11 +48,4 @@ export class AuthService {
     return false;
   }
 
-  isTokenExpired(): boolean {
-    let isExpired = this.jwtHelperService.isTokenExpired(
-      this.localStorageService.getToken()
-    );
-
-    return isExpired != null ? isExpired : true;
-  }
 }
