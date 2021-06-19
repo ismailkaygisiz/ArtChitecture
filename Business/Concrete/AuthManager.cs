@@ -65,6 +65,8 @@ namespace Business.Concrete
             };
 
             _userService.Update(user);
+            _user = user;
+
             return new SuccessResult(Messages.PasswordChanged);
         }
 
