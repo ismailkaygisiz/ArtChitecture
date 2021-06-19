@@ -46,6 +46,7 @@ export class ValidationService {
         return true;
       }
     }
+
     return false;
   }
 }
