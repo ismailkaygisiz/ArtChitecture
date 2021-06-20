@@ -4,10 +4,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { UserModel } from 'src/app/core/models/user/userModel';
 import { AuthService } from 'src/app/core/services/auth.service';
-import { LocalStorageService } from 'src/app/core/services/local-storage.service';
-import { UserService } from 'src/app/core/services/user.service';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-register',
@@ -23,10 +21,12 @@ export class RegisterComponent implements OnInit {
     private authService: AuthService,
     private tokenService: TokenService,
     private router: Router,
-    private validationService: ValidationService
+    private validationService: ValidationService,
+    private titleService: Title
   ) {}
 
   ngOnInit(): void {
+    this.titleService.setTitle('Kayıt Ol');
     this.createRegisterForm();
   }
 

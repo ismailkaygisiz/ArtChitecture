@@ -1,18 +1,29 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { DashboardComponent } from './core/components/admin/dashboard/dashboard.component';
-import { AuthComponent } from './core/components/auth/auth/auth.component';
-import { LoginComponent } from './core/components/auth/login/login.component';
-import { RegisterComponent } from './core/components/auth/register/register.component';
-import { ErrorComponent } from './core/components/error/error.component';
-
+// guards
 import { LoginDisableGuard } from './core/guards/login-disable.guard';
 import { LoginGuard } from './core/guards/login.guard';
+import { AdminGuard } from './core/guards/admin.guard';
 
+// layouts
 import { AdminLayoutComponent } from './core/layouts/admin-layout/admin-layout.component';
 import { AuthLayoutComponent } from './core/layouts/auth-layout/auth-layout.component';
 import { MainLayoutComponent } from './core/layouts/main-layout/main-layout.component';
+
+// error
+import { ErrorComponent } from './core/components/error/error.component';
+
+// admin
+import { DashboardComponent } from './core/components/admin/dashboard/dashboard.component';
+
+// auth
+import { AuthComponent } from './core/components/auth/auth/auth.component';
+import { LoginComponent } from './core/components/auth/login/login.component';
+import { RegisterComponent } from './core/components/auth/register/register.component';
+
+// main
+
 
 const routes: Routes = [
   {
@@ -23,8 +34,9 @@ const routes: Routes = [
   {
     path: 'admin',
     component: AdminLayoutComponent,
+    canActivate: [AdminGuard],
     children: [
-      { path: '', component: DashboardComponent, canActivate: [LoginGuard] }
+      { path: '', component: DashboardComponent }
     ],
   },
   {

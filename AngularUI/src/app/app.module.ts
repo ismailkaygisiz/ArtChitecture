@@ -6,19 +6,29 @@ import { AppComponent } from './app.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { AuthInterceptor } from './core/interceptors/auth.interceptor';
-
+// other
 import { ToastrModule } from 'ngx-toastr';
 
+// interceptors
+import { AuthInterceptor } from './core/interceptors/auth.interceptor';
+
+// layouts
 import { AdminLayoutComponent } from './core/layouts/admin-layout/admin-layout.component';
 import { AuthLayoutComponent } from './core/layouts/auth-layout/auth-layout.component';
 import { MainLayoutComponent } from './core/layouts/main-layout/main-layout.component';
 
+// error
 import { ErrorComponent } from './core/components/error/error.component';
+
+// admin
+import { DashboardComponent } from './core/components/admin/dashboard/dashboard.component';
+
+// auth
 import { AuthComponent } from './core/components/auth/auth/auth.component';
 import { LoginComponent } from './core/components/auth/login/login.component';
 import { RegisterComponent } from './core/components/auth/register/register.component';
-import { DashboardComponent } from './core/components/admin/dashboard/dashboard.component';
+
+// main
 
 @NgModule({
   declarations: [

@@ -15,15 +15,15 @@ export class TokenService {
     return this.jwtHelperService.decodeToken(token);
   }
 
-  getToken() {
+  getToken(): string {
     return this.localStorageService.getItem('token');
   }
 
-  setToken(token: string) {
+  setToken(token: string): void {
     this.localStorageService.setItem('token', token);
   }
 
-  removeToken() {
+  removeToken(): void {
     this.localStorageService.removeItem('token');
   }
 
@@ -38,7 +38,7 @@ export class TokenService {
   }
 
   getUserRolesWithJWT(): string[] {
-    let token = this.jwtHelperService.decodeToken(this.getToken());
+    let token = this.decodeToken(this.getToken());
 
     if (token != null) {
       let roles =

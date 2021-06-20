@@ -1,3 +1,4 @@
+import { Title } from '@angular/platform-browser';
 import { TokenService } from './../../../services/token.service';
 import { ValidationService } from './../../../services/validation.service';
 import { Component, OnInit } from '@angular/core';
@@ -5,7 +6,6 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/core/services/auth.service';
-import { LocalStorageService } from 'src/app/core/services/local-storage.service';
 
 @Component({
   selector: 'app-login',
@@ -21,10 +21,12 @@ export class LoginComponent implements OnInit {
     private authService: AuthService,
     private tokenService: TokenService,
     private router: Router,
-    private validationService: ValidationService
+    private validationService: ValidationService,
+    private titleService: Title
   ) {}
 
   ngOnInit(): void {
+    this.titleService.setTitle('Giriş Yap');
     this.createLoginForm();
   }
 

@@ -1,5 +1,5 @@
+import { Title } from '@angular/platform-browser';
 import { TokenService } from './core/services/token.service';
-import { UserService } from 'src/app/core/services/user.service';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { Component } from '@angular/core';
 
@@ -13,8 +13,11 @@ export class AppComponent {
 
   constructor(
     private tokenService: TokenService,
-    private authService: AuthService
+    private authService: AuthService,
+    private titleService: Title
   ) {
+    this.titleService.setTitle('Arthitecture');
+
     if (tokenService.isTokenExpired()) {
       authService.logout();
     }
