@@ -1,4 +1,5 @@
-﻿using Core.Entities.Concrete;
+﻿using Core.DataAccess;
+using Core.Entities.Concrete;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Concrete.EntityFramework
@@ -7,8 +8,7 @@ namespace DataAccess.Concrete.EntityFramework
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(
-                @"Data Source=(localdb)\MSSQLLocalDB;Database=ReCapProject;Trusted_Connection=true");
+            optionsBuilder.UseSqlServer(new AppConfiguration("MsSql").GetConnectionString());
         }
 
         public DbSet<User> Users { get; set; }

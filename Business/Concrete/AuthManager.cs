@@ -99,7 +99,20 @@ namespace Business.Concrete
                 return new ErrorDataResult<AccessToken>(result.Message);
             }
 
-            User user = CreateUser(userForRegisterDto, password).Data;
+            byte[] passwordHash;
+            byte[] passwordSalt;
+            HashingHelper.CreatePasswordHash(password, out passwordHash, out passwordSalt);
+
+            User user = new User
+            {
+                Email = userForRegisterDto.Email,
+                FirstName = userForRegisterDto.FirstName,
+                LastName = userForRegisterDto.LastName,
+                PasswordHash = passwordHash,
+                PasswordSalt = passwordSalt,
+                Status = true
+            };
+
             _userService.Add(user);
             return new SuccessDataResult<AccessToken>(CreateAccessToken(user).Data, Messages.SuccessfulRegister);
         }
@@ -147,25 +160,6 @@ namespace Business.Concrete
             }
 
             return new SuccessResult();
-        }
-
-        private IDataResult<User> CreateUser(UserForRegisterDto userForRegisterDto, string password)
-        {
-            byte[] passwordHash;
-            byte[] passwordSalt;
-            HashingHelper.CreatePasswordHash(password, out passwordHash, out passwordSalt);
-
-            User user = new User
-            {
-                Email = userForRegisterDto.Email,
-                FirstName = userForRegisterDto.FirstName,
-                LastName = userForRegisterDto.LastName,
-                PasswordHash = passwordHash,
-                PasswordSalt = passwordSalt,
-                Status = true
-            };
-
-            return new SuccessDataResult<User>(user);
         }
     }
 }
