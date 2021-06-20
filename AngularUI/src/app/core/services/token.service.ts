@@ -41,8 +41,7 @@ export class TokenService {
     let token = this.decodeToken(this.getToken());
 
     if (token != null) {
-      let roles =
-        token['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
+      let roles = token[Object.keys(token).filter((r) => r.endsWith('/role'))[0]];
 
       if (!Array.isArray(roles)) {
         let array = new Array();
@@ -62,16 +61,10 @@ export class TokenService {
 
     if (token != null) {
       let userModel = {
-        id: +token[
-          'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'
-        ],
+        id: +token[Object.keys(token).filter((t) => t.endsWith('nameidentifier'))[0]],
         email: token.email,
-        firstName:
-          token['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'],
-        lastName:
-          token[
-            'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname'
-          ],
+        firstName: token[Object.keys(token).filter((t) => t.endsWith('name'))[0]],
+        lastName: token[Object.keys(token).filter((t) => t.endsWith('surname'))[0]],
         status: Boolean(token.status),
       };
 
