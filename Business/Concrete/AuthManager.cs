@@ -19,11 +19,13 @@ namespace Business.Concrete
     {
         private IUserService _userService;
         private ITokenHelper _tokenHelper;
+        private IRequestUserService _requestUserService;
 
-        public AuthManager(IUserService userService, ITokenHelper tokenHelper)
+        public AuthManager(IUserService userService, ITokenHelper tokenHelper, IRequestUserService requestUserService)
         {
             _userService = userService;
             _tokenHelper = tokenHelper;
+            _requestUserService = requestUserService;
         }
 
         public IDataResult<AccessToken> CreateAccessToken(User user)
@@ -39,6 +41,7 @@ namespace Business.Concrete
         public IDataResult<AccessToken> ChangePassword(UserForLoginDto userForLoginDto, string newPassword)
         {
             IResult result = BusinessRules.Run(
+                _requestUserService.CheckIfRequestUserIsNotEqualsUser(userForLoginDto.Email),
                 CheckIfUserPasswordIsNotTrue(userForLoginDto.Email, userForLoginDto.Password),
                 CheckIfNewPasswordIsEqualsOldPassword(userForLoginDto, newPassword));
 

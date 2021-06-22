@@ -1,7 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using Core.Business;
 using Core.DependencyResolvers;
 using Core.Extensions;
 using Core.Utilities.Security.Encryption;
@@ -81,7 +84,7 @@ namespace WebAPI
 
             app.UseAuthorization();
 
-            app.UseAuthentication();
+            app.UseRequestUser();
 
             app.UseStaticFiles();
 
