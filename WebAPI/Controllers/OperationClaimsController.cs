@@ -8,7 +8,7 @@ namespace WebAPI.Controllers
     [ApiController]
     public class OperationClaimsController : Controller
     {
-        private IOperationClaimService _operationClaimService;
+        private readonly IOperationClaimService _operationClaimService;
 
         public OperationClaimsController(IOperationClaimService operationClaimService)
         {
@@ -19,10 +19,7 @@ namespace WebAPI.Controllers
         public IActionResult Add(OperationClaim operationClaim)
         {
             var result = _operationClaimService.Add(operationClaim);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
+            if (result.Success) return Ok(result);
 
             return BadRequest(result);
         }
@@ -31,10 +28,7 @@ namespace WebAPI.Controllers
         public IActionResult Delete(OperationClaim operationClaim)
         {
             var result = _operationClaimService.Delete(operationClaim);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
+            if (result.Success) return Ok(result);
 
             return BadRequest(result);
         }
@@ -43,10 +37,7 @@ namespace WebAPI.Controllers
         public IActionResult Update(OperationClaim operationClaim)
         {
             var result = _operationClaimService.Update(operationClaim);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
+            if (result.Success) return Ok(result);
 
             return BadRequest(result);
         }
@@ -55,10 +46,7 @@ namespace WebAPI.Controllers
         public IActionResult GetAll()
         {
             var result = _operationClaimService.GetAll();
-            if (result.Success)
-            {
-                return Ok(result);
-            }
+            if (result.Success) return Ok(result);
 
             return BadRequest(result);
         }
@@ -67,10 +55,7 @@ namespace WebAPI.Controllers
         public IActionResult GetById(int id)
         {
             var result = _operationClaimService.GetById(id);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
+            if (result.Success) return Ok(result);
 
             return BadRequest(result);
         }
@@ -79,10 +64,7 @@ namespace WebAPI.Controllers
         public IActionResult GetByName(string name)
         {
             var result = _operationClaimService.GetByName(name);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
+            if (result.Success) return Ok(result);
 
             return BadRequest(result);
         }

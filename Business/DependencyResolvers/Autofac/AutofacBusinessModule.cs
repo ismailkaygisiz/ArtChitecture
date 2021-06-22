@@ -1,14 +1,15 @@
-﻿using Autofac;
+﻿using System.Reflection;
+using Autofac;
 using Autofac.Extras.DynamicProxy;
 using Business.Abstract;
 using Business.Concrete;
 using Castle.DynamicProxy;
-using Core.Business;
 using Core.Utilities.Helpers.FileHelpers;
 using Core.Utilities.Interceptors;
 using Core.Utilities.Security.JWT;
 using DataAccess.Abstract;
 using DataAccess.Concrete.EntityFramework;
+using Module = Autofac.Module;
 
 namespace Business.DependencyResolvers.Autofac
 {
@@ -32,9 +33,9 @@ namespace Business.DependencyResolvers.Autofac
             builder.RegisterType<RootFileHelper>().As<IFileHelper>().SingleInstance();
 
             // Interceptors
-            var assembly = System.Reflection.Assembly.GetExecutingAssembly();
+            var assembly = Assembly.GetExecutingAssembly();
             builder.RegisterAssemblyTypes(assembly).AsImplementedInterfaces()
-                .EnableInterfaceInterceptors(new ProxyGenerationOptions()
+                .EnableInterfaceInterceptors(new ProxyGenerationOptions
                 {
                     Selector = new AspectInterceptorSelector()
                 }).SingleInstance();

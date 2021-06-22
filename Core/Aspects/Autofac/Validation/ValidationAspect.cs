@@ -1,29 +1,25 @@
-﻿using Castle.DynamicProxy;
-using Core.CrossCuttingConcerns.Validation;
-using Core.Utilities.Interceptors;
-using FluentValidation;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using Core.Extensions;
+using Castle.DynamicProxy;
+using Core.CrossCuttingConcerns.Validation;
 using Core.Utilities.Constants;
+using Core.Utilities.Interceptors;
 using Core.Utilities.Results.Concrete;
+using FluentValidation;
 using FluentValidation.Results;
 
 namespace Core.Aspects.Autofac.Validation
 {
     public class ValidationAspect : MethodInterception
     {
-        private Type _validatorType;
         private List<ValidationFailure> _errors;
+        private readonly Type _validatorType;
 
         public ValidationAspect(Type validatorType)
         {
             if (!typeof(IValidator).IsAssignableFrom(validatorType))
-            {
-                throw new System.Exception(CoreMessages.IsNotAValidationClass);
-            }
+                throw new Exception(CoreMessages.IsNotAValidationClass);
 
             _validatorType = validatorType;
         }
@@ -35,15 +31,9 @@ namespace Core.Aspects.Autofac.Validation
 
             var notNullEntities = invocation.Arguments.Where(t => t != null);
             var entities = notNullEntities.Where(t => t.GetType() == entityType);
-            foreach (var entity in entities)
-            {
-                _errors = ValidationTool.Validate(validator, entity);
-            }
+            foreach (var entity in entities) _errors = ValidationTool.Validate(validator, entity);
 
-            if (_errors != null)
-            {
-                Invoke = false;
-            }
+            if (_errors != null) Invoke = false;
         }
 
         protected override void OnAfter(IInvocation invocation)
@@ -53,10 +43,7 @@ namespace Core.Aspects.Autofac.Validation
             {
                 var validationErrors = new List<string>();
 
-                foreach (ValidationFailure error in _errors)
-                {
-                    validationErrors.Add(error.ErrorMessage);
-                }
+                foreach (var error in _errors) validationErrors.Add(error.ErrorMessage);
 
                 if (invocation.MethodInvocationTarget.ReturnType.GenericTypeArguments.Length > 0)
                 {
@@ -70,7 +57,6 @@ namespace Core.Aspects.Autofac.Validation
 
                 invocation.ReturnValue =
                     new ValidationErrorDataResult<dynamic>(validationErrors, CoreMessages.ValidationError);
-                return;
             }
         }
     }

@@ -1,27 +1,28 @@
-﻿using Core.Entities.Concrete;
-using Core.Extensions;
-using Core.Utilities.Security.Encryption;
-using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
+using Core.Entities.Concrete;
+using Core.Extensions;
+using Core.Utilities.Security.Encryption;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Core.Utilities.Security.JWT
 {
     public class JwtHelper : ITokenHelper
     {
-        public IConfiguration Configuration { get; }
-        private TokenOptions _tokenOptions;
-        DateTime _accessTokenExpiration;
+        private DateTime _accessTokenExpiration;
+        private readonly TokenOptions _tokenOptions;
 
         public JwtHelper(IConfiguration configuration)
         {
             Configuration = configuration;
             _tokenOptions = Configuration.GetSection("TokenOptions").Get<TokenOptions>();
         }
+
+        public IConfiguration Configuration { get; }
 
         public AccessToken CreateToken(User user, List<OperationClaim> operationClaims)
         {
@@ -39,16 +40,17 @@ namespace Core.Utilities.Security.JWT
             };
         }
 
-        public JwtSecurityToken CreateJwtSecurityToken(TokenOptions tokenOptions, User user, SigningCredentials signingCredentials, List<OperationClaim> operationClaims)
+        public JwtSecurityToken CreateJwtSecurityToken(TokenOptions tokenOptions, User user,
+            SigningCredentials signingCredentials, List<OperationClaim> operationClaims)
         {
             var jwt = new JwtSecurityToken(
-                issuer: tokenOptions.Issuer,
-                audience: tokenOptions.Audience,
+                tokenOptions.Issuer,
+                tokenOptions.Audience,
                 expires: _accessTokenExpiration,
                 notBefore: DateTime.Now,
                 claims: SetClaims(user, operationClaims),
                 signingCredentials: signingCredentials
-                );
+            );
 
             return jwt;
         }

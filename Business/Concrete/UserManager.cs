@@ -2,12 +2,12 @@
 using Business.Abstract;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Authorization;
+using Core.Aspects.Autofac.Caching;
 using Core.Aspects.Autofac.Transaction;
 using Core.Aspects.Autofac.Validation;
 using Core.Business;
 using Core.Entities.Concrete;
 using Core.Entities.DTOs;
-using Core.Utilities.Constants;
 using Core.Utilities.Results.Abstract;
 using Core.Utilities.Results.Concrete;
 using DataAccess.Abstract;
@@ -16,7 +16,7 @@ namespace Business.Concrete
 {
     public class UserManager : IUserService
     {
-        private IUserDal _userDal;
+        private readonly IUserDal _userDal;
 
         public UserManager(IUserDal userDal)
         {
@@ -25,14 +25,12 @@ namespace Business.Concrete
 
         [TransactionScopeAspect]
         [ValidationAspect(typeof(UserValidator))]
+        [CacheRemoveAspect("IUserService.Get")]
         public IResult Add(User entity)
         {
-            IResult result = BusinessRules.Run();
+            var result = BusinessRules.Run();
 
-            if (result != null)
-            {
-                return result;
-            }
+            if (result != null) return result;
 
             _userDal.Add(entity);
             return new SuccessResult();
@@ -40,14 +38,12 @@ namespace Business.Concrete
 
         [SecuredOperation("User", "entity.Id")]
         [TransactionScopeAspect]
+        [CacheRemoveAspect("IUserService.Get")]
         public IResult Delete(User entity)
         {
-            IResult result = BusinessRules.Run();
+            var result = BusinessRules.Run();
 
-            if (result != null)
-            {
-                return result;
-            }
+            if (result != null) return result;
 
             var entityToDelete = GetById(entity.Id).Data;
 
@@ -58,14 +54,12 @@ namespace Business.Concrete
         [SecuredOperation("User", "entity.Id")]
         [TransactionScopeAspect]
         [ValidationAspect(typeof(UserValidator))]
+        [CacheRemoveAspect("IUserService.Get")]
         public IResult Update(User entity)
         {
-            IResult result = BusinessRules.Run();
+            var result = BusinessRules.Run();
 
-            if (result != null)
-            {
-                return result;
-            }
+            if (result != null) return result;
 
             _userDal.Update(entity);
             return new SuccessResult();
@@ -78,18 +72,21 @@ namespace Business.Concrete
         }
 
         [SecuredOperation("Admin")]
+        [CacheAspect(10)]
         public IDataResult<List<User>> GetAll()
         {
             return new SuccessDataResult<List<User>>(_userDal.GetAll());
         }
 
         [SecuredOperation("Admin")]
+        [CacheAspect(10)]
         public IDataResult<List<User>> GetByFirstName(string firstName)
         {
             return new SuccessDataResult<List<User>>(_userDal.GetAll(u => u.FirstName == firstName));
         }
 
         [SecuredOperation("Admin")]
+        [CacheAspect(10)]
         public IDataResult<List<User>> GetByLastName(string lastName)
         {
             return new SuccessDataResult<List<User>>(_userDal.GetAll(u => u.LastName == lastName));
@@ -109,10 +106,11 @@ namespace Business.Concrete
 
         public IDataResult<User> GetByEmailForAuth(string email)
         {
-            return new SuccessDataResult<User>(_userDal.Get(u=>u.Email == email));
+            return new SuccessDataResult<User>(_userDal.Get(u => u.Email == email));
         }
 
         [SecuredOperation("Admin")]
+        [CacheAspect(10)]
         public IDataResult<UserOperationClaimDetailDto> GetUserOperationClaims(int userId)
         {
             return new SuccessDataResult<UserOperationClaimDetailDto>(_userDal.GetUserOperationClaimsDetails(userId));

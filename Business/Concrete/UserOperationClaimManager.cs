@@ -2,6 +2,7 @@
 using Business.Abstract;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Authorization;
+using Core.Aspects.Autofac.Caching;
 using Core.Aspects.Autofac.Transaction;
 using Core.Aspects.Autofac.Validation;
 using Core.Business;
@@ -14,7 +15,7 @@ namespace Business.Concrete
 {
     public class UserOperationClaimManager : IUserOperationClaimService
     {
-        private IUserOperationClaimDal _userOperationClaimDal;
+        private readonly IUserOperationClaimDal _userOperationClaimDal;
 
         public UserOperationClaimManager(IUserOperationClaimDal userOperationClaimDal)
         {
@@ -24,14 +25,12 @@ namespace Business.Concrete
         [TransactionScopeAspect]
         [SecuredOperation("Admin")]
         [ValidationAspect(typeof(UserOperationClaimValidator))]
+        [CacheRemoveAspect("IUserOperationClaimService.Get")]
         public IResult Add(UserOperationClaim entity)
         {
-            IResult result = BusinessRules.Run();
+            var result = BusinessRules.Run();
 
-            if (result != null)
-            {
-                return result;
-            }
+            if (result != null) return result;
 
             _userOperationClaimDal.Add(entity);
             return new SuccessResult();
@@ -39,14 +38,12 @@ namespace Business.Concrete
 
         [TransactionScopeAspect]
         [SecuredOperation("Admin")]
+        [CacheRemoveAspect("IUserOperationClaimService.Get")]
         public IResult Delete(UserOperationClaim entity)
         {
-            IResult result = BusinessRules.Run();
+            var result = BusinessRules.Run();
 
-            if (result != null)
-            {
-                return result;
-            }
+            if (result != null) return result;
 
             var entityToDelete = GetById(entity.Id).Data;
 
@@ -57,32 +54,33 @@ namespace Business.Concrete
         [TransactionScopeAspect]
         [SecuredOperation("Admin")]
         [ValidationAspect(typeof(UserOperationClaimValidator))]
+        [CacheRemoveAspect("IUserOperationClaimService.Get")]
         public IResult Update(UserOperationClaim entity)
         {
-            IResult result = BusinessRules.Run();
+            var result = BusinessRules.Run();
 
-            if (result != null)
-            {
-                return result;
-            }
+            if (result != null) return result;
 
             _userOperationClaimDal.Update(entity);
             return new SuccessResult();
         }
 
         [SecuredOperation("Admin")]
+        [CacheAspect]
         public IDataResult<UserOperationClaim> GetById(int id)
         {
             return new SuccessDataResult<UserOperationClaim>(_userOperationClaimDal.Get(u => u.Id == id));
         }
 
         [SecuredOperation("Admin")]
+        [CacheAspect]
         public IDataResult<List<UserOperationClaim>> GetAll()
         {
             return new SuccessDataResult<List<UserOperationClaim>>(_userOperationClaimDal.GetAll());
         }
 
         [SecuredOperation("Admin")]
+        [CacheAspect]
         public IDataResult<List<UserOperationClaim>> GetByClaimId(int claimId)
         {
             return new SuccessDataResult<List<UserOperationClaim>>(
@@ -90,6 +88,7 @@ namespace Business.Concrete
         }
 
         [SecuredOperation("User", "userId")]
+        [CacheAspect]
         public IDataResult<List<UserOperationClaim>> GetByUserId(int userId)
         {
             return new SuccessDataResult<List<UserOperationClaim>>(

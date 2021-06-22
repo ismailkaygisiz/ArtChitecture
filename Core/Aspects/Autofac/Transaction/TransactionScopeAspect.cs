@@ -1,7 +1,7 @@
 ﻿using System;
+using System.Transactions;
 using Castle.DynamicProxy;
 using Core.Utilities.Interceptors;
-using System.Transactions;
 
 namespace Core.Aspects.Autofac.Transaction
 {
@@ -9,14 +9,14 @@ namespace Core.Aspects.Autofac.Transaction
     {
         public override void Intercept(IInvocation invocation)
         {
-            using (TransactionScope transactionScope = new TransactionScope())
+            using (var transactionScope = new TransactionScope())
             {
                 try
                 {
                     invocation.Proceed();
                     transactionScope.Complete();
                 }
-                catch (System.Exception e)
+                catch (Exception e)
                 {
                     transactionScope.Dispose();
                     throw;

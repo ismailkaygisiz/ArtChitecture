@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
@@ -35,7 +34,7 @@ namespace Core.Extensions
 
         public static void AddStatus(this ICollection<Claim> claims, bool status)
         {
-            claims.Add(new Claim( "status", status.ToString()));
+            claims.Add(new Claim("status", status.ToString()));
         }
     }
 }

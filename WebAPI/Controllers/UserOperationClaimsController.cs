@@ -8,7 +8,7 @@ namespace WebAPI.Controllers
     [ApiController]
     public class UserOperationClaimsController : Controller
     {
-        private IUserOperationClaimService _userOperationClaimService;
+        private readonly IUserOperationClaimService _userOperationClaimService;
 
         public UserOperationClaimsController(IUserOperationClaimService userOperationClaimService)
         {
@@ -19,10 +19,7 @@ namespace WebAPI.Controllers
         public IActionResult Add(UserOperationClaim userOperationClaim)
         {
             var result = _userOperationClaimService.Add(userOperationClaim);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
+            if (result.Success) return Ok(result);
 
             return BadRequest(result);
         }
@@ -31,10 +28,7 @@ namespace WebAPI.Controllers
         public IActionResult Delete(UserOperationClaim userOperationClaim)
         {
             var result = _userOperationClaimService.Delete(userOperationClaim);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
+            if (result.Success) return Ok(result);
 
             return BadRequest(result);
         }
@@ -43,10 +37,7 @@ namespace WebAPI.Controllers
         public IActionResult Update(UserOperationClaim userOperationClaim)
         {
             var result = _userOperationClaimService.Update(userOperationClaim);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
+            if (result.Success) return Ok(result);
 
             return BadRequest(result);
         }
@@ -55,10 +46,7 @@ namespace WebAPI.Controllers
         public IActionResult GetAll()
         {
             var result = _userOperationClaimService.GetAll();
-            if (result.Success)
-            {
-                return Ok(result);
-            }
+            if (result.Success) return Ok(result);
 
             return BadRequest(result);
         }
@@ -67,10 +55,7 @@ namespace WebAPI.Controllers
         public IActionResult GetById(int id)
         {
             var result = _userOperationClaimService.GetById(id);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
+            if (result.Success) return Ok(result);
 
             return BadRequest(result);
         }
@@ -79,10 +64,7 @@ namespace WebAPI.Controllers
         public IActionResult GetByUserId(int userId)
         {
             var result = _userOperationClaimService.GetByUserId(userId);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
+            if (result.Success) return Ok(result);
 
             return BadRequest(result);
         }
@@ -91,10 +73,7 @@ namespace WebAPI.Controllers
         public IActionResult GetByClaimId(int claimId)
         {
             var result = _userOperationClaimService.GetByClaimId(claimId);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
+            if (result.Success) return Ok(result);
 
             return BadRequest(result);
         }

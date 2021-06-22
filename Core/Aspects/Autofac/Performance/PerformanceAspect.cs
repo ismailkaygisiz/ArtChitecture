@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Text;
+﻿using System.Diagnostics;
 using Castle.DynamicProxy;
 using Core.Utilities.Interceptors;
 using Core.Utilities.IoC;
@@ -11,8 +8,8 @@ namespace Core.Aspects.Autofac.Performance
 {
     public class PerformanceAspect : MethodInterception
     {
-        private int _interval;
-        private Stopwatch _stopwatch;
+        private readonly int _interval;
+        private readonly Stopwatch _stopwatch;
 
         public PerformanceAspect(int interval)
         {
@@ -29,10 +26,9 @@ namespace Core.Aspects.Autofac.Performance
         protected override void OnAfter(IInvocation invocation)
         {
             if (_stopwatch.Elapsed.TotalSeconds > _interval)
-            {
-                Debug.WriteLine($"Performance : {invocation.Method.DeclaringType.FullName}.{invocation.Method.Name}-->{_stopwatch.Elapsed.TotalSeconds}");
-                // Mail Support Will Be Added With IMailHelper
-            }
+                Debug.WriteLine(
+                    $"Performance : {invocation.Method.DeclaringType.FullName}.{invocation.Method.Name}-->{_stopwatch.Elapsed.TotalSeconds}");
+            // Mail Support Will Be Added With IMailHelper
             _stopwatch.Reset();
         }
     }

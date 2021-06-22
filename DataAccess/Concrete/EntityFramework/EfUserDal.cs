@@ -11,11 +11,11 @@ namespace DataAccess.Concrete.EntityFramework
     {
         public UserOperationClaimDetailDto GetUserOperationClaimsDetails(int userId)
         {
-            using (ProjectDbContext context = new ProjectDbContext())
+            using (var context = new ProjectDbContext())
             {
                 var result = from user in context.Users
                     where user.Id == userId
-                    select new UserOperationClaimDetailDto()
+                    select new UserOperationClaimDetailDto
                     {
                         Id = user.Id,
                         FirstName = user.FirstName,
@@ -25,7 +25,7 @@ namespace DataAccess.Concrete.EntityFramework
                             join operationClaim in context.OperationClaims on userOperationClaim.OperationClaimId equals
                                 operationClaim.Id
                             where userOperationClaim.Id == userId
-                            select new OperationClaim() {Id = operationClaim.Id, Name = operationClaim.Name}).ToList()
+                            select new OperationClaim {Id = operationClaim.Id, Name = operationClaim.Name}).ToList()
                     };
 
                 return result.SingleOrDefault();
@@ -34,7 +34,7 @@ namespace DataAccess.Concrete.EntityFramework
 
         public List<OperationClaim> GetClaims(User user)
         {
-            using (ProjectDbContext context = new ProjectDbContext())
+            using (var context = new ProjectDbContext())
             {
                 var result = from operationClaim in context.OperationClaims
                     join userOperationClaim in context.UserOperationClaims

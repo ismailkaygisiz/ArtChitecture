@@ -15,7 +15,7 @@ namespace Core.DataAccess
 
             var root = configurationBuilder.Build();
             _connectionString = root.GetSection("ConnectionStrings")
-                .GetSection(databaseConnectionName.ToString()).Value;
+                .GetSection(databaseConnectionName).Value;
             _ = root.GetSection("ApplicationSettings");
         }
 

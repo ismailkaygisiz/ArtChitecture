@@ -8,7 +8,7 @@ namespace WebAPI.Controllers
     [ApiController]
     public class AuthController : Controller
     {
-        private IAuthService _authService;
+        private readonly IAuthService _authService;
 
         public AuthController(IAuthService authService)
         {
@@ -19,10 +19,7 @@ namespace WebAPI.Controllers
         public IActionResult Login(UserForLoginDto userForLoginDto)
         {
             var result = _authService.Login(userForLoginDto);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
+            if (result.Success) return Ok(result);
 
             return BadRequest(result);
         }
@@ -31,10 +28,7 @@ namespace WebAPI.Controllers
         public IActionResult Register(UserForRegisterDto userForRegisterDto)
         {
             var result = _authService.Register(userForRegisterDto, userForRegisterDto.Password);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
+            if (result.Success) return Ok(result);
 
             return BadRequest(result);
         }
@@ -43,10 +37,7 @@ namespace WebAPI.Controllers
         public IActionResult ChangePassword(UserForLoginDto userForLoginDto, string newPassword)
         {
             var result = _authService.ChangePassword(userForLoginDto, newPassword);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
+            if (result.Success) return Ok(result);
 
             return BadRequest(result);
         }

@@ -12,7 +12,7 @@ namespace Core.Extensions
     public class RequestUserMiddleware
     {
         private readonly RequestDelegate _next;
-        private IRequestUserService _requestUserService;
+        private readonly IRequestUserService _requestUserService;
 
         public RequestUserMiddleware(RequestDelegate next)
         {
@@ -36,7 +36,7 @@ namespace Core.Extensions
 
                 roleClaims.ForEach(r => { roles.Add(r.Value); });
 
-                _requestUserService.SetUser(new RequestUser()
+                _requestUserService.SetUser(new RequestUser
                 {
                     Id = int.Parse(id),
                     FirstName = firstName,

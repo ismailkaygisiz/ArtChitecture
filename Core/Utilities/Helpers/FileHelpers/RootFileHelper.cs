@@ -1,16 +1,16 @@
-﻿using Core.Utilities.Results.Abstract;
+﻿using System;
+using System.IO;
+using Core.Utilities.Results.Abstract;
 using Core.Utilities.Results.Concrete;
 using Microsoft.AspNetCore.Http;
-using System;
-using System.IO;
 
 namespace Core.Utilities.Helpers.FileHelpers
 {
     public class RootFileHelper : IFileHelper
     {
-        private string path = Directory.GetCurrentDirectory() + "\\wwwroot";
-        private string folder = "\\images\\";
-        private string defaultImage;
+        private readonly string defaultImage;
+        private readonly string folder = "\\images\\";
+        private readonly string path = Directory.GetCurrentDirectory() + "\\wwwroot";
 
         public RootFileHelper()
         {
@@ -19,15 +19,12 @@ namespace Core.Utilities.Helpers.FileHelpers
 
         public IDataResult<string> CreateFile(IFormFile file)
         {
-            if (file == null)
-            {
-                return new SuccessDataResult<string>(defaultImage, "");
-            }
+            if (file == null) return new SuccessDataResult<string>(defaultImage, "");
 
-            string extension = Path.GetExtension(file.FileName);
-            string guid = Guid.NewGuid().ToString() + DateTime.Now.Millisecond + "_" + DateTime.Now.Hour + "_" +
-                          DateTime.Now.Minute;
-            string imagePath = folder + guid + extension;
+            var extension = Path.GetExtension(file.FileName);
+            var guid = Guid.NewGuid().ToString() + DateTime.Now.Millisecond + "_" + DateTime.Now.Hour + "_" +
+                       DateTime.Now.Minute;
+            var imagePath = folder + guid + extension;
 
             while (File.Exists(path + imagePath))
             {
@@ -36,7 +33,7 @@ namespace Core.Utilities.Helpers.FileHelpers
                 imagePath = folder + guid + extension;
             }
 
-            using (FileStream fileStream = File.Create(path + imagePath))
+            using (var fileStream = File.Create(path + imagePath))
             {
                 file.CopyTo(fileStream);
                 fileStream.Flush();
@@ -49,9 +46,7 @@ namespace Core.Utilities.Helpers.FileHelpers
         public IResult DeleteFile(string filePath)
         {
             if (filePath.Replace("\\", "/") != defaultImage && File.Exists(path + filePath))
-            {
                 File.Delete(path + filePath);
-            }
 
             return new SuccessResult();
         }

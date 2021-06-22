@@ -5,6 +5,5 @@ namespace DataAccess.Abstract
 {
     public interface IOperationClaimDal : IEntityRepository<OperationClaim>
     {
-
     }
 }

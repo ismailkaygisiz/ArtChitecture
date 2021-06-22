@@ -8,7 +8,7 @@ namespace WebAPI.Controllers
     [ApiController]
     public class UsersController : Controller
     {
-        private IUserService _userService;
+        private readonly IUserService _userService;
 
         public UsersController(IUserService userService)
         {
@@ -21,10 +21,7 @@ namespace WebAPI.Controllers
         {
             var result = _userService.Add(user);
 
-            if (result.Success)
-            {
-                return Ok(result);
-            }
+            if (result.Success) return Ok(result);
 
             return BadRequest(result);
         }
@@ -34,10 +31,7 @@ namespace WebAPI.Controllers
         {
             var result = _userService.Delete(user);
 
-            if (result.Success)
-            {
-                return Ok(result);
-            }
+            if (result.Success) return Ok(result);
 
             return BadRequest(result);
         }
@@ -47,10 +41,7 @@ namespace WebAPI.Controllers
         {
             var result = _userService.Update(user);
 
-            if (result.Success)
-            {
-                return Ok(result);
-            }
+            if (result.Success) return Ok(result);
 
             return BadRequest(result);
         }
@@ -60,10 +51,7 @@ namespace WebAPI.Controllers
         {
             var result = _userService.GetById(id);
 
-            if (result.Success)
-            {
-                return Ok(result);
-            }
+            if (result.Success) return Ok(result);
 
             return BadRequest(result);
         }
@@ -73,10 +61,7 @@ namespace WebAPI.Controllers
         {
             var result = _userService.GetByEmail(email);
 
-            if (result.Success)
-            {
-                return Ok(result);
-            }
+            if (result.Success) return Ok(result);
 
             return BadRequest(result);
         }
@@ -86,10 +71,7 @@ namespace WebAPI.Controllers
         {
             var result = _userService.GetByFirstName(firstName);
 
-            if (result.Success)
-            {
-                return Ok(result);
-            }
+            if (result.Success) return Ok(result);
 
             return BadRequest(result);
         }
@@ -99,10 +81,7 @@ namespace WebAPI.Controllers
         {
             var result = _userService.GetByLastName(lastName);
 
-            if (result.Success)
-            {
-                return Ok(result);
-            }
+            if (result.Success) return Ok(result);
 
             return BadRequest(result);
         }
@@ -112,10 +91,7 @@ namespace WebAPI.Controllers
         {
             var result = _userService.GetAll();
 
-            if (result.Success)
-            {
-                return Ok(result);
-            }
+            if (result.Success) return Ok(result);
 
             return BadRequest(result);
         }
@@ -126,10 +102,7 @@ namespace WebAPI.Controllers
         {
             var result = _userService.GetUserOperationClaims(userId);
 
-            if (result.Success)
-            {
-                return Ok(result);
-            }
+            if (result.Success) return Ok(result);
 
             return BadRequest(result);
         }
