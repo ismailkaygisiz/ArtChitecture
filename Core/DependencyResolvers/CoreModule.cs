@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
+using Core.Business;
 
 namespace Core.DependencyResolvers
 {
@@ -18,6 +19,7 @@ namespace Core.DependencyResolvers
             serviceCollection.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             serviceCollection.AddSingleton<Stopwatch>();
             serviceCollection.AddSingleton<ICacheManager, MemoryCacheManager>();
+            serviceCollection.AddSingleton<IRequestUserService, RequestUserManager>();
         }
     }
 }

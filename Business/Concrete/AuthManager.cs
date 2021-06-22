@@ -19,13 +19,11 @@ namespace Business.Concrete
     {
         private IUserService _userService;
         private ITokenHelper _tokenHelper;
-        private IRequestUserService _requestUserService;
 
-        public AuthManager(IUserService userService, ITokenHelper tokenHelper, IRequestUserService requestUserService)
+        public AuthManager(IUserService userService, ITokenHelper tokenHelper)
         {
             _userService = userService;
             _tokenHelper = tokenHelper;
-            _requestUserService = requestUserService;
         }
 
         public IDataResult<AccessToken> CreateAccessToken(User user)
@@ -37,11 +35,11 @@ namespace Business.Concrete
         }
 
         [TransactionScopeAspect]
+        [SecuredOperation("User", "userForLoginDto.Email")]
         [ValidationAspect(typeof(LoginValidator))]
         public IDataResult<AccessToken> ChangePassword(UserForLoginDto userForLoginDto, string newPassword)
         {
             IResult result = BusinessRules.Run(
-                _requestUserService.CheckIfRequestUserIsNotEqualsUser(userForLoginDto.Email),
                 CheckIfUserPasswordIsNotTrue(userForLoginDto.Email, userForLoginDto.Password),
                 CheckIfNewPasswordIsEqualsOldPassword(userForLoginDto, newPassword));
 
@@ -54,7 +52,7 @@ namespace Business.Concrete
             byte[] passwordSalt;
             HashingHelper.CreatePasswordHash(newPassword, out passwordHash, out passwordSalt);
 
-            var oldUser = _userService.GetByEmail(userForLoginDto.Email).Data;
+            var oldUser = _userService.GetByEmailForAuth(userForLoginDto.Email).Data;
 
             User user = new User
             {
@@ -85,7 +83,7 @@ namespace Business.Concrete
                 return new ErrorDataResult<AccessToken>(result.Message);
             }
 
-            User user = _userService.GetByEmail(userForLoginDto.Email).Data;
+            User user = _userService.GetByEmailForAuth(userForLoginDto.Email).Data;
             return new SuccessDataResult<AccessToken>(CreateAccessToken(user).Data, Messages.SuccessfulLogin);
         }
 
@@ -122,7 +120,7 @@ namespace Business.Concrete
 
         private IResult CheckIfUserIsAlreadyExists(string email)
         {
-            if (_userService.GetByEmail(email).Data != null)
+            if (_userService.GetByEmailForAuth(email).Data != null)
             {
                 return new ErrorResult(Messages.UserIsAlreadyExists);
             }
@@ -132,7 +130,7 @@ namespace Business.Concrete
 
         private IResult CheckIfUserIsNotExists(string email)
         {
-            var user = _userService.GetByEmail(email).Data;
+            var user = _userService.GetByEmailForAuth(email).Data;
             if (user == null)
             {
                 return new ErrorResult(Messages.UserIsNotExists);
@@ -143,7 +141,7 @@ namespace Business.Concrete
 
         private IResult CheckIfUserPasswordIsNotTrue(string email, string password)
         {
-            var user = _userService.GetByEmail(email).Data;
+            var user = _userService.GetByEmailForAuth(email).Data;
             if (user != null)
             {
                 if (!HashingHelper.VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))

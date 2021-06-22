@@ -30,7 +30,6 @@ namespace Business.DependencyResolvers.Autofac
             // CoreLayer
             builder.RegisterType<JwtHelper>().As<ITokenHelper>().SingleInstance();
             builder.RegisterType<RootFileHelper>().As<IFileHelper>().SingleInstance();
-            builder.RegisterType<RequestUserManager>().As<IRequestUserService>().SingleInstance();
 
             // Interceptors
             var assembly = System.Reflection.Assembly.GetExecutingAssembly();

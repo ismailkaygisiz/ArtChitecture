@@ -35,10 +35,13 @@ namespace Core.Business
                 {
                     return new ErrorResult(CoreMessages.AuthorizationDenied);
                 }
+                else
+                {
+                    return new SuccessResult();
+                }
             }
 
-
-            return new SuccessResult();
+            return null;
         }
 
         public IResult CheckIfRequestUserIsNotEqualsUser(string email)

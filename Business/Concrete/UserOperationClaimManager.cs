@@ -15,13 +15,10 @@ namespace Business.Concrete
     public class UserOperationClaimManager : IUserOperationClaimService
     {
         private IUserOperationClaimDal _userOperationClaimDal;
-        private IRequestUserService _requestUserService;
 
-        public UserOperationClaimManager(IUserOperationClaimDal userOperationClaimDal,
-            IRequestUserService requestUserService)
+        public UserOperationClaimManager(IUserOperationClaimDal userOperationClaimDal)
         {
             _userOperationClaimDal = userOperationClaimDal;
-            _requestUserService = requestUserService;
         }
 
         [TransactionScopeAspect]
@@ -92,15 +89,9 @@ namespace Business.Concrete
                 _userOperationClaimDal.GetAll(u => u.OperationClaimId == claimId));
         }
 
+        [SecuredOperation("User", "userId")]
         public IDataResult<List<UserOperationClaim>> GetByUserId(int userId)
         {
-            IResult result = BusinessRules.Run(_requestUserService.CheckIfRequestUserIsNotEqualsUser(userId));
-
-            if (result != null)
-            {
-                return new ErrorDataResult<List<UserOperationClaim>>(result.Message);
-            }
-
             return new SuccessDataResult<List<UserOperationClaim>>(
                 _userOperationClaimDal.GetAll(u => u.UserId == userId));
         }

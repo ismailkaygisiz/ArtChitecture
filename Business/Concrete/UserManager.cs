@@ -17,12 +17,10 @@ namespace Business.Concrete
     public class UserManager : IUserService
     {
         private IUserDal _userDal;
-        private IRequestUserService _requestUserService;
 
-        public UserManager(IUserDal userDal, IRequestUserService requestUserService)
+        public UserManager(IUserDal userDal)
         {
             _userDal = userDal;
-            _requestUserService = requestUserService;
         }
 
         [TransactionScopeAspect]
@@ -40,10 +38,11 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
+        [SecuredOperation("User", "entity.Id")]
         [TransactionScopeAspect]
         public IResult Delete(User entity)
         {
-            IResult result = BusinessRules.Run(_requestUserService.CheckIfRequestUserIsNotEqualsUser(entity.Id));
+            IResult result = BusinessRules.Run();
 
             if (result != null)
             {
@@ -56,11 +55,12 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
+        [SecuredOperation("User", "entity.Id")]
         [TransactionScopeAspect]
         [ValidationAspect(typeof(UserValidator))]
         public IResult Update(User entity)
         {
-            IResult result = BusinessRules.Run(_requestUserService.CheckIfRequestUserIsNotEqualsUser(entity.Id));
+            IResult result = BusinessRules.Run();
 
             if (result != null)
             {
@@ -71,15 +71,9 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
+        [SecuredOperation("User", "id")]
         public IDataResult<User> GetById(int id)
         {
-            IResult result = BusinessRules.Run(_requestUserService.CheckIfRequestUserIsNotEqualsUser(id));
-
-            if (result != null)
-            {
-                return new ErrorDataResult<User>(result.Message);
-            }
-
             return new SuccessDataResult<User>(_userDal.Get(u => u.Id == id));
         }
 
@@ -107,16 +101,15 @@ namespace Business.Concrete
             return new SuccessDataResult<List<User>>(_userDal.GetAll(u => u.Status == status));
         }
 
+        [SecuredOperation("User", "email")]
         public IDataResult<User> GetByEmail(string email)
         {
-            IResult result = BusinessRules.Run(_requestUserService.CheckIfRequestUserIsNotEqualsUser(email));
-
-            if (result != null)
-            {
-                return new ErrorDataResult<User>(result.Message);
-            }
-
             return new SuccessDataResult<User>(_userDal.Get(u => u.Email == email));
+        }
+
+        public IDataResult<User> GetByEmailForAuth(string email)
+        {
+            return new SuccessDataResult<User>(_userDal.Get(u=>u.Email == email));
         }
 
         [SecuredOperation("Admin")]
@@ -127,13 +120,6 @@ namespace Business.Concrete
 
         public IDataResult<List<OperationClaim>> GetClaims(User user)
         {
-            IResult result = BusinessRules.Run(_requestUserService.CheckIfRequestUserIsNotEqualsUser(user.Id));
-
-            if (result != null)
-            {
-                return new ErrorDataResult<List<OperationClaim>>(result.Message);
-            }
-
             return new SuccessDataResult<List<OperationClaim>>(_userDal.GetClaims(user));
         }
     }

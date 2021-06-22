@@ -3,7 +3,9 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Core.Business;
+using Core.Utilities.IoC;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Core.Extensions
 {
@@ -12,10 +14,10 @@ namespace Core.Extensions
         private readonly RequestDelegate _next;
         private IRequestUserService _requestUserService;
 
-        public RequestUserMiddleware(RequestDelegate next, IRequestUserService requestUserService)
+        public RequestUserMiddleware(RequestDelegate next)
         {
             _next = next;
-            _requestUserService = requestUserService;
+            _requestUserService = ServiceTool.ServiceProvider.GetService<IRequestUserService>();
         }
 
         public async Task InvokeAsync(HttpContext context)
