@@ -47,7 +47,11 @@ namespace Core.Aspects.Autofac.Authorization
         {
             var parameters = invocation.Method.GetParameters();
             var parameter = parameters.Find(p => p.Name == _arg);
-            dynamic methodArg = invocation.Arguments.GetValue(parameter.Position);
+            dynamic methodArg = new int();
+            if (invocation.Arguments != null && parameter != null)
+            {
+                methodArg = invocation.Arguments.GetValue(parameter.Position);
+            }
 
             if (_propertyName != null)
             {
