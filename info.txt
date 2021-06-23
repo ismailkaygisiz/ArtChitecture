@@ -1,0 +1,13 @@
+Migration Ekleme
+add-migration {{ MigrationName }} -Context ProjectDbContext -StartupProject WebAPI -Project DataAccess
+
+Örnek Kullanım
+add-migration INITAL -Context ProjectDbContext -StartupProject WebAPI -Project DataAccess  
+
+// MigrationName Her Seferinde Değişmek Zorundadır
+
+
+
+
+Veritabanını Güncelleme
+Update-Database -context ProjectDbContext
