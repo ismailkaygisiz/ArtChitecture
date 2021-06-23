@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Core.Business;
@@ -11,6 +10,7 @@ namespace Core.Extensions
 {
     public class RequestUserMiddleware
     {
+        private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly RequestDelegate _next;
         private readonly IRequestUserService _requestUserService;
 
@@ -18,6 +18,7 @@ namespace Core.Extensions
         {
             _next = next;
             _requestUserService = ServiceTool.ServiceProvider.GetService<IRequestUserService>();
+            _httpContextAccessor = ServiceTool.ServiceProvider.GetService<IHttpContextAccessor>();
         }
 
         public async Task InvokeAsync(HttpContext context)
@@ -31,10 +32,7 @@ namespace Core.Extensions
                 var lastName = claims.Find(c => c.Type == ClaimTypes.Surname).Value;
                 var email = claims.Find(c => c.Type == ClaimTypes.Email).Value;
                 var status = claims.Find(c => c.Type == "status").Value;
-                var roleClaims = claims.FindAll(c => c.Type == ClaimTypes.Role);
-                var roles = new List<string>();
-
-                roleClaims.ForEach(r => { roles.Add(r.Value); });
+                var roles = _httpContextAccessor.HttpContext.User.ClaimRoles();
 
                 _requestUserService.SetUser(new RequestUser
                 {

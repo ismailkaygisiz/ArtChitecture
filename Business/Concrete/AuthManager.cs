@@ -39,7 +39,7 @@ namespace Business.Concrete
         public IDataResult<AccessToken> ChangePassword(UserForLoginDto userForLoginDto, string newPassword)
         {
             var result = BusinessRules.Run(
-                CheckIfUserPasswordIsNotTrue(userForLoginDto.Email, userForLoginDto.Password),
+                CheckIfUserIsNotExists(userForLoginDto),
                 CheckIfNewPasswordIsEqualsOldPassword(userForLoginDto, newPassword));
 
             if (result != null) return new ErrorDataResult<AccessToken>(result.Message);
@@ -70,8 +70,7 @@ namespace Business.Concrete
         public IDataResult<AccessToken> Login(UserForLoginDto userForLoginDto)
         {
             var result = BusinessRules.Run(
-                CheckIfUserIsNotExists(userForLoginDto.Email),
-                CheckIfUserPasswordIsNotTrue(userForLoginDto.Email, userForLoginDto.Password)
+                CheckIfUserIsNotExists(userForLoginDto)
             );
 
             if (result != null) return new ErrorDataResult<AccessToken>(result.Message);
@@ -116,19 +115,13 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
-        private IResult CheckIfUserIsNotExists(string email)
+        private IResult CheckIfUserIsNotExists(UserForLoginDto userForLoginDto)
         {
-            var user = _userService.GetByEmailForAuth(email).Data;
+            var user = _userService.GetByEmailForAuth(userForLoginDto.Email).Data;
             if (user == null) return new ErrorResult(Messages.UserIsNotExists);
 
-            return new SuccessResult();
-        }
-
-        private IResult CheckIfUserPasswordIsNotTrue(string email, string password)
-        {
-            var user = _userService.GetByEmailForAuth(email).Data;
             if (user != null)
-                if (!HashingHelper.VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
+                if (!HashingHelper.VerifyPasswordHash(userForLoginDto.Password, user.PasswordHash, user.PasswordSalt))
                     return new ErrorResult(Messages.PasswordIsNotTrue);
 
             return new SuccessResult();

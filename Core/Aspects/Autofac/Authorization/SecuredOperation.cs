@@ -16,11 +16,11 @@ namespace Core.Aspects.Autofac.Authorization
     public class SecuredOperation : MethodInterception
     {
         private readonly string _arg;
-        private bool _error;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly string _propertyName;
         private readonly IRequestUserService _requestUserService;
         private readonly string[] _roles;
+        private bool _error;
 
         public SecuredOperation(string roles)
         {
@@ -45,13 +45,17 @@ namespace Core.Aspects.Autofac.Authorization
 
         protected override void OnBefore(IInvocation invocation)
         {
+            var roleClaims = _httpContextAccessor.HttpContext.User.ClaimRoles();
+
+            if (roleClaims.Contains("Admin"))
+                return;
+
             var parameters = invocation.Method.GetParameters();
             var parameter = parameters.Find(p => p.Name == _arg);
             dynamic methodArg = new int();
+
             if (invocation.Arguments != null && parameter != null)
-            {
                 methodArg = invocation.Arguments.GetValue(parameter.Position);
-            }
 
             if (_propertyName != null)
             {
@@ -59,7 +63,6 @@ namespace Core.Aspects.Autofac.Authorization
                 methodArg = myObject.GetProperty(_propertyName).GetValue(methodArg, null);
             }
 
-            var roleClaims = _httpContextAccessor.HttpContext.User.ClaimRoles();
             foreach (var role in _roles)
                 if (roleClaims.Contains(role))
                     if (Control(methodArg).Success)

@@ -13,8 +13,8 @@ namespace Core.Aspects.Autofac.Validation
 {
     public class ValidationAspect : MethodInterception
     {
-        private List<ValidationFailure> _errors;
         private readonly Type _validatorType;
+        private List<ValidationFailure> _errors;
 
         public ValidationAspect(Type validatorType)
         {
