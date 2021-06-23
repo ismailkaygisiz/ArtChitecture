@@ -14,7 +14,7 @@
 - ### Sürümler
 
   - Angular CLI 11.2.3.
-  - .Net Core 3.1
+  - .Net 5
   - .Net Standart 2.0
   - Flutter
 
@@ -28,7 +28,7 @@
 
   - <b>BackEnd</b>
 
-    - .Net Core 3.1 ve .Net Standart 2.0 derleyebilecek herhangi bir geliştirme ortamı.
+    - .Net 5 ve .Net Standart 2.0 derleyebilecek herhangi bir geliştirme ortamı.
 
   - <b>FrontEnd</b>
 
