@@ -11,12 +11,14 @@ namespace Core.Extensions
     public class RequestUserMiddleware
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly RequestDelegate _next;
         private readonly IRequestUserService _requestUserService;
+
+        private readonly RequestDelegate _next;
 
         public RequestUserMiddleware(RequestDelegate next)
         {
             _next = next;
+
             _requestUserService = ServiceTool.ServiceProvider.GetService<IRequestUserService>();
             _httpContextAccessor = ServiceTool.ServiceProvider.GetService<IHttpContextAccessor>();
         }

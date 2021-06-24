@@ -15,11 +15,13 @@ namespace Core.Aspects.Autofac.Authorization
 {
     public class SecuredOperation : MethodInterception
     {
-        private readonly string _arg;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly string _propertyName;
         private readonly IRequestUserService _requestUserService;
+
+        private readonly string _arg;
+        private readonly string _propertyName;
         private readonly string[] _roles;
+        
         private bool _error;
 
         public SecuredOperation(string roles)

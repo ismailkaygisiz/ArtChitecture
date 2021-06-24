@@ -12,7 +12,7 @@ namespace WebAPI
         public static void Main(string[] args)
         {
 
-            Create.CreateAngularProject();
+            Create.CreateAngularProject(); // For Angular Project
             CreateHostBuilder(args).Build().Run();
         }
 

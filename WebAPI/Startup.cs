@@ -73,7 +73,7 @@ namespace WebAPI
 
             app.UseAuthorization();
 
-            app.UseRequestUser();
+            app.UseRequestUser();   // For Authorization Security
 
             app.UseStaticFiles();
 
