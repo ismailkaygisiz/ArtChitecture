@@ -1,3 +1,4 @@
+using AngularUI;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Business.DependencyResolvers.Autofac;
@@ -10,6 +11,8 @@ namespace WebAPI
     {
         public static void Main(string[] args)
         {
+
+            Create.CreateAngularProject();
             CreateHostBuilder(args).Build().Run();
         }
 
