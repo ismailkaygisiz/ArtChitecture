@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Text;
 
 namespace AngularUI
@@ -8,12 +7,12 @@ namespace AngularUI
     {
         public static void CreateAngularProject()
         {
-            var path = (Directory.GetParent(Directory.GetCurrentDirectory()).FullName +"\\AngularUI");
+            var path = (Directory.GetParent(Directory.GetCurrentDirectory()).FullName + "\\AngularUI");
 
             var exePath = Path.Combine(path, "UI");
             var bld = new StringBuilder();
 
-            bld.Append("npm install -g @angular/cli@latest&");
+            bld.Append("npm list -g @angular/cli@12.0.3 || npm install -g @angular/cli@12.0.3&");
             bld.Append("npm install&");
             bld.Append("code .&");
 
