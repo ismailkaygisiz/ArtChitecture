@@ -1,4 +1,4 @@
-# Arthitecture
+# ArtChitecture
 ## ASP.Net Web API, Flutter ve Angular Kullanarak Çapraz Platform Bağımsız Uygulama Geliştirme Mimarisi
 <br>
 
