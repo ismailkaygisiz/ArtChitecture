@@ -26,8 +26,8 @@ namespace AngularUI
                     Arguments = @"/c " + bld
                 }
             };
-            cmd.Start();
 
+            cmd.Start();
             cmd.Close();
         }
     }
