@@ -19,7 +19,6 @@ namespace Core.Business
             return new SuccessResult();
         }
 
-
         public IResult CheckIfRequestUserIsNotEqualsUser(int userId)
         {
             var user = GetUser().Data;
@@ -43,9 +42,10 @@ namespace Core.Business
                 if (user.Roles.Contains("Admin") || user.Roles.Contains("Moderatör")) return new SuccessResult();
 
                 if (user.Email != email) return new ErrorResult(CoreMessages.AuthorizationDenied);
+                return new SuccessResult();
             }
 
-            return new SuccessResult();
+            return null;
         }
     }
 }

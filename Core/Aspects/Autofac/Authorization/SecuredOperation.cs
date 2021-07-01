@@ -21,7 +21,7 @@ namespace Core.Aspects.Autofac.Authorization
         private readonly string _arg;
         private readonly string _propertyName;
         private readonly string[] _roles;
-        
+
         private bool _error;
 
         public SecuredOperation(string roles)
@@ -57,18 +57,29 @@ namespace Core.Aspects.Autofac.Authorization
             dynamic methodArg = new int();
 
             if (invocation.Arguments != null && parameter != null)
-                methodArg = invocation.Arguments.GetValue(parameter.Position);
-
-            if (_propertyName != null)
             {
-                Type myObject = methodArg.GetType();
-                methodArg = myObject.GetProperty(_propertyName).GetValue(methodArg, null);
+                methodArg = invocation.Arguments.GetValue(parameter.Position);
+                if (_propertyName != null)
+                {
+                    Type myObject = methodArg.GetType();
+                    methodArg = myObject.GetProperty(_propertyName).GetValue(methodArg, null);
+                }
+
+                foreach (var role in _roles)
+                    if (roleClaims.Contains(role))
+                        if (Control(methodArg).Success)
+                            return;
+
+
+                Invoke = false;
+                _error = true;
+
+                return;
             }
 
             foreach (var role in _roles)
                 if (roleClaims.Contains(role))
-                    if (Control(methodArg).Success)
-                        return;
+                    return;
 
             Invoke = false;
             _error = true;
@@ -82,15 +93,15 @@ namespace Core.Aspects.Autofac.Authorization
                 _error = false;
                 if (invocation.MethodInvocationTarget.ReturnType.GenericTypeArguments.Length > 0)
                 {
-                    var type = typeof(ErrorDataResult<>).MakeGenericType(invocation.Method.ReturnType
+                    var type = typeof(SecurityErrorDataResult<>).MakeGenericType(invocation.Method.ReturnType
                         .GenericTypeArguments[0]);
-                    var result = Activator.CreateInstance(type, null, CoreMessages.AuthorizationDenied);
+                    var result = Activator.CreateInstance(type, invocation.Method.Name + " Özelliğini Çağıramazsınız", CoreMessages.AuthorizationDenied);
 
                     invocation.ReturnValue = result;
                     return;
                 }
 
-                invocation.ReturnValue = new ErrorDataResult<dynamic>(null, CoreMessages.AuthorizationDenied);
+                invocation.ReturnValue = new SecurityErrorDataResult<dynamic>(invocation.Method.Name + " Özelliğini Çağıramazsınız", CoreMessages.AuthorizationDenied);
             }
         }
 

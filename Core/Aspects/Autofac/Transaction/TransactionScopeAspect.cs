@@ -1,7 +1,9 @@
-﻿using System;
-using System.Transactions;
-using Castle.DynamicProxy;
+﻿using Castle.DynamicProxy;
+using Core.Utilities.Constants;
 using Core.Utilities.Interceptors;
+using Core.Utilities.Results.Concrete;
+using System;
+using System.Transactions;
 
 namespace Core.Aspects.Autofac.Transaction
 {
@@ -19,7 +21,19 @@ namespace Core.Aspects.Autofac.Transaction
                 catch (Exception e)
                 {
                     transactionScope.Dispose();
-                    throw;
+
+                    if (invocation.MethodInvocationTarget.ReturnType.GenericTypeArguments.Length > 0)
+                    {
+                        var type = typeof(TransactionScopeErrorDataResult<>).MakeGenericType(invocation.Method.ReturnType
+                            .GenericTypeArguments[0]);
+                        var result = Activator.CreateInstance(type, "Beklenmedik Bir Hata Meydana Geldi Yapılan İşlem Geri ALınıyor", CoreMessages.TransactionScopeError);
+
+                        invocation.ReturnValue = result;
+                        return;
+                    }
+
+                    invocation.ReturnValue =
+                        new TransactionScopeErrorDataResult<dynamic>("Beklenmedik Bir Hata Meydana Geldi Yapılan İşlem Geri ALınıyor", CoreMessages.TransactionScopeError);
                 }
             }
         }
