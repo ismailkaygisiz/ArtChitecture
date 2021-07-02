@@ -20,20 +20,23 @@ namespace Core.Aspects.Autofac.Transaction
                 }
                 catch (Exception e)
                 {
+                    _ = e.Message;
                     transactionScope.Dispose();
+
+                    string transactionError = "Beklenmedik Bir Hata Meydana Geldi Yapılan İşlem Geri ALınıyor";
 
                     if (invocation.MethodInvocationTarget.ReturnType.GenericTypeArguments.Length > 0)
                     {
                         var type = typeof(TransactionScopeErrorDataResult<>).MakeGenericType(invocation.Method.ReturnType
                             .GenericTypeArguments[0]);
-                        var result = Activator.CreateInstance(type, "Beklenmedik Bir Hata Meydana Geldi Yapılan İşlem Geri ALınıyor", CoreMessages.TransactionScopeError);
+                        var result = Activator.CreateInstance(type, transactionError, CoreMessages.TransactionScopeError);
 
                         invocation.ReturnValue = result;
                         return;
                     }
 
                     invocation.ReturnValue =
-                        new TransactionScopeErrorDataResult<dynamic>("Beklenmedik Bir Hata Meydana Geldi Yapılan İşlem Geri ALınıyor", CoreMessages.TransactionScopeError);
+                        new TransactionScopeErrorDataResult<dynamic>(transactionError, CoreMessages.TransactionScopeError);
                 }
             }
         }

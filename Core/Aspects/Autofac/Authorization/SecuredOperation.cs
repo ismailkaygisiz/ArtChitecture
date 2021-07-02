@@ -1,5 +1,4 @@
-﻿using System;
-using Castle.Core.Internal;
+﻿using Castle.Core.Internal;
 using Castle.DynamicProxy;
 using Core.Business;
 using Core.Extensions;
@@ -10,6 +9,7 @@ using Core.Utilities.Results.Abstract;
 using Core.Utilities.Results.Concrete;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace Core.Aspects.Autofac.Authorization
 {
@@ -91,17 +91,19 @@ namespace Core.Aspects.Autofac.Authorization
             if (_error)
             {
                 _error = false;
+                string securityError = invocation.Method.Name + " Özelliğini Çağıramazsınız";
+
                 if (invocation.MethodInvocationTarget.ReturnType.GenericTypeArguments.Length > 0)
                 {
                     var type = typeof(SecurityErrorDataResult<>).MakeGenericType(invocation.Method.ReturnType
                         .GenericTypeArguments[0]);
-                    var result = Activator.CreateInstance(type, invocation.Method.Name + " Özelliğini Çağıramazsınız", CoreMessages.AuthorizationDenied);
+                    var result = Activator.CreateInstance(type, securityError, CoreMessages.AuthorizationDenied);
 
                     invocation.ReturnValue = result;
                     return;
                 }
 
-                invocation.ReturnValue = new SecurityErrorDataResult<dynamic>(invocation.Method.Name + " Özelliğini Çağıramazsınız", CoreMessages.AuthorizationDenied);
+                invocation.ReturnValue = new SecurityErrorDataResult<dynamic>(securityError, CoreMessages.AuthorizationDenied);
             }
         }
 

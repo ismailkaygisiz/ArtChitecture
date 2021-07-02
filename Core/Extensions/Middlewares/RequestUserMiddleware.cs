@@ -6,21 +6,17 @@ using Core.Utilities.IoC;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Core.Extensions
+namespace Core.Extensions.Middlewares
 {
     public class RequestUserMiddleware
     {
-        private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IRequestUserService _requestUserService;
-
         private readonly RequestDelegate _next;
 
         public RequestUserMiddleware(RequestDelegate next)
         {
-            _next = next;
-
             _requestUserService = ServiceTool.ServiceProvider.GetService<IRequestUserService>();
-            _httpContextAccessor = ServiceTool.ServiceProvider.GetService<IHttpContextAccessor>();
+            _next = next;
         }
 
         public async Task InvokeAsync(HttpContext context)
@@ -34,7 +30,7 @@ namespace Core.Extensions
                 var lastName = claims.Find(c => c.Type == ClaimTypes.Surname).Value;
                 var email = claims.Find(c => c.Type == ClaimTypes.Email).Value;
                 var status = claims.Find(c => c.Type == "status").Value;
-                var roles = _httpContextAccessor.HttpContext.User.ClaimRoles();
+                var roles = context.User.ClaimRoles();
 
                 _requestUserService.SetUser(new RequestUser
                 {
