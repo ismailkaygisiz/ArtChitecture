@@ -28,7 +28,7 @@ namespace Core.Aspects.Autofac.Performance
             if (_stopwatch.Elapsed.TotalSeconds > _interval)
             {
                 string errorMessage = $"Performance : {invocation.Method.DeclaringType.FullName}.{invocation.Method.Name}-->{_stopwatch.Elapsed.TotalSeconds}";
-                // Anlamsız Şekilde Mantık Hatası Oluştuğu İçin Method Return Value Kullanılmadı
+                Debug.Write(errorMessage);
             }
             _stopwatch.Reset();
         }
