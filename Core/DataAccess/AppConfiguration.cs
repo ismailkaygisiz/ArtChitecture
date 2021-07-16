@@ -5,22 +5,22 @@ namespace Core.DataAccess
 {
     public class AppConfiguration
     {
-        private readonly string _connectionString;
+        protected string DatabaseConnectionName { get; set; }
+        public IConfiguration Configuration { get; set; }
 
-        public AppConfiguration(string databaseConnectionName)
+        public AppConfiguration()
         {
             var configurationBuilder = new ConfigurationBuilder();
             var path = Path.Combine(Directory.GetCurrentDirectory(), "appsettings.json");
             configurationBuilder.AddJsonFile(path, false);
-
-            var root = configurationBuilder.Build();
-            _connectionString = root.GetSection("ConnectionStrings")
-                .GetSection(databaseConnectionName).Value;
-            _ = root.GetSection("ApplicationSettings");
+            Configuration = configurationBuilder.Build();
         }
 
-        public string GetConnectionString()
+        public string GetConnectionString(string databaseConnectionName)
         {
+            DatabaseConnectionName = databaseConnectionName;
+
+            string _connectionString = Configuration.GetConnectionString(DatabaseConnectionName);
             return _connectionString;
         }
     }

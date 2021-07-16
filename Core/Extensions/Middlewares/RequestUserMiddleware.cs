@@ -1,10 +1,10 @@
-﻿using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using Core.Business;
+﻿using Core.Business;
 using Core.Utilities.IoC;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace Core.Extensions.Middlewares
 {
@@ -29,7 +29,7 @@ namespace Core.Extensions.Middlewares
                 var firstName = claims.Find(c => c.Type == ClaimTypes.Name).Value;
                 var lastName = claims.Find(c => c.Type == ClaimTypes.Surname).Value;
                 var email = claims.Find(c => c.Type == ClaimTypes.Email).Value;
-                var status = claims.Find(c => c.Type == "status").Value;
+                var status = claims.Find(c => c.Type == CustomClaimTypes.Status).Value;
                 var roles = context.User.ClaimRoles();
 
                 _requestUserService.SetUser(new RequestUser

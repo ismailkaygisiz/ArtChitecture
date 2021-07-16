@@ -1,5 +1,6 @@
 ﻿using Castle.DynamicProxy;
 using Core.Utilities.Constants;
+using Core.Utilities.Helpers.InterceptorHelpers;
 using Core.Utilities.Interceptors;
 using Core.Utilities.Results.Concrete;
 using System;
@@ -24,19 +25,7 @@ namespace Core.Aspects.Autofac.Transaction
                     transactionScope.Dispose();
 
                     string transactionError = "Beklenmedik Bir Hata Meydana Geldi Yapılan İşlem Geri ALınıyor";
-
-                    if (invocation.MethodInvocationTarget.ReturnType.GenericTypeArguments.Length > 0)
-                    {
-                        var type = typeof(TransactionScopeErrorDataResult<>).MakeGenericType(invocation.Method.ReturnType
-                            .GenericTypeArguments[0]);
-                        var result = Activator.CreateInstance(type, transactionError, CoreMessages.TransactionScopeError);
-
-                        invocation.ReturnValue = result;
-                        return;
-                    }
-
-                    invocation.ReturnValue =
-                        new TransactionScopeErrorDataResult<dynamic>(transactionError, CoreMessages.TransactionScopeError);
+                    InterceptorHelper.ChangeReturnValue(invocation, typeof(TransactionScopeErrorDataResult<>), transactionError, CoreMessages.TransactionScopeError);
                 }
             }
         }

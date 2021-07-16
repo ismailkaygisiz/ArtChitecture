@@ -40,7 +40,9 @@ namespace Business.Concrete
                 return result;
             }
 
-            _languageDal.Delete(entity);
+            var entityToDelete = GetById(entity.Id).Data;
+
+            _languageDal.Delete(entityToDelete);
             return new SuccessResult();
         }
 

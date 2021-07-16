@@ -1,6 +1,7 @@
 ﻿using Castle.DynamicProxy;
 using Core.CrossCuttingConcerns.Validation;
 using Core.Utilities.Constants;
+using Core.Utilities.Helpers.InterceptorHelpers;
 using Core.Utilities.Interceptors;
 using Core.Utilities.Results.Concrete;
 using FluentValidation;
@@ -44,18 +45,7 @@ namespace Core.Aspects.Autofac.Validation
                 var validationErrors = new List<string>();
 
                 foreach (var error in _errors) validationErrors.Add(error.ErrorMessage);
-
-                if (invocation.MethodInvocationTarget.ReturnType.GenericTypeArguments.Length > 0)
-                {
-                    var type = typeof(ValidationErrorDataResult<>).MakeGenericType(invocation.Method.ReturnType
-                        .GenericTypeArguments[0]);
-                    var result = Activator.CreateInstance(type, validationErrors, CoreMessages.ValidationError);
-
-                    invocation.ReturnValue = result;
-                    return;
-                }
-
-                invocation.ReturnValue = new ValidationErrorDataResult<dynamic>(validationErrors, CoreMessages.ValidationError);
+                InterceptorHelper.ChangeReturnValue(invocation, typeof(ValidationErrorDataResult<>), validationErrors, CoreMessages.ValidationError);
             }
         }
     }

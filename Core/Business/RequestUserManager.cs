@@ -24,8 +24,6 @@ namespace Core.Business
             var user = GetUser().Data;
             if (user != null)
             {
-                if (user.Roles.Contains("Admin") || user.Roles.Contains("Moderatör")) return new SuccessResult();
-
                 if (user.Id != userId)
                     return new ErrorResult(CoreMessages.AuthorizationDenied);
                 return new SuccessResult();
@@ -39,8 +37,6 @@ namespace Core.Business
             var user = GetUser().Data;
             if (user != null)
             {
-                if (user.Roles.Contains("Admin") || user.Roles.Contains("Moderatör")) return new SuccessResult();
-
                 if (user.Email != email) return new ErrorResult(CoreMessages.AuthorizationDenied);
                 return new SuccessResult();
             }

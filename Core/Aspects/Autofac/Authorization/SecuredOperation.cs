@@ -3,6 +3,7 @@ using Castle.DynamicProxy;
 using Core.Business;
 using Core.Extensions;
 using Core.Utilities.Constants;
+using Core.Utilities.Helpers.InterceptorHelpers;
 using Core.Utilities.Interceptors;
 using Core.Utilities.IoC;
 using Core.Utilities.Results.Abstract;
@@ -92,18 +93,7 @@ namespace Core.Aspects.Autofac.Authorization
             {
                 _error = false;
                 string securityError = invocation.Method.Name + " Özelliğini Çağıramazsınız";
-
-                if (invocation.MethodInvocationTarget.ReturnType.GenericTypeArguments.Length > 0)
-                {
-                    var type = typeof(SecurityErrorDataResult<>).MakeGenericType(invocation.Method.ReturnType
-                        .GenericTypeArguments[0]);
-                    var result = Activator.CreateInstance(type, securityError, CoreMessages.AuthorizationDenied);
-
-                    invocation.ReturnValue = result;
-                    return;
-                }
-
-                invocation.ReturnValue = new SecurityErrorDataResult<dynamic>(securityError, CoreMessages.AuthorizationDenied);
+                InterceptorHelper.ChangeReturnValue(invocation,typeof(SecurityErrorDataResult<>), securityError, CoreMessages.AuthorizationDenied);
             }
         }
 
