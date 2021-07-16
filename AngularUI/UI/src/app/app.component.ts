@@ -23,6 +23,7 @@ export class AppComponent {
     this.titleService.setTitle('Arthitecture');
 
     setInterval(() => {
+      // Refactor Edilecek
       if (tokenService.isTokenExpired()) {
         if (
           tokenService.getTokenExpirationDate() < new Date() &&

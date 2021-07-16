@@ -50,6 +50,8 @@ import { RegisterComponent } from './core/components/auth/register/register.comp
     ReactiveFormsModule,
     ToastrModule.forRoot({
       positionClass: 'toast-bottom-right',
+      timeOut: 10000,
+      preventDuplicates: true,
     }),
     BrowserAnimationsModule,
   ],

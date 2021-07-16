@@ -27,6 +27,7 @@ export class ValidationService {
   }
 
   showErrors(response: any) {
+    // Düzenlenecek
     if (response.error != null) {
       if (response.error.validationErrors != null) {
         response.error.validationErrors.forEach((error: any) => {
