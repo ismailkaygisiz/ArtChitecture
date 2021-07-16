@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Core.API;
 using Core.Entities.Concrete;
 using Microsoft.AspNetCore.Mvc;
 
@@ -6,7 +7,7 @@ namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UsersController : Controller
+    public class UsersController : Controller, IControllerRepository<User, IActionResult>
     {
         private readonly IUserService _userService;
 
