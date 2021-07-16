@@ -1,14 +1,10 @@
-﻿using System;
-using System.IO;
-using System.Text;
-
-namespace AngularUI
+﻿namespace AngularUI
 {
     internal static class Program
     {
         private static void Main()
         {
-            // Create.CreateAngularProject();
+            Create.CreateAngularProject();
         }
     }
 }

@@ -79,7 +79,7 @@ namespace WebAPI.Controllers
         [HttpGet("getbycode")]
         public IActionResult GetByCode(string code)
         {
-            var result = _languageService.GetByCode(code)
+            var result = _languageService.GetByCode(code);
             if (result.Success)
             {
                 return Ok(result);
