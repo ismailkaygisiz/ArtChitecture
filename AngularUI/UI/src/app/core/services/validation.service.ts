@@ -26,21 +26,47 @@ export class ValidationService {
     });
   }
 
-  showErrors(response: any) {
-    // Düzenlenecek
-    if (response.error != null) {
-      if (response.error.validationErrors != null) {
-        response.error.validationErrors.forEach((error: any) => {
-          this.toastrService.error(error, response.error.message);
+  showErrors(responseError: any) {
+    if (responseError.error != null) {
+      // Validation Control
+      if (responseError.error.validationErrors != null) {
+        responseError.error.validationErrors.forEach((error: any) => {
+          this.toastrService.error(error, responseError.error.message);
         });
 
         return true;
-      } else if (response.error.message != null) {
-        this.toastrService.error(response.error.message, 'Hata');
+      }
+
+      // Security Control
+      else if (responseError.error.securityError != null) {
+        this.toastrService.error(
+          responseError.error.securityError,
+          responseError.error.message
+        );
 
         return true;
-      } else {
-        this.toastrService.error(response.error, 'Hata');
+      }
+
+      // Transaction Control
+      else if (responseError.error.transactionScopeError != null) {
+        this.toastrService.error(
+          responseError.error.transactionScopeError,
+          responseError.error.message
+        );
+
+        return true;
+      }
+
+      // System Control
+      else if (responseError.error.ErrorMessage != null) {
+        this.toastrService.error('', responseError.error.ErrorMessage);
+
+        return true;
+      }
+
+      // Error
+      else {
+        this.toastrService.error('Bir Şeyler Ters Gitti', 'Beklenmedik Hata');
 
         return true;
       }
