@@ -57,10 +57,32 @@ class LanguageService extends Service
     return SingleResponseModel<LanguageModel>.fromJson(jsonData);
   }
 
+  Future<SingleResponseModel<LanguageModel>> getByName(String name) async {
+    var response = await httpClient.get(
+      Uri.parse(
+        API_URL + "languages/getbyname?name=" + name,
+      ),
+    );
+
+    var jsonData = json.decode(response.body);
+    return SingleResponseModel<LanguageModel>.fromJson(jsonData);
+  }
+
+  Future<SingleResponseModel<LanguageModel>> getByCode(String code) async {
+    var response = await httpClient.get(
+      Uri.parse(
+        API_URL + "languages/getbycode?code=" + code,
+      ),
+    );
+
+    var jsonData = json.decode(response.body);
+    return SingleResponseModel<LanguageModel>.fromJson(jsonData);
+  }
+
   @override
   Future<ResponseModel> update(LanguageModel updateModel) async {
     var response = await httpClient.post(
-      Uri.parse(API_URL + "languages/add"),
+      Uri.parse(API_URL + "languages/update"),
       body: updateModel.toJson(),
     );
 

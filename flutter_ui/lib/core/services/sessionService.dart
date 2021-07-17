@@ -7,7 +7,11 @@ class SessionService extends Service {
 
   Future<String> get(String key) async {
     SharedPreferences _session = await SharedPreferences.getInstance();
-    return crypto.get(_session.get(key) as String);
+    if (_session.get(key) != null) {
+      return crypto.get(_session.get(key) as String);
+    }
+
+    return null;
   }
 
   Future<void> set(String key, String value) async {

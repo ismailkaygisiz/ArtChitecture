@@ -4,15 +4,13 @@
 
 import 'dart:core';
 import 'package:flutter_ui/core/models/entity.dart' as prefix0;
-import 'package:flutter_ui/core/models/operationClaim/operationClaimDetailsModel.dart'
-    as prefix5;
-import 'package:flutter_ui/core/models/operationClaim/operationClaimModel.dart'
-    as prefix7;
-import 'package:flutter_ui/core/models/user/loginModel.dart' as prefix1;
-import 'package:flutter_ui/core/models/user/registerModel.dart' as prefix3;
-import 'package:flutter_ui/core/models/user/tokenModel.dart' as prefix2;
-import 'package:flutter_ui/core/models/user/userAddModel.dart' as prefix6;
-import 'package:flutter_ui/core/models/user/userModel.dart' as prefix4;
+import 'package:flutter_ui/core/models/operationClaim/operationClaimAddModel.dart'
+    as prefix4;
+import 'package:flutter_ui/core/models/translate/translateAddModel.dart'
+    as prefix1;
+import 'package:flutter_ui/core/models/translate/translateModel.dart'
+    as prefix2;
+import 'package:flutter_ui/core/utilities/dictionary.dart' as prefix3;
 
 // ignore_for_file: prefer_adjacent_string_concatenation
 // ignore_for_file: prefer_collection_literals
@@ -30,8 +28,8 @@ final _data = <r.Reflectable, r.ReflectorData>{
   const prefix0.Entity(): r.ReflectorData(
       <m.TypeMirror>[
         r.NonGenericClassMirrorImpl(
-            r'LoginModel',
-            r'.LoginModel',
+            r'TranslateAddModel',
+            r'.TranslateAddModel',
             7,
             0,
             const prefix0.Entity(),
@@ -42,8 +40,8 @@ final _data = <r.Reflectable, r.ReflectorData>{
             {},
             {},
             {
-              r'': (bool b) => (email, password) =>
-                  b ? prefix1.LoginModel(email, password) : null
+              r'': (bool b) => (languageId, key, value) =>
+                  b ? prefix1.TranslateAddModel(languageId, key, value) : null
             },
             -1,
             -1,
@@ -56,14 +54,16 @@ final _data = <r.Reflectable, r.ReflectorData>{
               r'hashCode': 0,
               r'runtimeType': 0,
               r'toJson': 0,
-              r'email': 0,
-              r'email=': 1,
-              r'password': 0,
-              r'password=': 1
+              r'languageId': 0,
+              r'languageId=': 1,
+              r'key': 0,
+              r'key=': 1,
+              r'value': 0,
+              r'value=': 1
             }),
         r.NonGenericClassMirrorImpl(
-            r'TokenModel',
-            r'.TokenModel',
+            r'TranslateModel',
+            r'.TranslateModel',
             7,
             1,
             const prefix0.Entity(),
@@ -74,10 +74,10 @@ final _data = <r.Reflectable, r.ReflectorData>{
             {},
             {},
             {
-              r'': (bool b) => (token, expiration) =>
-                  b ? prefix2.TokenModel(token, expiration) : null,
+              r'': (bool b) => (id, languageId, key, value) =>
+                  b ? prefix2.TranslateModel(id, languageId, key, value) : null,
               r'fromJson': (bool b) =>
-                  (json) => b ? prefix2.TokenModel.fromJson(json) : null
+                  (json) => b ? prefix2.TranslateModel.fromJson(json) : null
             },
             -1,
             -1,
@@ -89,14 +89,19 @@ final _data = <r.Reflectable, r.ReflectorData>{
               r'noSuchMethod': 1,
               r'hashCode': 0,
               r'runtimeType': 0,
-              r'token': 0,
-              r'token=': 1,
-              r'expiration': 0,
-              r'expiration=': 1
+              r'toJson': 0,
+              r'id': 0,
+              r'id=': 1,
+              r'languageId': 0,
+              r'languageId=': 1,
+              r'key': 0,
+              r'key=': 1,
+              r'value': 0,
+              r'value=': 1
             }),
         r.NonGenericClassMirrorImpl(
-            r'RegisterModel',
-            r'.RegisterModel',
+            r'Dictionary',
+            r'.Dictionary',
             7,
             2,
             const prefix0.Entity(),
@@ -107,9 +112,9 @@ final _data = <r.Reflectable, r.ReflectorData>{
             {},
             {},
             {
-              r'': (bool b) => (firstName, lastName, email, password) => b
-                  ? prefix3.RegisterModel(firstName, lastName, email, password)
-                  : null
+              r'': (bool b) => () => b ? prefix3.Dictionary() : null,
+              r'fromJson': (bool b) =>
+                  (json) => b ? prefix3.Dictionary.fromJson(json) : null
             },
             -1,
             -1,
@@ -121,19 +126,13 @@ final _data = <r.Reflectable, r.ReflectorData>{
               r'noSuchMethod': 1,
               r'hashCode': 0,
               r'runtimeType': 0,
-              r'toJson': 0,
-              r'firstName': 0,
-              r'firstName=': 1,
-              r'lastName': 0,
-              r'lastName=': 1,
-              r'email': 0,
-              r'email=': 1,
-              r'password': 0,
-              r'password=': 1
+              r'set': 4,
+              r'get': 1,
+              r'clear': 0
             }),
         r.NonGenericClassMirrorImpl(
-            r'UserModel',
-            r'.UserModel',
+            r'OperationClaimAddModel',
+            r'.OperationClaimAddModel',
             7,
             3,
             const prefix0.Entity(),
@@ -144,11 +143,8 @@ final _data = <r.Reflectable, r.ReflectorData>{
             {},
             {},
             {
-              r'': (bool b) => (id, firstName, lastName, email, status) => b
-                  ? prefix4.UserModel(id, firstName, lastName, email, status)
-                  : null,
-              r'fromJson': (bool b) =>
-                  (json) => b ? prefix4.UserModel.fromJson(json) : null
+              r'': (bool b) =>
+                  (name) => b ? prefix4.OperationClaimAddModel(name) : null
             },
             -1,
             -1,
@@ -161,126 +157,6 @@ final _data = <r.Reflectable, r.ReflectorData>{
               r'hashCode': 0,
               r'runtimeType': 0,
               r'toJson': 0,
-              r'id': 0,
-              r'id=': 1,
-              r'firstName': 0,
-              r'firstName=': 1,
-              r'lastName': 0,
-              r'lastName=': 1,
-              r'email': 0,
-              r'email=': 1,
-              r'status': 0,
-              r'status=': 1
-            }),
-        r.NonGenericClassMirrorImpl(
-            r'OperationClaimDetailsModel',
-            r'.OperationClaimDetailsModel',
-            7,
-            4,
-            const prefix0.Entity(),
-            const <int>[-1],
-            null,
-            null,
-            -1,
-            {},
-            {},
-            {
-              r'': (bool b) => (id, claims, firstName, lastName, email) => b
-                  ? prefix5.OperationClaimDetailsModel(
-                      id, claims, firstName, lastName, email)
-                  : null,
-              r'fromJson': (bool b) => (json) =>
-                  b ? prefix5.OperationClaimDetailsModel.fromJson(json) : null
-            },
-            -1,
-            -1,
-            const <int>[-1],
-            null,
-            {
-              r'==': 1,
-              r'toString': 0,
-              r'noSuchMethod': 1,
-              r'hashCode': 0,
-              r'runtimeType': 0,
-              r'id': 0,
-              r'id=': 1,
-              r'claims': 0,
-              r'claims=': 1,
-              r'firstName': 0,
-              r'firstName=': 1,
-              r'lastName': 0,
-              r'lastName=': 1,
-              r'email': 0,
-              r'email=': 1
-            }),
-        r.NonGenericClassMirrorImpl(
-            r'UserAddModel',
-            r'.UserAddModel',
-            7,
-            5,
-            const prefix0.Entity(),
-            const <int>[-1],
-            null,
-            null,
-            -1,
-            {},
-            {},
-            {
-              r'': (bool b) => (firstName, lastName, email, status) => b
-                  ? prefix6.UserAddModel(firstName, lastName, email, status)
-                  : null
-            },
-            -1,
-            -1,
-            const <int>[-1],
-            null,
-            {
-              r'==': 1,
-              r'toString': 0,
-              r'noSuchMethod': 1,
-              r'hashCode': 0,
-              r'runtimeType': 0,
-              r'toJson': 0,
-              r'firstName': 0,
-              r'firstName=': 1,
-              r'lastName': 0,
-              r'lastName=': 1,
-              r'email': 0,
-              r'email=': 1,
-              r'status': 0,
-              r'status=': 1
-            }),
-        r.NonGenericClassMirrorImpl(
-            r'OperationClaimModel',
-            r'.OperationClaimModel',
-            7,
-            6,
-            const prefix0.Entity(),
-            const <int>[-1],
-            null,
-            null,
-            -1,
-            {},
-            {},
-            {
-              r'': (bool b) => (id, name) =>
-                  b ? prefix7.OperationClaimModel(id, name) : null,
-              r'fromJson': (bool b) => (json) =>
-                  b ? prefix7.OperationClaimModel.fromJson(json) : null
-            },
-            -1,
-            -1,
-            const <int>[-1],
-            null,
-            {
-              r'==': 1,
-              r'toString': 0,
-              r'noSuchMethod': 1,
-              r'hashCode': 0,
-              r'runtimeType': 0,
-              r'toJson': 0,
-              r'id': 0,
-              r'id=': 1,
               r'name': 0,
               r'name=': 1
             })
@@ -288,15 +164,12 @@ final _data = <r.Reflectable, r.ReflectorData>{
       null,
       null,
       <Type>[
-        prefix1.LoginModel,
-        prefix2.TokenModel,
-        prefix3.RegisterModel,
-        prefix4.UserModel,
-        prefix5.OperationClaimDetailsModel,
-        prefix6.UserAddModel,
-        prefix7.OperationClaimModel
+        prefix1.TranslateAddModel,
+        prefix2.TranslateModel,
+        prefix3.Dictionary,
+        prefix4.OperationClaimAddModel
       ],
-      7,
+      4,
       {
         r'==': (dynamic instance) => (x) => instance == x,
         r'toString': (dynamic instance) => instance.toString,
@@ -304,37 +177,30 @@ final _data = <r.Reflectable, r.ReflectorData>{
         r'hashCode': (dynamic instance) => instance.hashCode,
         r'runtimeType': (dynamic instance) => instance.runtimeType,
         r'toJson': (dynamic instance) => instance.toJson,
-        r'email': (dynamic instance) => instance.email,
-        r'password': (dynamic instance) => instance.password,
-        r'token': (dynamic instance) => instance.token,
-        r'expiration': (dynamic instance) => instance.expiration,
-        r'firstName': (dynamic instance) => instance.firstName,
-        r'lastName': (dynamic instance) => instance.lastName,
+        r'languageId': (dynamic instance) => instance.languageId,
+        r'key': (dynamic instance) => instance.key,
+        r'value': (dynamic instance) => instance.value,
         r'id': (dynamic instance) => instance.id,
-        r'status': (dynamic instance) => instance.status,
-        r'claims': (dynamic instance) => instance.claims,
+        r'set': (dynamic instance) => instance.set,
+        r'get': (dynamic instance) => instance.get,
+        r'clear': (dynamic instance) => instance.clear,
         r'name': (dynamic instance) => instance.name
       },
       {
-        r'email=': (dynamic instance, value) => instance.email = value,
-        r'password=': (dynamic instance, value) => instance.password = value,
-        r'token=': (dynamic instance, value) => instance.token = value,
-        r'expiration=': (dynamic instance, value) =>
-            instance.expiration = value,
-        r'firstName=': (dynamic instance, value) => instance.firstName = value,
-        r'lastName=': (dynamic instance, value) => instance.lastName = value,
+        r'languageId=': (dynamic instance, value) =>
+            instance.languageId = value,
+        r'key=': (dynamic instance, value) => instance.key = value,
+        r'value=': (dynamic instance, value) => instance.value = value,
         r'id=': (dynamic instance, value) => instance.id = value,
-        r'status=': (dynamic instance, value) => instance.status = value,
-        r'claims=': (dynamic instance, value) => instance.claims = value,
         r'name=': (dynamic instance, value) => instance.name = value
       },
       null,
       [
         const [0, 0, null],
         const [1, 0, null],
-        const [2, 0, null],
+        const [3, 0, null],
         const [4, 0, null],
-        const [5, 0, null]
+        const [2, 0, null]
       ])
 };
 

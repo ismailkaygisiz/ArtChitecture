@@ -1,3 +1,4 @@
+import 'dart:collection';
 import 'dart:convert';
 
 import 'package:flutter_ui/core/interceptors/authInterceptor.dart';
@@ -9,6 +10,7 @@ import 'package:flutter_ui/core/models/translate/translateAddModel.dart';
 import 'package:flutter_ui/core/models/translate/translateModel.dart';
 import 'package:flutter_ui/core/services/service.dart';
 import 'package:flutter_ui/core/services/serviceRepository.dart';
+import 'package:flutter_ui/core/utilities/dictionary.dart';
 import 'package:flutter_ui/environments/api.dart';
 
 class TranslateService extends Service
@@ -66,5 +68,36 @@ class TranslateService extends Service
 
     var jsonData = json.decode(response.body);
     return ResponseModel.fromJson(jsonData);
+  }
+
+  Future<ListResponseModel<TranslateModel>> getByKey(String key) async {
+    var response = await httpClient.get(
+      Uri.parse(API_URL + "translates/getbykey?key=" + key),
+    );
+
+    var jsonData = json.decode(response.body);
+    return ListResponseModel<TranslateModel>.fromJson(jsonData);
+  }
+
+  Future<ListResponseModel<TranslateModel>> getByLanguageId(
+      int languageId) async {
+    var response = await httpClient.get(
+      Uri.parse(API_URL +
+          "translates/getbylanguageid?languageId=" +
+          languageId.toString()),
+    );
+
+    var jsonData = json.decode(response.body);
+    return ListResponseModel<TranslateModel>.fromJson(jsonData);
+  }
+
+  Future<Map> getTranslates(String languageCode) async {
+    var response = await httpClient.get(
+      Uri.parse(
+          API_URL + "translates/gettranslates?languageCode=" + languageCode),
+    );
+
+    var jsonData = json.decode(response.body);
+    return Map.from(jsonData);
   }
 }
