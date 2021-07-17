@@ -9,5 +9,6 @@ namespace Business.Abstract
     {
         IDataResult<List<Translate>> GetByKey(string key);
         IDataResult<List<Translate>> GetByLanguageId(int languageId);
+        IDataResult<Dictionary<string, string>> GetTranslates(string languageCode);
     }
 }

@@ -1,10 +1,7 @@
-import { LocalStorageService } from './core/services/local-storage.service';
-import { ToastrService } from 'ngx-toastr';
 import { Title } from '@angular/platform-browser';
-import { TokenService } from './core/services/token.service';
-import { AuthService } from 'src/app/core/services/auth.service';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { TranslateService } from './core/services/translate.service';
+import { ValidationService } from './core/services/validation.service';
 import { translates } from 'src/api';
 
 @Component({
@@ -12,38 +9,23 @@ import { translates } from 'src/api';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'AngularUI';
 
   constructor(
-    private tokenService: TokenService,
-    private authService: AuthService,
     private titleService: Title,
-    private toastrService: ToastrService,
-    private localStorageService: LocalStorageService,
-    private translateService: TranslateService
-  ) {
-    this.titleService.setTitle('Arthitecture');
-
-    setInterval(() => {
-      // Refactor Edilecek
-      if (tokenService.isTokenExpired()) {
-        if (
-          tokenService.getTokenExpirationDate() < new Date() &&
-          localStorageService.getItem('tV') != '1'
-        ) {
-          toastrService.info(
-            'Oturumunuzun Süresi Doldu Lütfen Tekrar Giriş Yapın',
-            'Bilgilendirme'
-          );
-
-          localStorageService.setItem('tV', '1');
-        }
-
-        authService.logout();
-      } else {
-        localStorageService.removeItem('tV');
+    private translateService: TranslateService,
+    private validationService: ValidationService
+  ) {}
+  ngOnInit(): void {
+    this.titleService.setTitle('ArtChitecture AngularUI');
+    this.translateService.getTranslates(localStorage.getItem('lang')).subscribe(
+      (response) => {
+        translates.keys = response.data;
+      },
+      (responseError) => {
+        this.validationService.showErrors(responseError);
       }
-    }, 25000);
+    );
   }
 }

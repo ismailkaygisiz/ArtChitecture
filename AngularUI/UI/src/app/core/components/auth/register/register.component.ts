@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { Title } from '@angular/platform-browser';
+import { translates } from 'src/api';
 
 @Component({
   selector: 'app-register',
@@ -14,6 +15,7 @@ import { Title } from '@angular/platform-browser';
 })
 export class RegisterComponent implements OnInit {
   registerForm: FormGroup;
+  translateKeys: any = translates;
 
   constructor(
     private formBuilder: FormBuilder,

@@ -1,27 +1,33 @@
-<body class="text-center">
+<body class="text-center" *ngIf="translateKeys.keys != null">
   <main class="form-signin">
     <form [formGroup]="loginForm">
-      <h1 class="h3 mb-3 fw-normal">Giriş Yap</h1>
+      <h1 class="h3 mb-3 fw-normal">
+        {{ translateKeys.keys.Login_Title_Key }}
+      </h1>
 
       <div class="form-floating">
         <input
           type="email"
           class="form-control"
           id="floatingInput"
-          placeholder="name@example.com"
+          placeholder="{{ translateKeys.keys.Placeholder_Email_Key }}"
           formControlName="email"
         />
-        <label for="floatingInput">Email</label>
+        <label for="floatingInput">{{
+          translateKeys.keys.Placeholder_Email_Key
+        }}</label>
       </div>
       <div class="form-floating">
         <input
           type="password"
           class="form-control"
           id="floatingPassword"
-          placeholder="Password"
+          placeholder="{{ translateKeys.keys.Placeholder_Password_Key }}"
           formControlName="password"
         />
-        <label for="floatingPassword">Parola</label>
+        <label for="floatingPassword">{{
+          translateKeys.keys.Placeholder_Password_Key
+        }}</label>
       </div>
 
       <button
@@ -29,9 +35,8 @@
         class="w-100 btn btn-lg btn-primary"
         type="submit"
       >
-        Giriş Yap
+        {{ translateKeys.keys.Login_Title_Key }}
       </button>
-      <p class="mt-5 mb-3 text-muted">&copy; 2017–2021</p>
     </form>
   </main>
 </body>

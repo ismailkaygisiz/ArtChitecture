@@ -88,6 +88,18 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
+        [HttpGet("gettranslates")]
+        public IActionResult GetTranslates(string languageCode)
+        {
+            var result = _translateService.GetTranslates(languageCode);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest(result);
+        }
+
         [HttpPost("update")]
         public IActionResult Update(Translate entity)
         {

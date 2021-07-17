@@ -61,4 +61,10 @@ export class TranslateService
       apiUrl + 'translates/getbylanguageid?languageId=' + languageId;
     return this.httpClient.get<ListResponseModel<TranslateModel>>(newPath);
   }
+
+  getTranslates(languageCode: string): Observable<SingleResponseModel<any>> {
+    let newPath =
+      apiUrl + 'translates/gettranslates?languageCode=' + languageCode;
+    return this.httpClient.get<SingleResponseModel<any>>(newPath);
+  }
 }

@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Core.Aspects.Autofac.Transaction;
 using Core.Business;
 using Core.Entities.Concrete;
 using Core.Utilities.Results.Abstract;
@@ -12,10 +13,12 @@ namespace Business.Concrete
     public class TranslateManager : ITranslateService
     {
         private readonly ITranslateDal _translateDal;
+        private readonly ILanguageService _languageService;
 
-        public TranslateManager(ITranslateDal translateDal)
+        public TranslateManager(ITranslateDal translateDal, ILanguageService languageService)
         {
             _translateDal = translateDal;
+            _languageService = languageService;
         }
 
         public IResult Add(Translate entity)
@@ -76,6 +79,21 @@ namespace Business.Concrete
         public IDataResult<List<Translate>> GetByLanguageId(int languageId)
         {
             return new SuccessDataResult<List<Translate>>(_translateDal.GetAll(t => t.LanguageId == languageId));
+        }
+
+        public IDataResult<Dictionary<string, string>> GetTranslates(string languageCode)
+        {
+            Dictionary<string, string> dictionary = new Dictionary<string, string>();
+            var language = _languageService.GetByCode(languageCode).Data;
+            if (language != null)
+            {
+                GetByLanguageId(language.Id).Data.ForEach((t) =>
+                {
+                    dictionary.Add(t.Key, t.Value);
+                });
+            }
+
+            return new SuccessDataResult<Dictionary<string, string>>(dictionary);
         }
     }
 }

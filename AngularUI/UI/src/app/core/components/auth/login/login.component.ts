@@ -6,6 +6,8 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/core/services/auth.service';
+import { TranslateService } from 'src/app/core/services/translate.service';
+import { translates } from 'src/api';
 
 @Component({
   selector: 'app-login',
@@ -14,6 +16,7 @@ import { AuthService } from 'src/app/core/services/auth.service';
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
+  translateKeys: any = translates;
 
   constructor(
     private formBuilder: FormBuilder,
