@@ -6,14 +6,13 @@ import 'package:flutter_ui/core/models/user/registerModel.dart';
 import 'package:flutter_ui/core/models/user/tokenModel.dart';
 import 'package:flutter_ui/core/services/service.dart';
 import 'package:flutter_ui/core/services/sessionService.dart';
+import 'package:flutter_ui/environments/api.dart';
 
 class AuthService extends Service {
-  var http = AuthInterceptor();
-
   SessionService _sessionService = SessionService();
 
   Future<SingleResponseModel<TokenModel>> login(LoginModel user) async {
-    var response = await http.post(
+    var response = await httpClient.post(
       Uri.parse(API_URL + "auth/login"),
       body: user.toJson(),
     );
@@ -23,7 +22,7 @@ class AuthService extends Service {
   }
 
   Future<SingleResponseModel<TokenModel>> register(RegisterModel user) async {
-    var response = await http.post(
+    var response = await httpClient.post(
       Uri.parse(API_URL + "auth/register"),
       body: user.toJson(),
     );
@@ -35,7 +34,6 @@ class AuthService extends Service {
   bool logout() {
     if (isAuthenticated() == true) {
       _sessionService.remove("token");
-      _sessionService.remove("email");
 
       return true;
     }
@@ -44,17 +42,13 @@ class AuthService extends Service {
   }
 
   bool isAuthenticated() {
-    bool token, email;
+    bool token;
 
     _sessionService
         .get("token")
         .then((value) => value != null ? token = true : token = false);
 
-    _sessionService
-        .get("email")
-        .then((value) => value != null ? email = true : email = false);
-
-    if (email && token) {
+    if (token) {
       return true;
     }
 

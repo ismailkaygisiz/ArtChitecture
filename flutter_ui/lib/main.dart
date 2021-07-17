@@ -11,17 +11,6 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
   initializeReflectable();
   EnvironmentDev();
-  AuthService _authService = AuthService();
-  SessionService _sessionService = SessionService();
-
-  _authService.login(LoginModel("admin@admin.com", "Admin123")).then((value) {
-    print(value.success);
-    print(value.message);
-    print(value.data.token);
-    _sessionService.set("token", value.data.token);
-    print(value.data.expiration);
-  });
-
   runApp(App());
 }
 

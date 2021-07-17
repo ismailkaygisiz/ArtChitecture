@@ -9,10 +9,10 @@ class LoginComponent implements Component {
   List<UserModel> users;
 
   Future<void> getAll() async {
-    var userResponseModel = await _userService.getAll().then((value) {
-      users = value.data;
-      whenComplete();
-    });
+    var userResponseModel = await _userService.getAll();
+
+    users = userResponseModel.data;
+    whenComplete();
   }
 
   @override

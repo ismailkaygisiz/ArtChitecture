@@ -7,13 +7,12 @@ import 'package:flutter_ui/core/models/response/listResponseModel.dart';
 import 'package:flutter_ui/core/models/response/responseModel.dart';
 import 'package:flutter_ui/core/models/response/singleResponseModel.dart';
 import 'package:flutter_ui/core/services/service.dart';
+import 'package:flutter_ui/environments/api.dart';
 
 class OperationClaimService extends Service {
-  var http = AuthInterceptor();
-
   Future<ResponseModel> add(
       OperationClaimAddModel operationClaimAddModel) async {
-    var response = await http.post(
+    var response = await httpClient.post(
       Uri.parse(API_URL + "operationclaims/add"),
       body: operationClaimAddModel.toJson(),
     );
@@ -23,7 +22,7 @@ class OperationClaimService extends Service {
   }
 
   Future<ResponseModel> delete(DeleteModel deleteModel) async {
-    var response = await http.post(
+    var response = await httpClient.post(
       Uri.parse(API_URL + "operationclaims/delete"),
       body: deleteModel.toJson(),
     );
@@ -33,7 +32,7 @@ class OperationClaimService extends Service {
   }
 
   Future<ResponseModel> update(OperationClaimModel operationClaimModel) async {
-    var response = await http.post(
+    var response = await httpClient.post(
       Uri.parse(API_URL + "operationclaims/update"),
       body: operationClaimModel.toJson(),
     );
@@ -43,7 +42,7 @@ class OperationClaimService extends Service {
   }
 
   Future<ListResponseModel<OperationClaimModel>> getAll() async {
-    var response = await http.get(
+    var response = await httpClient.get(
       Uri.parse(API_URL + "operationclaims/getall"),
     );
 
@@ -52,7 +51,7 @@ class OperationClaimService extends Service {
   }
 
   Future<SingleResponseModel<OperationClaimModel>> getById(int id) async {
-    var response = await http.get(
+    var response = await httpClient.get(
       Uri.parse(API_URL + "operationclaims/getbyid?id=" + id.toString()),
     );
 
@@ -62,7 +61,7 @@ class OperationClaimService extends Service {
 
   Future<SingleResponseModel<OperationClaimModel>> getByName(
       String name) async {
-    var response = await http
+    var response = await httpClient
         .get(Uri.parse(API_URL + "operationclaims/getbyname?name=" + name));
 
     var jsonData = json.decode(response.body);

@@ -1,3 +1,5 @@
+import 'package:flutter_ui/environments/api.dart';
+
 import 'service.dart';
 import 'package:encrypt/encrypt.dart';
 

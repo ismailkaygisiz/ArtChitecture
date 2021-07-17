@@ -7,13 +7,12 @@ import 'package:flutter_ui/core/models/response/responseModel.dart';
 import 'package:flutter_ui/core/models/response/singleResponseModel.dart';
 import 'package:flutter_ui/core/models/user/userAddModel.dart';
 import 'package:flutter_ui/core/models/user/userModel.dart';
+import 'package:flutter_ui/environments/api.dart';
 import 'service.dart';
 
 class UserService extends Service {
-  var http = AuthInterceptor();
-
   Future<ResponseModel> add(UserAddModel userAddModel) async {
-    var response = await http.post(
+    var response = await httpClient.post(
       Uri.parse(API_URL + "users/add"),
       body: userAddModel.toJson(),
     );
@@ -23,7 +22,7 @@ class UserService extends Service {
   }
 
   Future<ResponseModel> delete(DeleteModel deleteModel) async {
-    var response = await http.post(
+    var response = await httpClient.post(
       Uri.parse(API_URL + "users/delete"),
       body: deleteModel.toJson(),
     );
@@ -33,7 +32,7 @@ class UserService extends Service {
   }
 
   Future<ResponseModel> update(UserModel userModel) async {
-    var response = await http.post(
+    var response = await httpClient.post(
       Uri.parse(API_URL + "users/update"),
       body: userModel.toJson(),
     );
@@ -43,7 +42,7 @@ class UserService extends Service {
   }
 
   Future<ListResponseModel<UserModel>> getAll() async {
-    var response = await http.get(
+    var response = await httpClient.get(
       Uri.parse(API_URL + "users/getall"),
     );
 
@@ -52,7 +51,7 @@ class UserService extends Service {
   }
 
   Future<SingleResponseModel<UserModel>> getById(int id) async {
-    var response = await http.get(
+    var response = await httpClient.get(
       Uri.parse(API_URL + "users/getbyid?id=" + id.toString()),
     );
 
@@ -61,7 +60,7 @@ class UserService extends Service {
   }
 
   Future<SingleResponseModel<UserModel>> getByEmail(String email) async {
-    var response = await http.get(
+    var response = await httpClient.get(
       Uri.parse(API_URL + "users/getbymail?email=" + email),
     );
 
@@ -70,7 +69,7 @@ class UserService extends Service {
   }
 
   Future<ListResponseModel<UserModel>> getByFirstName(String firstName) async {
-    var response = await http.get(
+    var response = await httpClient.get(
       Uri.parse(API_URL + "users/getbyfirstname?firstName=" + firstName),
     );
 
@@ -79,7 +78,7 @@ class UserService extends Service {
   }
 
   Future<ListResponseModel<UserModel>> getByLastName(String lastName) async {
-    var response = await http.get(
+    var response = await httpClient.get(
       Uri.parse(API_URL + "users/getbylastname?lastName=" + lastName),
     );
 
@@ -89,7 +88,7 @@ class UserService extends Service {
 
   Future<SingleResponseModel<OperationClaimDetailsModel>> getClaims(
       int id) async {
-    var response = await http.get(
+    var response = await httpClient.get(
       Uri.parse(API_URL + "users/getclaims?id=" + id.toString()),
     );
 
