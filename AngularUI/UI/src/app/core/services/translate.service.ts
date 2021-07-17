@@ -10,6 +10,7 @@ import { ListResponseModel } from '../models/response/listResponseModel';
 import { ResponseModel } from '../models/response/responseModel';
 import { SingleResponseModel } from '../models/response/singleResponseModel';
 import { apiUrl } from 'src/api';
+import { ValidationService } from './validation.service';
 
 @Injectable({
   providedIn: 'root',
@@ -19,7 +20,8 @@ export class TranslateService
 {
   constructor(
     private httpClient: HttpClient,
-    private localStorageService: LocalStorageService
+    private localStorageService: LocalStorageService,
+    private validationService: ValidationService
   ) {}
 
   add(addModel: TranslateAddModel): Observable<ResponseModel> {
@@ -44,6 +46,19 @@ export class TranslateService
 
   getAll(): Observable<ListResponseModel<TranslateModel>> {
     let newPath = apiUrl + 'translates/getall';
+    return this.httpClient.get<ListResponseModel<TranslateModel>>(newPath);
+  }
+
+  getByKey(key: string): Observable<ListResponseModel<TranslateModel>> {
+    let newPath = apiUrl + 'translates/getbykey?key=' + key;
+    return this.httpClient.get<ListResponseModel<TranslateModel>>(newPath);
+  }
+
+  getByLanguageId(
+    languageId: number
+  ): Observable<ListResponseModel<TranslateModel>> {
+    let newPath =
+      apiUrl + 'translates/getbylanguageid?languageId=' + languageId;
     return this.httpClient.get<ListResponseModel<TranslateModel>>(newPath);
   }
 }

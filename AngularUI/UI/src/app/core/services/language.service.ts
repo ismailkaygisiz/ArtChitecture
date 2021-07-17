@@ -42,4 +42,14 @@ export class LanguageService
     let newPath = apiUrl + 'languages/getall';
     return this.httpClient.get<ListResponseModel<LanguageModel>>(newPath);
   }
+
+  getByName(name: string): Observable<SingleResponseModel<LanguageModel>> {
+    let newPath = apiUrl + 'languages/getbyname?name=' + name;
+    return this.httpClient.get<SingleResponseModel<LanguageModel>>(newPath);
+  }
+
+  getByCode(code: string): Observable<SingleResponseModel<LanguageModel>> {
+    let newPath = apiUrl + 'languages/getbycode?code=' + code;
+    return this.httpClient.get<SingleResponseModel<LanguageModel>>(newPath);
+  }
 }

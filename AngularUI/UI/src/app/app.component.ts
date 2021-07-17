@@ -4,6 +4,8 @@ import { Title } from '@angular/platform-browser';
 import { TokenService } from './core/services/token.service';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { Component } from '@angular/core';
+import { TranslateService } from './core/services/translate.service';
+import { translates } from 'src/api';
 
 @Component({
   selector: 'app-root',
@@ -18,7 +20,8 @@ export class AppComponent {
     private authService: AuthService,
     private titleService: Title,
     private toastrService: ToastrService,
-    private localStorageService: LocalStorageService
+    private localStorageService: LocalStorageService,
+    private translateService: TranslateService
   ) {
     this.titleService.setTitle('Arthitecture');
 
