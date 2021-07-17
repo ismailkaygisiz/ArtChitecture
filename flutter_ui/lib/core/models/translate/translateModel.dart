@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter_ui/core/models/entity.dart';
 
 @entity
@@ -16,5 +18,14 @@ class TranslateModel {
       json["key"] as String,
       json["value"] as String,
     );
+  }
+
+  String toJson() {
+    return json.encode({
+      "id": id,
+      "languageId": languageId,
+      "key": key,
+      "value": value,
+    });
   }
 }

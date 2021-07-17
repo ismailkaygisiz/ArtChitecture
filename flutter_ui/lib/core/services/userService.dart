@@ -7,10 +7,12 @@ import 'package:flutter_ui/core/models/response/responseModel.dart';
 import 'package:flutter_ui/core/models/response/singleResponseModel.dart';
 import 'package:flutter_ui/core/models/user/userAddModel.dart';
 import 'package:flutter_ui/core/models/user/userModel.dart';
+import 'package:flutter_ui/core/services/serviceRepository.dart';
 import 'package:flutter_ui/environments/api.dart';
 import 'service.dart';
 
-class UserService extends Service {
+class UserService extends Service
+    with ServiceRepository<UserAddModel, UserModel> {
   Future<ResponseModel> add(UserAddModel userAddModel) async {
     var response = await httpClient.post(
       Uri.parse(API_URL + "users/add"),

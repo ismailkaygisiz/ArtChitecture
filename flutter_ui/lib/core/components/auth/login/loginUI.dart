@@ -11,7 +11,7 @@ class _LoginUIState extends State<LoginUI> with LoginComponent {
   @override
   void initState() {
     super.initState();
-    super.getAll();
+    super.getAllUsers();
   }
 
   @override

@@ -8,9 +8,12 @@ import 'package:flutter_ui/core/models/response/singleResponseModel.dart';
 import 'package:flutter_ui/core/models/userOperationClaim/userOperationClaimAddModel.dart';
 import 'package:flutter_ui/core/models/userOperationClaim/userOperationClaimModel.dart';
 import 'package:flutter_ui/core/services/service.dart';
+import 'package:flutter_ui/core/services/serviceRepository.dart';
 import 'package:flutter_ui/environments/api.dart';
 
-class UserOperationClaimService extends Service {
+class UserOperationClaimService extends Service
+    with
+        ServiceRepository<UserOperationClaimAddModel, UserOperationClaimModel> {
   Future<ResponseModel> add(
       UserOperationClaimAddModel userOperationClaimAddModel) async {
     var response = await httpClient.post(

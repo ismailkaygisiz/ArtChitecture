@@ -8,9 +8,8 @@ class LoginComponent implements Component {
   UserService _userService = UserService();
   List<UserModel> users;
 
-  Future<void> getAll() async {
+  Future<void> getAllUsers() async {
     var userResponseModel = await _userService.getAll();
-
     users = userResponseModel.data;
     whenComplete();
   }

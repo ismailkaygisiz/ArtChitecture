@@ -1,3 +1,3 @@
 abstract class Component {
-  void whenComplete();
+  void whenComplete(); // For State Management
 }
