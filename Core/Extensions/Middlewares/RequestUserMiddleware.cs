@@ -42,6 +42,10 @@ namespace Core.Extensions.Middlewares
                     Roles = roles
                 });
             }
+            else
+            {
+                _requestUserService.SetUser(null);
+            }
 
             await _next.Invoke(context);
         }

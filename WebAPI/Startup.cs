@@ -1,3 +1,5 @@
+using Business.DependencyResolvers;
+using Business.Hubs;
 using Core.DependencyResolvers;
 using Core.Extensions;
 using Core.Utilities.Security.Encryption;
@@ -47,7 +49,8 @@ namespace WebAPI
                 });
 
             services.AddDependencyResolvers(
-                new CoreModule()
+                new CoreModule(),
+                new BusinessModule()
             );
 
             services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebAPI", Version = "v1" }); });
@@ -79,7 +82,11 @@ namespace WebAPI
 
             app.UseStaticFiles();
 
-            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+                endpoints.MapHub<SystemHub>("/myhub");
+            });
         }
     }
 }
