@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Core.Entities.Concrete;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
@@ -34,7 +35,11 @@ namespace Core.Extensions
 
         public static void AddStatus(this ICollection<Claim> claims, bool status)
         {
-            claims.Add(new Claim("status", status.ToString()));
+            claims.Add(new Claim(CustomClaimTypes.Status, status.ToString()));
+        }
+        public static void AddGroups(this ICollection<Claim> claims, List<Group> groups)
+        {
+            groups.ForEach(group => claims.Add(new Claim(CustomClaimTypes.Group, group.ToString())));
         }
     }
 }
