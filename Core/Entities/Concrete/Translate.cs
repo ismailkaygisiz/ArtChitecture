@@ -8,5 +8,7 @@ namespace Core.Entities.Concrete
         public int LanguageId { get; set; }
         public string Key { get; set; }
         public string Value { get; set; }
+
+        public virtual Language Language { get; set; }
     }
 }
