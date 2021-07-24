@@ -10,7 +10,6 @@ import 'package:flutter_ui/core/models/translate/translateAddModel.dart';
 import 'package:flutter_ui/core/models/translate/translateModel.dart';
 import 'package:flutter_ui/core/services/service.dart';
 import 'package:flutter_ui/core/services/serviceRepository.dart';
-import 'package:flutter_ui/core/utilities/dictionary.dart';
 import 'package:flutter_ui/environments/api.dart';
 
 class TranslateService extends Service

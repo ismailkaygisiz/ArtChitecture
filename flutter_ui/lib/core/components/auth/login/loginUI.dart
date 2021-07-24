@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_ui/environments/api.dart';
 import 'loginComponent.dart';
 
 class LoginUI extends StatefulWidget {
@@ -6,7 +7,7 @@ class LoginUI extends StatefulWidget {
   _LoginUIState createState() => _LoginUIState();
 }
 
-class _LoginUIState extends State<LoginUI> implements LoginComponent {
+class _LoginUIState extends State<LoginUI> with LoginComponent {
   @override
   void initState() {
     super.initState();

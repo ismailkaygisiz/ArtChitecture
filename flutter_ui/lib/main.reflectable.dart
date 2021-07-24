@@ -5,12 +5,11 @@
 import 'dart:core';
 import 'package:flutter_ui/core/models/entity.dart' as prefix0;
 import 'package:flutter_ui/core/models/operationClaim/operationClaimAddModel.dart'
-    as prefix4;
+    as prefix3;
 import 'package:flutter_ui/core/models/translate/translateAddModel.dart'
     as prefix1;
 import 'package:flutter_ui/core/models/translate/translateModel.dart'
     as prefix2;
-import 'package:flutter_ui/core/utilities/dictionary.dart' as prefix3;
 
 // ignore_for_file: prefer_adjacent_string_concatenation
 // ignore_for_file: prefer_collection_literals
@@ -100,8 +99,8 @@ final _data = <r.Reflectable, r.ReflectorData>{
               r'value=': 1
             }),
         r.NonGenericClassMirrorImpl(
-            r'Dictionary',
-            r'.Dictionary',
+            r'OperationClaimAddModel',
+            r'.OperationClaimAddModel',
             7,
             2,
             const prefix0.Entity(),
@@ -112,39 +111,8 @@ final _data = <r.Reflectable, r.ReflectorData>{
             {},
             {},
             {
-              r'': (bool b) => () => b ? prefix3.Dictionary() : null,
-              r'fromJson': (bool b) =>
-                  (json) => b ? prefix3.Dictionary.fromJson(json) : null
-            },
-            -1,
-            -1,
-            const <int>[-1],
-            null,
-            {
-              r'==': 1,
-              r'toString': 0,
-              r'noSuchMethod': 1,
-              r'hashCode': 0,
-              r'runtimeType': 0,
-              r'set': 4,
-              r'get': 1,
-              r'clear': 0
-            }),
-        r.NonGenericClassMirrorImpl(
-            r'OperationClaimAddModel',
-            r'.OperationClaimAddModel',
-            7,
-            3,
-            const prefix0.Entity(),
-            const <int>[-1],
-            null,
-            null,
-            -1,
-            {},
-            {},
-            {
               r'': (bool b) =>
-                  (name) => b ? prefix4.OperationClaimAddModel(name) : null
+                  (name) => b ? prefix3.OperationClaimAddModel(name) : null
             },
             -1,
             -1,
@@ -166,10 +134,9 @@ final _data = <r.Reflectable, r.ReflectorData>{
       <Type>[
         prefix1.TranslateAddModel,
         prefix2.TranslateModel,
-        prefix3.Dictionary,
-        prefix4.OperationClaimAddModel
+        prefix3.OperationClaimAddModel
       ],
-      4,
+      3,
       {
         r'==': (dynamic instance) => (x) => instance == x,
         r'toString': (dynamic instance) => instance.toString,
@@ -181,9 +148,6 @@ final _data = <r.Reflectable, r.ReflectorData>{
         r'key': (dynamic instance) => instance.key,
         r'value': (dynamic instance) => instance.value,
         r'id': (dynamic instance) => instance.id,
-        r'set': (dynamic instance) => instance.set,
-        r'get': (dynamic instance) => instance.get,
-        r'clear': (dynamic instance) => instance.clear,
         r'name': (dynamic instance) => instance.name
       },
       {
@@ -199,8 +163,7 @@ final _data = <r.Reflectable, r.ReflectorData>{
         const [0, 0, null],
         const [1, 0, null],
         const [3, 0, null],
-        const [4, 0, null],
-        const [2, 0, null]
+        const [4, 0, null]
       ])
 };
 

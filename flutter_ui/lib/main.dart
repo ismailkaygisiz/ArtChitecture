@@ -22,6 +22,19 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    getTranslates();
+
+    return MaterialApp(
+      home: TRANSLATES.values.length > 0
+          ? LoginUI()
+          : Scaffold(
+              appBar: AppBar(),
+              body: Center(),
+            ),
+    );
+  }
+
+  void getTranslates() {
     _sessionService.set("lang", "tr-Tr");
 
     _sessionService.get("lang").then((value) {
@@ -31,13 +44,5 @@ class App extends StatelessWidget {
         });
       }
     });
-
-    return MaterialApp(
-        home: TRANSLATES.values.length > 0
-            ? LoginUI()
-            : Scaffold(
-                appBar: AppBar(),
-                body: Center(),
-              ));
   }
 }

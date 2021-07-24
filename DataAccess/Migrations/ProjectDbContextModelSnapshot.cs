@@ -18,45 +18,6 @@ namespace DataAccess.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("Core.Entities.Concrete.Group", b =>
-            {
-                b.Property<int>("Id")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnType("int")
-                    .HasAnnotation("SqlServer:ValueGenerationStrategy",
-                        SqlServerValueGenerationStrategy.IdentityColumn);
-
-                b.Property<string>("Name")
-                    .HasColumnType("nvarchar(max)");
-
-                b.HasKey("Id");
-
-                b.ToTable("Groups");
-            });
-
-            modelBuilder.Entity("Core.Entities.Concrete.GroupOperationClaim", b =>
-            {
-                b.Property<int>("Id")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnType("int")
-                    .HasAnnotation("SqlServer:ValueGenerationStrategy",
-                        SqlServerValueGenerationStrategy.IdentityColumn);
-
-                b.Property<int>("GroupId")
-                    .HasColumnType("int");
-
-                b.Property<int>("OperationClaimId")
-                    .HasColumnType("int");
-
-                b.HasKey("Id");
-
-                b.HasIndex("GroupId");
-
-                b.HasIndex("OperationClaimId");
-
-                b.ToTable("GroupOperationClaims");
-            });
-
             modelBuilder.Entity("Core.Entities.Concrete.Language", b =>
             {
                 b.Property<int>("Id")
@@ -170,20 +131,6 @@ namespace DataAccess.Migrations
                 b.ToTable("UserOperationClaims");
             });
 
-            modelBuilder.Entity("Core.Entities.Concrete.GroupOperationClaim", b =>
-            {
-                b.HasOne("Core.Entities.Concrete.Group", "Group")
-                    .WithMany()
-                    .HasForeignKey("GroupId")
-                    .OnDelete(DeleteBehavior.Cascade)
-                    .IsRequired();
-
-                b.HasOne("Core.Entities.Concrete.OperationClaim", "OperationClaim")
-                    .WithMany()
-                    .HasForeignKey("OperationClaimId")
-                    .OnDelete(DeleteBehavior.Cascade)
-                    .IsRequired();
-            });
 
             modelBuilder.Entity("Core.Entities.Concrete.Translate", b =>
             {
