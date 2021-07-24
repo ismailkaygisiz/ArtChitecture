@@ -1,8 +1,8 @@
-﻿using Core.Entities.Concrete;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
+using Core.Entities.Concrete;
 
 namespace Core.Extensions
 {
@@ -37,6 +37,7 @@ namespace Core.Extensions
         {
             claims.Add(new Claim(CustomClaimTypes.Status, status.ToString()));
         }
+
         public static void AddGroups(this ICollection<Claim> claims, List<Group> groups)
         {
             groups.ForEach(group => claims.Add(new Claim(CustomClaimTypes.Group, group.ToString())));

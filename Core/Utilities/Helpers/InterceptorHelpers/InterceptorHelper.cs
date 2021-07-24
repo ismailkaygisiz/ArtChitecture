@@ -1,13 +1,12 @@
-﻿using Castle.DynamicProxy;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System;
+using Castle.DynamicProxy;
 
 namespace Core.Utilities.Helpers.InterceptorHelpers
 {
     public static class InterceptorHelper
     {
-        public static void ChangeReturnValue(IInvocation invocation, Type returnType, dynamic errorMessage, string message)
+        public static void ChangeReturnValue(IInvocation invocation, Type returnType, dynamic errorMessage,
+            string message)
         {
             if (invocation.MethodInvocationTarget.ReturnType.GenericTypeArguments.Length > 0)
             {

@@ -20,10 +20,7 @@ namespace WebAPI.Controllers
         public IActionResult Add(Translate entity)
         {
             var result = _translateService.Add(entity);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
+            if (result.Success) return Ok(result);
 
             return BadRequest(result);
         }
@@ -32,10 +29,7 @@ namespace WebAPI.Controllers
         public IActionResult Delete(Translate entity)
         {
             var result = _translateService.Delete(entity);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
+            if (result.Success) return Ok(result);
 
             return BadRequest(result);
         }
@@ -44,10 +38,7 @@ namespace WebAPI.Controllers
         public IActionResult GetAll()
         {
             var result = _translateService.GetAll();
-            if (result.Success)
-            {
-                return Ok(result);
-            }
+            if (result.Success) return Ok(result);
 
             return BadRequest(result);
         }
@@ -56,46 +47,7 @@ namespace WebAPI.Controllers
         public IActionResult GetById(int id)
         {
             var result = _translateService.GetById(id);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-
-            return BadRequest(result);
-        }
-
-        [HttpGet("getbykey")]
-        public IActionResult GetByKey(string key)
-        {
-            var result = _translateService.GetByKey(key);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-
-            return BadRequest(result);
-        }
-
-        [HttpGet("getbylanguageid")]
-        public IActionResult GetByLanguage(int languageId)
-        {
-            var result = _translateService.GetByLanguageId(languageId);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-
-            return BadRequest(result);
-        }
-
-        [HttpGet("gettranslates")]
-        public IActionResult GetTranslates(string languageCode)
-        {
-            var result = _translateService.GetTranslates(languageCode);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
+            if (result.Success) return Ok(result);
 
             return BadRequest(result);
         }
@@ -104,10 +56,34 @@ namespace WebAPI.Controllers
         public IActionResult Update(Translate entity)
         {
             var result = _translateService.Update(entity);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
+            if (result.Success) return Ok(result);
+
+            return BadRequest(result);
+        }
+
+        [HttpGet("getbykey")]
+        public IActionResult GetByKey(string key)
+        {
+            var result = _translateService.GetByKey(key);
+            if (result.Success) return Ok(result);
+
+            return BadRequest(result);
+        }
+
+        [HttpGet("getbylanguageid")]
+        public IActionResult GetByLanguage(int languageId)
+        {
+            var result = _translateService.GetByLanguageId(languageId);
+            if (result.Success) return Ok(result);
+
+            return BadRequest(result);
+        }
+
+        [HttpGet("gettranslates")]
+        public IActionResult GetTranslates(string languageCode)
+        {
+            var result = _translateService.GetTranslates(languageCode);
+            if (result.Success) return Ok(result);
 
             return BadRequest(result);
         }

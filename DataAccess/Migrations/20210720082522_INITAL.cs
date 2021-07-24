@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DataAccess.Migrations
 {
@@ -8,48 +7,39 @@ namespace DataAccess.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Groups",
-                columns: table => new
+                "Groups",
+                table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(nullable: true)
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Groups", x => x.Id);
-                });
+                constraints: table => { table.PrimaryKey("PK_Groups", x => x.Id); });
 
             migrationBuilder.CreateTable(
-                name: "Languages",
-                columns: table => new
+                "Languages",
+                table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     LanguageCode = table.Column<string>(nullable: true),
                     LanguageName = table.Column<string>(nullable: true)
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Languages", x => x.Id);
-                });
+                constraints: table => { table.PrimaryKey("PK_Languages", x => x.Id); });
 
             migrationBuilder.CreateTable(
-                name: "OperationClaims",
-                columns: table => new
+                "OperationClaims",
+                table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(nullable: true)
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_OperationClaims", x => x.Id);
-                });
+                constraints: table => { table.PrimaryKey("PK_OperationClaims", x => x.Id); });
 
             migrationBuilder.CreateTable(
-                name: "Users",
-                columns: table => new
+                "Users",
+                table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
@@ -60,14 +50,11 @@ namespace DataAccess.Migrations
                     PasswordHash = table.Column<byte[]>(nullable: true),
                     Status = table.Column<bool>(nullable: false)
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Users", x => x.Id);
-                });
+                constraints: table => { table.PrimaryKey("PK_Users", x => x.Id); });
 
             migrationBuilder.CreateTable(
-                name: "Translates",
-                columns: table => new
+                "Translates",
+                table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
@@ -79,16 +66,16 @@ namespace DataAccess.Migrations
                 {
                     table.PrimaryKey("PK_Translates", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Translates_Languages_LanguageId",
-                        column: x => x.LanguageId,
-                        principalTable: "Languages",
-                        principalColumn: "Id",
+                        "FK_Translates_Languages_LanguageId",
+                        x => x.LanguageId,
+                        "Languages",
+                        "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "GroupOperationClaims",
-                columns: table => new
+                "GroupOperationClaims",
+                table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
@@ -99,22 +86,22 @@ namespace DataAccess.Migrations
                 {
                     table.PrimaryKey("PK_GroupOperationClaims", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_GroupOperationClaims_Groups_GroupId",
-                        column: x => x.GroupId,
-                        principalTable: "Groups",
-                        principalColumn: "Id",
+                        "FK_GroupOperationClaims_Groups_GroupId",
+                        x => x.GroupId,
+                        "Groups",
+                        "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_GroupOperationClaims_OperationClaims_OperationClaimId",
-                        column: x => x.OperationClaimId,
-                        principalTable: "OperationClaims",
-                        principalColumn: "Id",
+                        "FK_GroupOperationClaims_OperationClaims_OperationClaimId",
+                        x => x.OperationClaimId,
+                        "OperationClaims",
+                        "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "UserOperationClaims",
-                columns: table => new
+                "UserOperationClaims",
+                table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
@@ -125,67 +112,67 @@ namespace DataAccess.Migrations
                 {
                     table.PrimaryKey("PK_UserOperationClaims", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_UserOperationClaims_OperationClaims_OperationClaimId",
-                        column: x => x.OperationClaimId,
-                        principalTable: "OperationClaims",
-                        principalColumn: "Id",
+                        "FK_UserOperationClaims_OperationClaims_OperationClaimId",
+                        x => x.OperationClaimId,
+                        "OperationClaims",
+                        "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_UserOperationClaims_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
-                        principalColumn: "Id",
+                        "FK_UserOperationClaims_Users_UserId",
+                        x => x.UserId,
+                        "Users",
+                        "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_GroupOperationClaims_GroupId",
-                table: "GroupOperationClaims",
-                column: "GroupId");
+                "IX_GroupOperationClaims_GroupId",
+                "GroupOperationClaims",
+                "GroupId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_GroupOperationClaims_OperationClaimId",
-                table: "GroupOperationClaims",
-                column: "OperationClaimId");
+                "IX_GroupOperationClaims_OperationClaimId",
+                "GroupOperationClaims",
+                "OperationClaimId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Translates_LanguageId",
-                table: "Translates",
-                column: "LanguageId");
+                "IX_Translates_LanguageId",
+                "Translates",
+                "LanguageId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserOperationClaims_OperationClaimId",
-                table: "UserOperationClaims",
-                column: "OperationClaimId");
+                "IX_UserOperationClaims_OperationClaimId",
+                "UserOperationClaims",
+                "OperationClaimId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserOperationClaims_UserId",
-                table: "UserOperationClaims",
-                column: "UserId");
+                "IX_UserOperationClaims_UserId",
+                "UserOperationClaims",
+                "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "GroupOperationClaims");
+                "GroupOperationClaims");
 
             migrationBuilder.DropTable(
-                name: "Translates");
+                "Translates");
 
             migrationBuilder.DropTable(
-                name: "UserOperationClaims");
+                "UserOperationClaims");
 
             migrationBuilder.DropTable(
-                name: "Groups");
+                "Groups");
 
             migrationBuilder.DropTable(
-                name: "Languages");
+                "Languages");
 
             migrationBuilder.DropTable(
-                name: "OperationClaims");
+                "OperationClaims");
 
             migrationBuilder.DropTable(
-                name: "Users");
+                "Users");
         }
     }
 }

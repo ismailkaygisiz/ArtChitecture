@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Core.API
+﻿namespace Core.API
 {
     public interface IControllerRepository<TEntity, TResult>
     {

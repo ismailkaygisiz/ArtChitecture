@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Diagnostics;
+using System.IO;
 using System.Text;
 
 namespace AngularUI
@@ -7,7 +8,7 @@ namespace AngularUI
     {
         public static void CreateAngularProject()
         {
-            var path = (Directory.GetParent(Directory.GetCurrentDirectory()).FullName + "\\AngularUI");
+            var path = Directory.GetParent(Directory.GetCurrentDirectory()).FullName + "\\AngularUI";
 
             var exePath = Path.Combine(path, "UI");
             var bld = new StringBuilder();
@@ -16,7 +17,7 @@ namespace AngularUI
             bld.Append("npm install&");
             bld.Append("code .&");
 
-            var cmd = new System.Diagnostics.Process
+            var cmd = new Process
             {
                 StartInfo =
                 {

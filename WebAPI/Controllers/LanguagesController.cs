@@ -20,10 +20,7 @@ namespace WebAPI.Controllers
         public IActionResult Add(Language entity)
         {
             var result = _languageService.Add(entity);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
+            if (result.Success) return Ok(result);
 
             return BadRequest(result);
         }
@@ -32,10 +29,7 @@ namespace WebAPI.Controllers
         public IActionResult Delete(Language entity)
         {
             var result = _languageService.Delete(entity);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
+            if (result.Success) return Ok(result);
 
             return BadRequest(result);
         }
@@ -44,10 +38,7 @@ namespace WebAPI.Controllers
         public IActionResult GetAll()
         {
             var result = _languageService.GetAll();
-            if (result.Success)
-            {
-                return Ok(result);
-            }
+            if (result.Success) return Ok(result);
 
             return BadRequest(result);
         }
@@ -56,34 +47,7 @@ namespace WebAPI.Controllers
         public IActionResult GetById(int id)
         {
             var result = _languageService.GetById(id);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-
-            return BadRequest(result);
-        }
-
-        [HttpGet("getbyname")]
-        public IActionResult GetByName(string name)
-        {
-            var result = _languageService.GetByName(name);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-
-            return BadRequest(result);
-        }
-
-        [HttpGet("getbycode")]
-        public IActionResult GetByCode(string code)
-        {
-            var result = _languageService.GetByCode(code);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
+            if (result.Success) return Ok(result);
 
             return BadRequest(result);
         }
@@ -92,10 +56,25 @@ namespace WebAPI.Controllers
         public IActionResult Update(Language entity)
         {
             var result = _languageService.Update(entity);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
+            if (result.Success) return Ok(result);
+
+            return BadRequest(result);
+        }
+
+        [HttpGet("getbyname")]
+        public IActionResult GetByName(string name)
+        {
+            var result = _languageService.GetByName(name);
+            if (result.Success) return Ok(result);
+
+            return BadRequest(result);
+        }
+
+        [HttpGet("getbycode")]
+        public IActionResult GetByCode(string code)
+        {
+            var result = _languageService.GetByCode(code);
+            if (result.Success) return Ok(result);
 
             return BadRequest(result);
         }

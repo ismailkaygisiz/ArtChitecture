@@ -1,10 +1,10 @@
-﻿using Business.Abstract;
+﻿using System.Collections.Generic;
+using Business.Abstract;
 using Core.Business;
 using Core.Entities.Concrete;
 using Core.Utilities.Results.Abstract;
 using Core.Utilities.Results.Concrete;
 using DataAccess.Abstract;
-using System.Collections.Generic;
 
 namespace Business.Concrete
 {
@@ -21,10 +21,7 @@ namespace Business.Concrete
         {
             var result = BusinessRules.Run();
 
-            if (result != null)
-            {
-                return result;
-            }
+            if (result != null) return result;
 
             _groupOperationClaimDal.Add(entity);
             return new SuccessResult();
@@ -34,10 +31,7 @@ namespace Business.Concrete
         {
             var result = BusinessRules.Run();
 
-            if (result != null)
-            {
-                return result;
-            }
+            if (result != null) return result;
 
             _groupOperationClaimDal.Delete(entity);
             return new SuccessResult();
@@ -57,10 +51,7 @@ namespace Business.Concrete
         {
             var result = BusinessRules.Run();
 
-            if (result != null)
-            {
-                return result;
-            }
+            if (result != null) return result;
 
             _groupOperationClaimDal.Update(entity);
             return new SuccessResult();

@@ -1,19 +1,17 @@
-﻿using Business.Abstract;
-using Core.Aspects.Autofac.Transaction;
+﻿using System.Collections.Generic;
+using Business.Abstract;
 using Core.Business;
 using Core.Entities.Concrete;
 using Core.Utilities.Results.Abstract;
 using Core.Utilities.Results.Concrete;
 using DataAccess.Abstract;
-using System;
-using System.Collections.Generic;
 
 namespace Business.Concrete
 {
     public class TranslateManager : ITranslateService
     {
-        private readonly ITranslateDal _translateDal;
         private readonly ILanguageService _languageService;
+        private readonly ITranslateDal _translateDal;
 
         public TranslateManager(ITranslateDal translateDal, ILanguageService languageService)
         {
@@ -25,10 +23,7 @@ namespace Business.Concrete
         {
             var result = BusinessRules.Run();
 
-            if (result != null)
-            {
-                return result;
-            }
+            if (result != null) return result;
 
             _translateDal.Add(entity);
             return new SuccessResult();
@@ -38,24 +33,19 @@ namespace Business.Concrete
         {
             var result = BusinessRules.Run();
 
-            if (result != null)
-            {
-                return result;
-            }
+            if (result != null) return result;
 
             var entityToDelete = GetById(entity.Id).Data;
 
             _translateDal.Delete(entityToDelete);
             return new SuccessResult();
         }
+
         public IResult Update(Translate entity)
         {
             var result = BusinessRules.Run();
 
-            if (result != null)
-            {
-                return result;
-            }
+            if (result != null) return result;
 
             _translateDal.Update(entity);
             return new SuccessResult();
@@ -83,15 +73,10 @@ namespace Business.Concrete
 
         public IDataResult<Dictionary<string, string>> GetTranslates(string languageCode)
         {
-            Dictionary<string, string> dictionary = new Dictionary<string, string>();
+            var dictionary = new Dictionary<string, string>();
             var language = _languageService.GetByCode(languageCode).Data;
             if (language != null)
-            {
-                GetByLanguageId(language.Id).Data.ForEach((t) =>
-                {
-                    dictionary.Add(t.Key, t.Value);
-                });
-            }
+                GetByLanguageId(language.Id).Data.ForEach(t => { dictionary.Add(t.Key, t.Value); });
 
             return new SuccessDataResult<Dictionary<string, string>>(dictionary);
         }

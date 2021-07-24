@@ -1,15 +1,15 @@
-﻿using Castle.DynamicProxy;
+﻿using System.Diagnostics;
+using Castle.DynamicProxy;
 using Core.Utilities.Interceptors;
 using Core.Utilities.IoC;
 using Microsoft.Extensions.DependencyInjection;
-using System.Diagnostics;
 
 namespace Core.Aspects.Autofac.Performance
 {
     public class PerformanceAspect : MethodInterception
     {
-        private readonly Stopwatch _stopwatch;
         private readonly int _interval;
+        private readonly Stopwatch _stopwatch;
 
         public PerformanceAspect(int interval)
         {
@@ -27,9 +27,11 @@ namespace Core.Aspects.Autofac.Performance
         {
             if (_stopwatch.Elapsed.TotalSeconds > _interval)
             {
-                string errorMessage = $"Performance : {invocation.Method.DeclaringType.FullName}.{invocation.Method.Name}-->{_stopwatch.Elapsed.TotalSeconds}";
+                var errorMessage =
+                    $"Performance : {invocation.Method.DeclaringType.FullName}.{invocation.Method.Name}-->{_stopwatch.Elapsed.TotalSeconds}";
                 Debug.Write(errorMessage);
             }
+
             _stopwatch.Reset();
         }
     }

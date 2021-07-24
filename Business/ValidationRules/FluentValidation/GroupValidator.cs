@@ -5,9 +5,5 @@ namespace Business.ValidationRules.FluentValidation
 {
     public class GroupValidator : AbstractValidator<Group>
     {
-        public GroupValidator()
-        {
-
-        }
     }
 }

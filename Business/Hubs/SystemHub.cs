@@ -1,8 +1,6 @@
-﻿using Microsoft.AspNetCore.SignalR;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.SignalR;
 
 namespace Business.Hubs
 {
@@ -13,7 +11,7 @@ namespace Business.Hubs
             return base.OnConnectedAsync();
         }
 
-        public override  Task OnDisconnectedAsync(Exception exception)
+        public override Task OnDisconnectedAsync(Exception exception)
         {
             return base.OnDisconnectedAsync(exception);
         }

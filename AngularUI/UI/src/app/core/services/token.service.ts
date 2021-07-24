@@ -44,7 +44,7 @@ export class TokenService {
       let roles = token[Object.keys(token).filter((r) => r.endsWith('/role'))[0]];
 
       if (!Array.isArray(roles)) {
-        let array = new Array();
+        let array = [];
         array.push(roles);
 
         return array;

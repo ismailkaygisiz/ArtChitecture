@@ -10,7 +10,7 @@ namespace DataAccess.Concrete.EntityFramework
         public DbSet<OperationClaim> OperationClaims { get; set; }
         public DbSet<UserOperationClaim> UserOperationClaims { get; set; }
         public DbSet<Group> Groups { get; set; }
-        public DbSet<GroupOperationClaim> GroupOperationClaims{ get; set; }
+        public DbSet<GroupOperationClaim> GroupOperationClaims { get; set; }
 
         public DbSet<Language> Languages { get; set; }
         public DbSet<Translate> Translates { get; set; }

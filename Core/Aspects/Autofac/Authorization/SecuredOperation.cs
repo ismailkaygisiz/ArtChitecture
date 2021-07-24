@@ -1,4 +1,5 @@
-﻿using Castle.Core.Internal;
+﻿using System;
+using Castle.Core.Internal;
 using Castle.DynamicProxy;
 using Core.Business;
 using Core.Extensions;
@@ -10,17 +11,15 @@ using Core.Utilities.Results.Abstract;
 using Core.Utilities.Results.Concrete;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
-using System;
 
 namespace Core.Aspects.Autofac.Authorization
 {
     public class SecuredOperation : MethodInterception
     {
-        private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly IRequestUserService _requestUserService;
-
         private readonly string _arg;
+        private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly string _propertyName;
+        private readonly IRequestUserService _requestUserService;
         private readonly string[] _roles;
 
         private bool _error;
@@ -92,8 +91,9 @@ namespace Core.Aspects.Autofac.Authorization
             if (_error)
             {
                 _error = false;
-                string securityError = invocation.Method.Name + " Özelliğini Çağıramazsınız";
-                InterceptorHelper.ChangeReturnValue(invocation,typeof(SecurityErrorDataResult<>), securityError, CoreMessages.AuthorizationDenied);
+                var securityError = invocation.Method.Name + " Özelliğini Çağıramazsınız";
+                InterceptorHelper.ChangeReturnValue(invocation, typeof(SecurityErrorDataResult<>), securityError,
+                    CoreMessages.AuthorizationDenied);
             }
         }
 

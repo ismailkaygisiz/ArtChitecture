@@ -20,10 +20,7 @@ namespace WebAPI.Controllers
         public IActionResult Add(GroupOperationClaim entity)
         {
             var result = _groupOperationClaimService.Add(entity);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
+            if (result.Success) return Ok(result);
 
             return BadRequest(result);
         }
@@ -32,10 +29,7 @@ namespace WebAPI.Controllers
         public IActionResult Delete(GroupOperationClaim entity)
         {
             var result = _groupOperationClaimService.Delete(entity);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
+            if (result.Success) return Ok(result);
 
             return BadRequest(result);
         }
@@ -44,10 +38,7 @@ namespace WebAPI.Controllers
         public IActionResult GetAll()
         {
             var result = _groupOperationClaimService.GetAll();
-            if (result.Success)
-            {
-                return Ok(result);
-            }
+            if (result.Success) return Ok(result);
 
             return BadRequest(result);
         }
@@ -56,10 +47,7 @@ namespace WebAPI.Controllers
         public IActionResult GetById(int id)
         {
             var result = _groupOperationClaimService.GetById(id);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
+            if (result.Success) return Ok(result);
 
             return BadRequest(result);
         }
@@ -68,10 +56,7 @@ namespace WebAPI.Controllers
         public IActionResult Update(GroupOperationClaim entity)
         {
             var result = _groupOperationClaimService.Update(entity);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
+            if (result.Success) return Ok(result);
 
             return BadRequest(result);
         }

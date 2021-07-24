@@ -5,9 +5,5 @@ namespace Business.ValidationRules.FluentValidation
 {
     public class LanguageValidator : AbstractValidator<Language>
     {
-        public LanguageValidator()
-        {
-
-        }
     }
 }

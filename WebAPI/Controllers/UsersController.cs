@@ -57,6 +57,16 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
+        [HttpGet("getall")]
+        public IActionResult GetAll()
+        {
+            var result = _userService.GetAll();
+
+            if (result.Success) return Ok(result);
+
+            return BadRequest(result);
+        }
+
         [HttpGet("getbyemail")]
         public IActionResult GetByEmail(string email)
         {
@@ -81,16 +91,6 @@ namespace WebAPI.Controllers
         public IActionResult GetByLastName(string lastName)
         {
             var result = _userService.GetByLastName(lastName);
-
-            if (result.Success) return Ok(result);
-
-            return BadRequest(result);
-        }
-
-        [HttpGet("getall")]
-        public IActionResult GetAll()
-        {
-            var result = _userService.GetAll();
 
             if (result.Success) return Ok(result);
 

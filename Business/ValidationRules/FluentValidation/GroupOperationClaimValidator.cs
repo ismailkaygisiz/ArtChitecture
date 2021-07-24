@@ -5,9 +5,5 @@ namespace Business.ValidationRules.FluentValidation
 {
     public class GroupOperationClaimValidator : AbstractValidator<GroupOperationClaim>
     {
-        public GroupOperationClaimValidator()
-        {
-
-        }
     }
 }

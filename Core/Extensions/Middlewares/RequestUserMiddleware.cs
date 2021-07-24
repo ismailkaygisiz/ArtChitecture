@@ -1,17 +1,17 @@
-﻿using Core.Business;
+﻿using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
+using Core.Business;
 using Core.Utilities.IoC;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
 
 namespace Core.Extensions.Middlewares
 {
     public class RequestUserMiddleware
     {
-        private readonly IRequestUserService _requestUserService;
         private readonly RequestDelegate _next;
+        private readonly IRequestUserService _requestUserService;
 
         public RequestUserMiddleware(RequestDelegate next)
         {

@@ -1,5 +1,4 @@
 ﻿using Core.Entities.Abstract;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Core.Entities.Concrete
 {

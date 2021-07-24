@@ -20,10 +20,7 @@ namespace WebAPI.Controllers
         public IActionResult Add(Group entity)
         {
             var result = _groupService.Add(entity);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
+            if (result.Success) return Ok(result);
 
             return BadRequest(result);
         }
@@ -32,10 +29,7 @@ namespace WebAPI.Controllers
         public IActionResult Delete(Group entity)
         {
             var result = _groupService.Delete(entity);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
+            if (result.Success) return Ok(result);
 
             return BadRequest(result);
         }
@@ -44,10 +38,7 @@ namespace WebAPI.Controllers
         public IActionResult GetAll()
         {
             var result = _groupService.GetAll();
-            if (result.Success)
-            {
-                return Ok(result);
-            }
+            if (result.Success) return Ok(result);
 
             return BadRequest(result);
         }
@@ -56,10 +47,7 @@ namespace WebAPI.Controllers
         public IActionResult GetById(int id)
         {
             var result = _groupService.GetById(id);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
+            if (result.Success) return Ok(result);
 
             return BadRequest(result);
         }
@@ -68,10 +56,7 @@ namespace WebAPI.Controllers
         public IActionResult Update(Group entity)
         {
             var result = _groupService.Update(entity);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
+            if (result.Success) return Ok(result);
 
             return BadRequest(result);
         }
