@@ -103,6 +103,27 @@ namespace DataAccess.Migrations
                 "IX_UserOperationClaims_UserId",
                 "UserOperationClaims",
                 "UserId");
+
+
+
+            migrationBuilder.InsertData(table: "OperationClaims", column: "Name", value: "Admin");
+            migrationBuilder.InsertData(table: "OperationClaims", column: "Name", value: "User");
+
+            migrationBuilder.InsertData(table: "Languages", columns: new string[] {"Id", "LanguageCode", "LanguageName" }, values: new object[] {1, "tr-Tr", "Türkçe" });
+            migrationBuilder.InsertData(table: "Languages", columns: new string[] {"Id", "LanguageCode", "LanguageName" }, values: new object[] {2, "en-Us", "English" });
+
+            migrationBuilder.InsertData(table: "Translates", columns: new string[] { "LanguageId", "Key", "Value" }, values: new object[] { 1, "Login_Title_Key", "Giriş Yap" });
+            migrationBuilder.InsertData(table: "Translates", columns: new string[] { "LanguageId", "Key", "Value" }, values: new object[] { 2, "Login_Title_Key", "Login" });
+            migrationBuilder.InsertData(table: "Translates", columns: new string[] { "LanguageId", "Key", "Value" }, values: new object[] { 1, "Sign_Up_Title_Key ", "Kayıt Ol" });
+            migrationBuilder.InsertData(table: "Translates", columns: new string[] { "LanguageId", "Key", "Value" }, values: new object[] { 2, "Sign_Up_Title_Key ", "Sign Up" });
+            migrationBuilder.InsertData(table: "Translates", columns: new string[] { "LanguageId", "Key", "Value" }, values: new object[] { 1, "Placeholder_Name_Key", "Ad" });
+            migrationBuilder.InsertData(table: "Translates", columns: new string[] { "LanguageId", "Key", "Value" }, values: new object[] { 2, "Placeholder_Name_Key", "Name" });
+            migrationBuilder.InsertData(table: "Translates", columns: new string[] { "LanguageId", "Key", "Value" }, values: new object[] { 1, "Placeholder_Surname_Key", "Soyad" });
+            migrationBuilder.InsertData(table: "Translates", columns: new string[] { "LanguageId", "Key", "Value" }, values: new object[] { 2, "Placeholder_Surname_Key", "Surname" });
+            migrationBuilder.InsertData(table: "Translates", columns: new string[] { "LanguageId", "Key", "Value" }, values: new object[] { 1, "Placeholder_Email_Key", "E-Posta" });
+            migrationBuilder.InsertData(table: "Translates", columns: new string[] { "LanguageId", "Key", "Value" }, values: new object[] { 2, "Placeholder_Email_Key", "Email" });
+            migrationBuilder.InsertData(table: "Translates", columns: new string[] { "LanguageId", "Key", "Value" }, values: new object[] { 1, "Placeholder_Password_Key", "Parola" });
+            migrationBuilder.InsertData(table: "Translates", columns: new string[] { "LanguageId", "Key", "Value" }, values: new object[] { 2, "Placeholder_Password_Key", "Password" });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
