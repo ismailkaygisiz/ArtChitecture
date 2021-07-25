@@ -18,23 +18,22 @@ void main() async {
 }
 
 class App extends StatelessWidget {
-  TranslateService _translateService = TranslateService();
-  SessionService _sessionService = SessionService();
-
   @override
   Widget build(BuildContext context) {
-    getTranslates();
-
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: TRANSLATES.values.length > 0
-          ? LoginUI()
-          : Scaffold(
-              appBar: AppBar(),
-              body: Center(),
-            ),
-    );
+    return MaterialApp(debugShowCheckedModeBanner: false, home: Home());
   }
+}
+
+class Home extends StatefulWidget {
+  const Home({Key key}) : super(key: key);
+
+  @override
+  _HomeState createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
+  TranslateService _translateService = TranslateService();
+  SessionService _sessionService = SessionService();
 
   void getTranslates() {
     _sessionService.set("lang", "tr-Tr");
@@ -43,8 +42,20 @@ class App extends StatelessWidget {
       if (value != null) {
         _translateService.getTranslates(value).then((dynamic value) {
           TRANSLATES = value["data"];
+          setState(() {});
         });
       }
     });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    getTranslates();
+    return TRANSLATES.values.length > 0
+        ? LoginUI()
+        : Scaffold(
+            appBar: AppBar(),
+            body: Center(),
+          );
   }
 }
