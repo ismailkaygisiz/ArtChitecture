@@ -7,8 +7,8 @@ import 'package:flutter_ui/core/models/language/languageModel.dart';
 import 'package:flutter_ui/core/models/response/listResponseModel.dart';
 import 'package:flutter_ui/core/models/response/responseModel.dart';
 import 'package:flutter_ui/core/models/response/singleResponseModel.dart';
-import 'package:flutter_ui/core/services/service.dart';
-import 'package:flutter_ui/core/services/serviceRepository.dart';
+import 'package:flutter_ui/core/utilities/service.dart';
+import 'package:flutter_ui/core/utilities/serviceRepository.dart';
 import 'package:flutter_ui/environments/api.dart';
 
 class LanguageService extends Service
@@ -20,8 +20,7 @@ class LanguageService extends Service
       body: addModel.toJson(),
     );
 
-    var jsonData = json.decode(response.body);
-    return ResponseModel.fromJson(jsonData);
+    return ResponseModel.fromJson(response);
   }
 
   @override
@@ -31,8 +30,7 @@ class LanguageService extends Service
       body: deleteModel.toJson(),
     );
 
-    var jsonData = json.decode(response.body);
-    return ResponseModel.fromJson(jsonData);
+    return ResponseModel.fromJson(response);
   }
 
   @override
@@ -41,8 +39,7 @@ class LanguageService extends Service
       Uri.parse(API_URL + "languages/getall"),
     );
 
-    var jsonData = json.decode(response.body);
-    return ListResponseModel<LanguageModel>.fromJson(jsonData);
+    return ListResponseModel<LanguageModel>.fromJson(response);
   }
 
   @override
@@ -53,8 +50,7 @@ class LanguageService extends Service
       ),
     );
 
-    var jsonData = json.decode(response.body);
-    return SingleResponseModel<LanguageModel>.fromJson(jsonData);
+    return SingleResponseModel<LanguageModel>.fromJson(response);
   }
 
   Future<SingleResponseModel<LanguageModel>> getByName(String name) async {
@@ -64,8 +60,7 @@ class LanguageService extends Service
       ),
     );
 
-    var jsonData = json.decode(response.body);
-    return SingleResponseModel<LanguageModel>.fromJson(jsonData);
+    return SingleResponseModel<LanguageModel>.fromJson(response);
   }
 
   Future<SingleResponseModel<LanguageModel>> getByCode(String code) async {
@@ -75,8 +70,7 @@ class LanguageService extends Service
       ),
     );
 
-    var jsonData = json.decode(response.body);
-    return SingleResponseModel<LanguageModel>.fromJson(jsonData);
+    return SingleResponseModel<LanguageModel>.fromJson(response);
   }
 
   @override
@@ -86,7 +80,6 @@ class LanguageService extends Service
       body: updateModel.toJson(),
     );
 
-    var jsonData = json.decode(response.body);
-    return ResponseModel.fromJson(jsonData);
+    return ResponseModel.fromJson(response);
   }
 }

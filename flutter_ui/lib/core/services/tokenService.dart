@@ -1,0 +1,87 @@
+import 'package:flutter_ui/core/models/user/userModel.dart';
+import 'package:flutter_ui/core/services/sessionService.dart';
+import 'package:flutter_ui/core/utilities/service.dart';
+import 'package:jwt_decode/jwt_decode.dart';
+
+class TokenService extends Service {
+  SessionService _sessionService = SessionService();
+
+  decodeToken(String token) {
+    return Jwt.parseJwt(token);
+  }
+
+  Future<String> getToken() async {
+    return await _sessionService.get("token");
+  }
+
+  Future<void> setToken(String token) async {
+    await _sessionService.set('token', token);
+  }
+
+  Future<void> removeToken() async {
+    await _sessionService.remove('token');
+  }
+
+  Future<bool> isTokenExpired() async {
+    var isExpired = Jwt.isExpired(await getToken());
+
+    return isExpired != null ? isExpired : true;
+  }
+
+  Future<DateTime> getTokenExpirationDate() async {
+    return Jwt.getExpiryDate(await getToken());
+  }
+
+  Future<List<String>> getUserRolesWithJWT() async {
+    var token = decodeToken(await getToken());
+
+    List<String> _roles = [];
+    if (token != null) {
+      Map t = token;
+
+      t.keys.forEach((element) {
+        if (element.endsWith("/role")) {
+          if (t[element] is String) {
+            _roles.add(t[element]);
+          } else if (t[element] is List) {
+            for (int i = 0; i < t[element].length; i++)
+              _roles.add(t[element][i]);
+          }
+        }
+      });
+
+      return _roles;
+    }
+
+    return _roles;
+  }
+
+  Future<UserModel> getUserWithJWT() async {
+    var token = decodeToken(await getToken());
+    if (token != null) {
+      UserModel userModel = UserModel(0, "", "", "", true);
+      Map t = token;
+
+      t.forEach((key, dynamic value) {
+        String k = key;
+
+        if (k.endsWith("/nameidentifier")) {
+          userModel.id = int.parse(value.toString());
+        } else if (k.endsWith("/name")) {
+          userModel.firstName = value.toString();
+        } else if (k.endsWith("/surname")) {
+          userModel.lastName = value.toString();
+        } else if (k.endsWith("email")) {
+          userModel.email = value.toString();
+        } else if (k.endsWith("status")) {
+          userModel.status =
+              value.toString().toLowerCase() == "true" ? true : false;
+        }
+      });
+
+      return userModel;
+    }
+
+    return null;
+  }
+}

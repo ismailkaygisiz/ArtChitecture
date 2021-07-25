@@ -10,6 +10,14 @@ class UserOperationClaimModel {
 
   UserOperationClaimModel(this.id, this.userId, this.claimId);
 
+  factory UserOperationClaimModel.fromJson(Map<String, dynamic> json) {
+    return UserOperationClaimModel(
+      json["id"] as int,
+      json["userId"] as int,
+      json["claimId"] as int,
+    );
+  }
+
   String toJson() {
     return json.encode({
       "id": id,

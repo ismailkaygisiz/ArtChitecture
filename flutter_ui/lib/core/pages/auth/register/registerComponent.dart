@@ -1,4 +1,4 @@
-import 'package:flutter_ui/core/components/component.dart';
+import 'package:flutter_ui/core/utilities/component.dart';
 
 class RegisterComponent implements Component {
   @override

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_ui/core/components/auth/register/registerComponent.dart';
+import 'package:flutter_ui/core/pages/auth/register/registerComponent.dart';
 
 class RegisterUI extends StatefulWidget {
   const RegisterUI({Key key}) : super(key: key);

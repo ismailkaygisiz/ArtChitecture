@@ -1,4 +1,7 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_ui/core/models/user/loginModel.dart';
 import 'package:flutter_ui/environments/api.dart';
 import 'loginComponent.dart';
 
@@ -16,8 +19,15 @@ class _LoginUIState extends State<LoginUI> with LoginComponent {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
-      body: Center(),
+      appBar: AppBar(
+        title: Text(TRANSLATES["Login_Title_Key"]),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [],
+        ),
+      ),
     );
   }
 

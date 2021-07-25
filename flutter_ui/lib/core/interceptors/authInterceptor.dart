@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:encrypt/encrypt.dart';
 import 'package:flutter_ui/core/environments/environment.development.dart';
 import 'package:flutter_ui/core/services/cryptoService.dart';
-import 'package:flutter_ui/core/services/service.dart';
+import 'package:flutter_ui/core/utilities/service.dart';
 import 'package:flutter_ui/environments/api.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/io_client.dart';

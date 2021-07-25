@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:http/http.dart';
 import 'package:reflectable/reflectable.dart';
 import '../entity.dart';
 
@@ -5,19 +8,32 @@ class SingleResponseModel<T> {
   bool success;
   String message;
   T data;
+  Map<String, dynamic> jsonData;
 
-  SingleResponseModel(this.success, this.message, this.data);
+  SingleResponseModel(this.success, this.message, this.data, this.jsonData);
 
-  factory SingleResponseModel.fromJson(Map<String, dynamic> json) {
-    var classMirror = entity.reflectType(T) as ClassMirror;
+  factory SingleResponseModel.fromJson(Response response) {
+    Map<String, dynamic> jsonData = json.decode(response.body);
 
-    dynamic d = json["data"];
+    if (jsonData["success"] as bool == true) {
+      var classMirror = entity.reflectType(T) as ClassMirror;
 
-    var data = classMirror.newInstance("fromJson", [d]) as T;
+      dynamic d = jsonData["data"];
+
+      var data = classMirror.newInstance("fromJson", [d]) as T;
+      return SingleResponseModel(
+        jsonData["success"] as bool,
+        jsonData["message"] as String,
+        data,
+        jsonData,
+      );
+    }
+
     return SingleResponseModel(
-      json["success"] as bool,
-      json["message"].toString(),
-      data,
+      jsonData["success"] as bool,
+      jsonData["message"] as String,
+      null,
+      jsonData,
     );
   }
 }

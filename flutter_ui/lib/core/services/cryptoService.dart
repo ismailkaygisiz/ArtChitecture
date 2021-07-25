@@ -1,6 +1,6 @@
 import 'package:flutter_ui/environments/api.dart';
 
-import 'service.dart';
+import '../utilities/service.dart';
 import 'package:encrypt/encrypt.dart';
 
 class CryptoService extends Service {

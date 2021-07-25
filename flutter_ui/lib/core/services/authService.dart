@@ -4,7 +4,7 @@ import 'package:flutter_ui/core/models/response/singleResponseModel.dart';
 import 'package:flutter_ui/core/models/user/loginModel.dart';
 import 'package:flutter_ui/core/models/user/registerModel.dart';
 import 'package:flutter_ui/core/models/user/tokenModel.dart';
-import 'package:flutter_ui/core/services/service.dart';
+import 'package:flutter_ui/core/utilities/service.dart';
 import 'package:flutter_ui/core/services/sessionService.dart';
 import 'package:flutter_ui/environments/api.dart';
 
@@ -17,8 +17,7 @@ class AuthService extends Service {
       body: user.toJson(),
     );
 
-    var jsonData = json.decode(response.body);
-    return SingleResponseModel<TokenModel>.fromJson(jsonData);
+    return SingleResponseModel<TokenModel>.fromJson(response);
   }
 
   Future<SingleResponseModel<TokenModel>> register(RegisterModel user) async {
@@ -27,8 +26,7 @@ class AuthService extends Service {
       body: user.toJson(),
     );
 
-    var jsonData = json.decode(response.body);
-    return SingleResponseModel<TokenModel>.fromJson(jsonData);
+    return SingleResponseModel<TokenModel>.fromJson(response);
   }
 
   bool logout() {

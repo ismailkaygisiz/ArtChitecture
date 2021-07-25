@@ -27,6 +27,7 @@ dependencies:
   http: ^0.13.3
   reflectable: any
   encrypt: ^5.0.0
+  jwt_decode: ^0.3.1
 
 
   # The following adds the Cupertino Icons font to your application.

@@ -7,9 +7,9 @@ import 'package:flutter_ui/core/models/response/responseModel.dart';
 import 'package:flutter_ui/core/models/response/singleResponseModel.dart';
 import 'package:flutter_ui/core/models/user/userAddModel.dart';
 import 'package:flutter_ui/core/models/user/userModel.dart';
-import 'package:flutter_ui/core/services/serviceRepository.dart';
+import 'package:flutter_ui/core/utilities/serviceRepository.dart';
 import 'package:flutter_ui/environments/api.dart';
-import 'service.dart';
+import '../utilities/service.dart';
 
 class UserService extends Service
     with ServiceRepository<UserAddModel, UserModel> {
@@ -19,8 +19,7 @@ class UserService extends Service
       body: userAddModel.toJson(),
     );
 
-    var jsonData = json.decode(response.body);
-    return ResponseModel.fromJson(jsonData);
+    return ResponseModel.fromJson(response);
   }
 
   Future<ResponseModel> delete(DeleteModel deleteModel) async {
@@ -29,8 +28,7 @@ class UserService extends Service
       body: deleteModel.toJson(),
     );
 
-    var jsonData = json.decode(response.body);
-    return ResponseModel.fromJson(jsonData);
+    return ResponseModel.fromJson(response);
   }
 
   Future<ResponseModel> update(UserModel userModel) async {
@@ -39,8 +37,7 @@ class UserService extends Service
       body: userModel.toJson(),
     );
 
-    var jsonData = json.decode(response.body);
-    return ResponseModel.fromJson(jsonData);
+    return ResponseModel.fromJson(response);
   }
 
   Future<ListResponseModel<UserModel>> getAll() async {
@@ -48,8 +45,7 @@ class UserService extends Service
       Uri.parse(API_URL + "users/getall"),
     );
 
-    var jsonData = json.decode(response.body);
-    return ListResponseModel<UserModel>.fromJson(jsonData);
+    return ListResponseModel<UserModel>.fromJson(response);
   }
 
   Future<SingleResponseModel<UserModel>> getById(int id) async {
@@ -57,8 +53,7 @@ class UserService extends Service
       Uri.parse(API_URL + "users/getbyid?id=" + id.toString()),
     );
 
-    var jsonData = json.decode(response.body);
-    return SingleResponseModel<UserModel>.fromJson(jsonData);
+    return SingleResponseModel<UserModel>.fromJson(response);
   }
 
   Future<SingleResponseModel<UserModel>> getByEmail(String email) async {
@@ -66,8 +61,7 @@ class UserService extends Service
       Uri.parse(API_URL + "users/getbymail?email=" + email),
     );
 
-    var jsonData = json.decode(response.body);
-    return SingleResponseModel<UserModel>.fromJson(jsonData);
+    return SingleResponseModel<UserModel>.fromJson(response);
   }
 
   Future<ListResponseModel<UserModel>> getByFirstName(String firstName) async {
@@ -75,8 +69,7 @@ class UserService extends Service
       Uri.parse(API_URL + "users/getbyfirstname?firstName=" + firstName),
     );
 
-    var jsonData = json.decode(response.body);
-    return ListResponseModel<UserModel>.fromJson(jsonData);
+    return ListResponseModel<UserModel>.fromJson(response);
   }
 
   Future<ListResponseModel<UserModel>> getByLastName(String lastName) async {
@@ -84,8 +77,7 @@ class UserService extends Service
       Uri.parse(API_URL + "users/getbylastname?lastName=" + lastName),
     );
 
-    var jsonData = json.decode(response.body);
-    return ListResponseModel<UserModel>.fromJson(jsonData);
+    return ListResponseModel<UserModel>.fromJson(response);
   }
 
   Future<SingleResponseModel<OperationClaimDetailsModel>> getClaims(
@@ -94,7 +86,6 @@ class UserService extends Service
       Uri.parse(API_URL + "users/getclaims?id=" + id.toString()),
     );
 
-    var jsonData = json.decode(response.body);
-    return SingleResponseModel<OperationClaimDetailsModel>.fromJson(jsonData);
+    return SingleResponseModel<OperationClaimDetailsModel>.fromJson(response);
   }
 }

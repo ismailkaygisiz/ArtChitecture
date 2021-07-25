@@ -6,8 +6,8 @@ import 'package:flutter_ui/core/models/operationClaim/operationClaimModel.dart';
 import 'package:flutter_ui/core/models/response/listResponseModel.dart';
 import 'package:flutter_ui/core/models/response/responseModel.dart';
 import 'package:flutter_ui/core/models/response/singleResponseModel.dart';
-import 'package:flutter_ui/core/services/service.dart';
-import 'package:flutter_ui/core/services/serviceRepository.dart';
+import 'package:flutter_ui/core/utilities/service.dart';
+import 'package:flutter_ui/core/utilities/serviceRepository.dart';
 import 'package:flutter_ui/environments/api.dart';
 
 class OperationClaimService extends Service
@@ -19,8 +19,7 @@ class OperationClaimService extends Service
       body: operationClaimAddModel.toJson(),
     );
 
-    var jsonData = json.decode(response.body);
-    return ResponseModel.fromJson(jsonData);
+    return ResponseModel.fromJson(response);
   }
 
   Future<ResponseModel> delete(DeleteModel deleteModel) async {
@@ -29,8 +28,7 @@ class OperationClaimService extends Service
       body: deleteModel.toJson(),
     );
 
-    var jsonData = json.decode(response.body);
-    return ResponseModel.fromJson(jsonData);
+    return ResponseModel.fromJson(response);
   }
 
   Future<ResponseModel> update(OperationClaimModel operationClaimModel) async {
@@ -39,8 +37,7 @@ class OperationClaimService extends Service
       body: operationClaimModel.toJson(),
     );
 
-    var jsonData = json.decode(response.body);
-    return ResponseModel.fromJson(jsonData);
+    return ResponseModel.fromJson(response);
   }
 
   Future<ListResponseModel<OperationClaimModel>> getAll() async {
@@ -48,8 +45,7 @@ class OperationClaimService extends Service
       Uri.parse(API_URL + "operationclaims/getall"),
     );
 
-    var jsonData = json.decode(response.body);
-    return ListResponseModel<OperationClaimModel>.fromJson(jsonData);
+    return ListResponseModel<OperationClaimModel>.fromJson(response);
   }
 
   Future<SingleResponseModel<OperationClaimModel>> getById(int id) async {
@@ -57,8 +53,7 @@ class OperationClaimService extends Service
       Uri.parse(API_URL + "operationclaims/getbyid?id=" + id.toString()),
     );
 
-    var jsonData = json.decode(response.body);
-    return SingleResponseModel<OperationClaimModel>.fromJson(jsonData);
+    return SingleResponseModel<OperationClaimModel>.fromJson(response);
   }
 
   Future<SingleResponseModel<OperationClaimModel>> getByName(
@@ -66,7 +61,6 @@ class OperationClaimService extends Service
     var response = await httpClient
         .get(Uri.parse(API_URL + "operationclaims/getbyname?name=" + name));
 
-    var jsonData = json.decode(response.body);
-    return SingleResponseModel<OperationClaimModel>.fromJson(jsonData);
+    return SingleResponseModel<OperationClaimModel>.fromJson(response);
   }
 }

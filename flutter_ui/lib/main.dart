@@ -2,14 +2,15 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_ui/core/services/sessionService.dart';
+import 'package:flutter_ui/core/services/tokenService.dart';
 import 'package:flutter_ui/core/services/translateService.dart';
 import 'package:flutter_ui/environments/api.dart';
 import 'package:reflectable/reflectable.dart';
-import 'core/components/auth/login/loginUI.dart';
 import 'core/environments/environment.development.dart';
+import 'core/pages/auth/login/loginUI.dart';
 import 'main.reflectable.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   initializeReflectable();
   EnvironmentDev();
@@ -25,6 +26,7 @@ class App extends StatelessWidget {
     getTranslates();
 
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: TRANSLATES.values.length > 0
           ? LoginUI()
           : Scaffold(
