@@ -104,8 +104,6 @@ namespace DataAccess.Migrations
                 "UserOperationClaims",
                 "UserId");
 
-
-
             migrationBuilder.InsertData(table: "OperationClaims", column: "Name", value: "Admin");
             migrationBuilder.InsertData(table: "OperationClaims", column: "Name", value: "User");
 
