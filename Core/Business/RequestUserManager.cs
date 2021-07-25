@@ -10,7 +10,10 @@ namespace Core.Business
 
         public IDataResult<RequestUser> GetUser()
         {
-            return new SuccessDataResult<RequestUser>(_requestUser);
+            if (_requestUser != null)
+                return new SuccessDataResult<RequestUser>(_requestUser);
+
+            return new SuccessDataResult<RequestUser>(new RequestUser());
         }
 
         public IResult SetUser(RequestUser requestUser)
