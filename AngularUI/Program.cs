@@ -4,7 +4,6 @@
     {
         private static void Main()
         {
-            Create.CreateAngularProject();
         }
     }
 }
