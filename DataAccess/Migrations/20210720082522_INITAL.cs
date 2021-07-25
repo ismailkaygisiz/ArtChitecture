@@ -107,8 +107,8 @@ namespace DataAccess.Migrations
             migrationBuilder.InsertData(table: "OperationClaims", column: "Name", value: "Admin");
             migrationBuilder.InsertData(table: "OperationClaims", column: "Name", value: "User");
 
-            migrationBuilder.InsertData(table: "Languages", columns: new string[] {"Id", "LanguageCode", "LanguageName" }, values: new object[] {1, "tr-Tr", "Türkçe" });
-            migrationBuilder.InsertData(table: "Languages", columns: new string[] {"Id", "LanguageCode", "LanguageName" }, values: new object[] {2, "en-Us", "English" });
+            migrationBuilder.InsertData(table: "Languages", columns: new string[] { "Id", "LanguageCode", "LanguageName" }, values: new object[] { 1, "tr-Tr", "Türkçe" });
+            migrationBuilder.InsertData(table: "Languages", columns: new string[] { "Id", "LanguageCode", "LanguageName" }, values: new object[] { 2, "en-Us", "English" });
 
             migrationBuilder.InsertData(table: "Translates", columns: new string[] { "LanguageId", "Key", "Value" }, values: new object[] { 1, "Login_Title_Key", "Giriş Yap" });
             migrationBuilder.InsertData(table: "Translates", columns: new string[] { "LanguageId", "Key", "Value" }, values: new object[] { 2, "Login_Title_Key", "Login" });
