@@ -1,14 +1,9 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_ui/core/services/sessionService.dart';
-import 'package:flutter_ui/core/services/tokenService.dart';
 import 'package:flutter_ui/core/services/translateService.dart';
 import 'package:flutter_ui/environments/api.dart';
-import 'package:reflectable/reflectable.dart';
-import 'package:signalr_netcore/hub_connection_builder.dart';
-import 'core/environments/environment.development.dart';
-import 'core/pages/auth/login/loginUI.dart';
+import 'package:flutter_ui/pages/main/homePage/homePageUI.dart';
+import 'environments/environment.development.dart';
 import 'main.reflectable.dart';
 
 void main() async {
@@ -57,7 +52,7 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     getTranslates();
     return TRANSLATES.values.length > 0
-        ? LoginUI()
+        ? HomePageUI()
         : Scaffold(
             appBar: AppBar(),
             body: Center(),

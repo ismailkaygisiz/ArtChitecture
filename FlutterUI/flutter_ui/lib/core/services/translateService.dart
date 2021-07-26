@@ -8,6 +8,7 @@ import 'package:flutter_ui/core/models/response/responseModel.dart';
 import 'package:flutter_ui/core/models/response/singleResponseModel.dart';
 import 'package:flutter_ui/core/models/translate/translateAddModel.dart';
 import 'package:flutter_ui/core/models/translate/translateModel.dart';
+import 'package:flutter_ui/core/utilities/dependencyResolver.dart';
 import 'package:flutter_ui/core/utilities/service.dart';
 import 'package:flutter_ui/core/utilities/serviceRepository.dart';
 import 'package:flutter_ui/environments/api.dart';

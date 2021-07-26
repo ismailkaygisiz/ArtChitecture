@@ -1,6 +1,6 @@
 import 'dart:io';
 
-class DevHttpOverrides extends HttpOverrides {
+class CustomHttpOverrides extends HttpOverrides {
   @override
   HttpClient createHttpClient(SecurityContext context) {
     return super.createHttpClient(context)
@@ -11,6 +11,6 @@ class DevHttpOverrides extends HttpOverrides {
 
 class EnvironmentDev {
   EnvironmentDev() {
-    HttpOverrides.global = new DevHttpOverrides();
+    HttpOverrides.global = CustomHttpOverrides();
   }
 }

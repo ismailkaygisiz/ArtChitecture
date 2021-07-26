@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:encrypt/encrypt.dart';
-import 'package:flutter_ui/core/environments/environment.development.dart';
+import 'package:flutter_ui/environments/environment.development.dart';
 import 'package:flutter_ui/core/services/cryptoService.dart';
 import 'package:flutter_ui/core/utilities/service.dart';
 import 'package:flutter_ui/environments/api.dart';
@@ -45,5 +45,3 @@ class AuthInterceptor extends http.BaseClient {
     return token;
   }
 }
-
-var httpClient = AuthInterceptor();

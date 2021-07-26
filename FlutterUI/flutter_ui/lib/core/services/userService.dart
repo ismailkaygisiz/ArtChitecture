@@ -1,5 +1,3 @@
-import 'dart:convert';
-import 'package:flutter_ui/core/interceptors/authInterceptor.dart';
 import 'package:flutter_ui/core/models/deleteModel.dart';
 import 'package:flutter_ui/core/models/operationClaim/operationClaimDetailsModel.dart';
 import 'package:flutter_ui/core/models/response/listResponseModel.dart';
@@ -7,6 +5,7 @@ import 'package:flutter_ui/core/models/response/responseModel.dart';
 import 'package:flutter_ui/core/models/response/singleResponseModel.dart';
 import 'package:flutter_ui/core/models/user/userAddModel.dart';
 import 'package:flutter_ui/core/models/user/userModel.dart';
+import 'package:flutter_ui/core/utilities/dependencyResolver.dart';
 import 'package:flutter_ui/core/utilities/serviceRepository.dart';
 import 'package:flutter_ui/environments/api.dart';
 import '../utilities/service.dart';

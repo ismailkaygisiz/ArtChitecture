@@ -1,3 +1,4 @@
+import 'package:flutter_ui/core/interceptors/authInterceptor.dart';
 import 'package:flutter_ui/core/services/authService.dart';
 import 'package:flutter_ui/core/services/cryptoService.dart';
 import 'package:flutter_ui/core/services/languageService.dart';
@@ -10,6 +11,7 @@ import 'package:flutter_ui/core/services/userOperationClaimService.dart';
 import 'package:flutter_ui/core/services/userService.dart';
 import 'package:flutter_ui/core/services/validationService.dart';
 
+final AuthInterceptor httpClient = AuthInterceptor();
 final AuthService authService = AuthService();
 final CryptoService cryptoService = CryptoService();
 final LanguageService languageService = LanguageService();
