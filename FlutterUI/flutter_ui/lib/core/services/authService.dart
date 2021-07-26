@@ -4,13 +4,12 @@ import 'package:flutter_ui/core/models/response/singleResponseModel.dart';
 import 'package:flutter_ui/core/models/user/loginModel.dart';
 import 'package:flutter_ui/core/models/user/registerModel.dart';
 import 'package:flutter_ui/core/models/user/tokenModel.dart';
+import 'package:flutter_ui/core/utilities/dependencyResolver.dart';
 import 'package:flutter_ui/core/utilities/service.dart';
 import 'package:flutter_ui/core/services/sessionService.dart';
 import 'package:flutter_ui/environments/api.dart';
 
 class AuthService extends Service {
-  SessionService _sessionService = SessionService();
-
   Future<SingleResponseModel<TokenModel>> login(LoginModel user) async {
     var response = await httpClient.post(
       Uri.parse(API_URL + "auth/login"),
@@ -31,7 +30,7 @@ class AuthService extends Service {
 
   bool logout() {
     if (isAuthenticated() == true) {
-      _sessionService.remove("token");
+      sessionService.remove("token");
 
       return true;
     }
@@ -42,7 +41,7 @@ class AuthService extends Service {
   bool isAuthenticated() {
     bool token;
 
-    _sessionService
+    sessionService
         .get("token")
         .then((value) => value != null ? token = true : token = false);
 

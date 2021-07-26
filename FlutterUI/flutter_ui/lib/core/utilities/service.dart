@@ -1,1 +1,1 @@
-abstract class Service {}
+class Service {}

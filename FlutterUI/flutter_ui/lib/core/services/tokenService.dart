@@ -1,25 +1,24 @@
 import 'package:flutter_ui/core/models/user/userModel.dart';
 import 'package:flutter_ui/core/services/sessionService.dart';
+import 'package:flutter_ui/core/utilities/dependencyResolver.dart';
 import 'package:flutter_ui/core/utilities/service.dart';
 import 'package:jwt_decode/jwt_decode.dart';
 
 class TokenService extends Service {
-  SessionService _sessionService = SessionService();
-
   decodeToken(String token) {
     return Jwt.parseJwt(token);
   }
 
   Future<String> getToken() async {
-    return await _sessionService.get("token");
+    return await sessionService.get("token");
   }
 
   Future<void> setToken(String token) async {
-    await _sessionService.set('token', token);
+    await sessionService.set('token', token);
   }
 
   Future<void> removeToken() async {
-    await _sessionService.remove('token');
+    await sessionService.remove('token');
   }
 
   Future<bool> isTokenExpired() async {

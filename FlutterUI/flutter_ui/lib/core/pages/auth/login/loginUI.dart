@@ -2,6 +2,8 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_ui/core/models/user/loginModel.dart';
+import 'package:flutter_ui/core/models/user/registerModel.dart';
+import 'package:flutter_ui/core/utilities/dependencyResolver.dart';
 import 'package:flutter_ui/environments/api.dart';
 import 'loginComponent.dart';
 

@@ -28,6 +28,7 @@ dependencies:
   reflectable: any
   encrypt: ^5.0.0
   jwt_decode: ^0.3.1
+  signalr_netcore: ^1.1.1
 
 
   # The following adds the Cupertino Icons font to your application.

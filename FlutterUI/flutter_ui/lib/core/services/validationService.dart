@@ -3,6 +3,7 @@ import 'package:flutter_ui/core/utilities/service.dart';
 class ValidationService extends Service {
   showErrors(Map<String, dynamic> jsonData) {
     if (jsonData["success"] as bool == true) {
+      print("İşlem Başarılı");
       return false;
     }
 
@@ -12,8 +13,9 @@ class ValidationService extends Service {
 
       validationErrors.forEach((error) {
         print(error);
-        print(jsonData["message"]);
       });
+
+      print(jsonData["message"]);
 
       return true;
     }
@@ -21,6 +23,7 @@ class ValidationService extends Service {
     // Security Control
     else if (jsonData.containsKey("securityError")) {
       print(jsonData["securityError"]);
+
       print(jsonData["message"]);
       return true;
     }
@@ -36,6 +39,11 @@ class ValidationService extends Service {
     // System Control
     else if (jsonData.containsKey("ErrorMessage")) {
       print(jsonData["ErrorMessage"]);
+
+      return true;
+    } else if (jsonData.containsKey("message")) {
+      print(jsonData["message"]);
+
       return true;
     }
 
