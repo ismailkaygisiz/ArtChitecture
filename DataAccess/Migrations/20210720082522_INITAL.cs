@@ -112,8 +112,8 @@ namespace DataAccess.Migrations
 
             migrationBuilder.InsertData(table: "Translates", columns: new string[] { "LanguageId", "Key", "Value" }, values: new object[] { 1, "Login_Title_Key", "Giriş Yap" });
             migrationBuilder.InsertData(table: "Translates", columns: new string[] { "LanguageId", "Key", "Value" }, values: new object[] { 2, "Login_Title_Key", "Login" });
-            migrationBuilder.InsertData(table: "Translates", columns: new string[] { "LanguageId", "Key", "Value" }, values: new object[] { 1, "Sign_Up_Title_Key ", "Kayıt Ol" });
-            migrationBuilder.InsertData(table: "Translates", columns: new string[] { "LanguageId", "Key", "Value" }, values: new object[] { 2, "Sign_Up_Title_Key ", "Sign Up" });
+            migrationBuilder.InsertData(table: "Translates", columns: new string[] { "LanguageId", "Key", "Value" }, values: new object[] { 1, "Sign_Up_Title_Key", "Kayıt Ol" });
+            migrationBuilder.InsertData(table: "Translates", columns: new string[] { "LanguageId", "Key", "Value" }, values: new object[] { 2, "Sign_Up_Title_Key", "Sign Up" });
             migrationBuilder.InsertData(table: "Translates", columns: new string[] { "LanguageId", "Key", "Value" }, values: new object[] { 1, "Placeholder_Name_Key", "Ad" });
             migrationBuilder.InsertData(table: "Translates", columns: new string[] { "LanguageId", "Key", "Value" }, values: new object[] { 2, "Placeholder_Name_Key", "Name" });
             migrationBuilder.InsertData(table: "Translates", columns: new string[] { "LanguageId", "Key", "Value" }, values: new object[] { 1, "Placeholder_Surname_Key", "Soyad" });
