@@ -15,7 +15,7 @@ import { translates } from 'src/api';
 })
 export class RegisterComponent implements OnInit {
   registerForm: FormGroup;
-  translateKeys: any = translates;
+  translateKeys = translates;
 
   constructor(
     private formBuilder: FormBuilder,

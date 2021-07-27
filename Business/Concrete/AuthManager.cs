@@ -1,5 +1,4 @@
 ﻿using Business.Abstract;
-using Business.Constants;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Authorization;
 using Core.Aspects.Autofac.Transaction;
@@ -14,7 +13,7 @@ using Core.Utilities.Security.JWT;
 
 namespace Business.Concrete
 {
-    public class AuthManager : IAuthService
+    public class AuthManager : BusinessService, IAuthService
     {
         private readonly ITokenHelper _tokenHelper;
         private readonly IUserService _userService;
@@ -62,7 +61,8 @@ namespace Business.Concrete
             };
 
             _userService.Update(user);
-            return new SuccessDataResult<AccessToken>(CreateAccessToken(user).Data, Messages.PasswordChanged);
+            return new SuccessDataResult<AccessToken>(CreateAccessToken(user).Data,
+                _businessMessages.PasswordChanged());
         }
 
         [TransactionScopeAspect]
@@ -76,7 +76,8 @@ namespace Business.Concrete
             if (result != null) return new ErrorDataResult<AccessToken>(result.Message);
 
             var user = _userService.GetByEmailForAuth(userForLoginDto.Email).Data;
-            return new SuccessDataResult<AccessToken>(CreateAccessToken(user).Data, Messages.SuccessfulLogin);
+            return new SuccessDataResult<AccessToken>(CreateAccessToken(user).Data,
+                _businessMessages.SuccessfulLogin());
         }
 
         [TransactionScopeAspect]
@@ -104,13 +105,14 @@ namespace Business.Concrete
             };
 
             _userService.Add(user);
-            return new SuccessDataResult<AccessToken>(CreateAccessToken(user).Data, Messages.SuccessfulRegister);
+            return new SuccessDataResult<AccessToken>(CreateAccessToken(user).Data,
+                _businessMessages.SuccessfulRegister());
         }
 
         private IResult CheckIfUserIsAlreadyExists(string email)
         {
             if (_userService.GetByEmailForAuth(email).Data != null)
-                return new ErrorResult(Messages.UserIsAlreadyExists);
+                return new ErrorResult(_businessMessages.UserIsAlreadyExists());
 
             return new SuccessResult();
         }
@@ -118,11 +120,11 @@ namespace Business.Concrete
         private IResult CheckIfUserIsNotExists(UserForLoginDto userForLoginDto)
         {
             var user = _userService.GetByEmailForAuth(userForLoginDto.Email).Data;
-            if (user == null) return new ErrorResult(Messages.UserIsNotExists);
+            if (user == null) return new ErrorResult(_businessMessages.UserIsNotExists());
 
             if (user != null)
                 if (!HashingHelper.VerifyPasswordHash(userForLoginDto.Password, user.PasswordHash, user.PasswordSalt))
-                    return new ErrorResult(Messages.PasswordIsNotTrue);
+                    return new ErrorResult(_businessMessages.PasswordIsNotTrue());
 
             return new SuccessResult();
         }
@@ -130,7 +132,7 @@ namespace Business.Concrete
         private IResult CheckIfNewPasswordIsEqualsOldPassword(UserForLoginDto userForLoginDto, string newPassword)
         {
             if (userForLoginDto.Password == newPassword)
-                return new ErrorResult(Messages.NewPasswordCannotBeTheSameAsTheOldPassword);
+                return new ErrorResult(_businessMessages.NewPasswordCannotBeTheSameAsTheOldPassword());
 
             return new SuccessResult();
         }

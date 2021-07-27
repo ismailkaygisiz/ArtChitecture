@@ -62,6 +62,8 @@ export class ValidationService {
         this.toastrService.error('', responseError.error.ErrorMessage);
 
         return true;
+      } else if (responseError.error.message != null) {
+        this.toastrService.error(responseError.error.message, 'Hata');
       }
 
       // Error

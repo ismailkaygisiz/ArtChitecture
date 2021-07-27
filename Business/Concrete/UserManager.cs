@@ -14,7 +14,7 @@ using DataAccess.Abstract;
 
 namespace Business.Concrete
 {
-    public class UserManager : IUserService
+    public class UserManager : BusinessService, IUserService
     {
         private readonly IUserDal _userDal;
 

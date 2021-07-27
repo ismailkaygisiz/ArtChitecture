@@ -11,6 +11,7 @@ import { translates } from 'src/api';
 })
 export class AppComponent implements OnInit {
   title = 'AngularUI';
+  translateKeys: any;
 
   constructor(
     private titleService: Title,
@@ -22,6 +23,7 @@ export class AppComponent implements OnInit {
     this.translateService.getTranslates(localStorage.getItem('lang')).subscribe(
       (response) => {
         translates.keys = response.data;
+        this.translateKeys = translates;
       },
       (responseError) => {
         this.validationService.showErrors(responseError);

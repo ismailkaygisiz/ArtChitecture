@@ -1,11 +1,23 @@
 ﻿using System;
 using Castle.DynamicProxy;
+using Core.Business.Translate;
+using Core.Utilities.Constants;
+using Core.Utilities.IoC;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Core.Utilities.Interceptors
 {
     public abstract class MethodInterception : MethodInterceptionBaseAttribute
     {
+        protected readonly CoreMessages _coreMessages;
+        protected readonly ITranslateContext _translateContext;
         protected bool Invoke = true;
+
+        public MethodInterception()
+        {
+            _translateContext = ServiceTool.ServiceProvider.GetService<ITranslateContext>();
+            _coreMessages = new CoreMessages();
+        }
 
         protected virtual void OnBefore(IInvocation invocation)
         {

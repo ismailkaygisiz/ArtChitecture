@@ -3,7 +3,6 @@ using Castle.Core.Internal;
 using Castle.DynamicProxy;
 using Core.Business;
 using Core.Extensions;
-using Core.Utilities.Constants;
 using Core.Utilities.Helpers.InterceptorHelpers;
 using Core.Utilities.Interceptors;
 using Core.Utilities.IoC;
@@ -91,9 +90,10 @@ namespace Core.Aspects.Autofac.Authorization
             if (_error)
             {
                 _error = false;
-                var securityError = invocation.Method.Name + " Özelliğini Çağıramazsınız";
+                var securityError = _translateContext.Translates["Cannot_Cal_Property_Error_Key"] + " : " +
+                                    invocation.Method.Name;
                 InterceptorHelper.ChangeReturnValue(invocation, typeof(SecurityErrorDataResult<>), securityError,
-                    CoreMessages.AuthorizationDenied);
+                    _coreMessages.AuthorizationDenied());
             }
         }
 

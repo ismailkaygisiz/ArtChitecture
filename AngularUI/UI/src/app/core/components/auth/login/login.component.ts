@@ -16,7 +16,7 @@ import { translates } from 'src/api';
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
-  translateKeys: any = translates;
+  translateKeys = translates;
 
   constructor(
     private formBuilder: FormBuilder,

@@ -1,6 +1,8 @@
 ﻿using Core.DataAccess;
 using Core.Entities.Concrete;
+using Core.Utilities.IoC;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace DataAccess.Concrete.EntityFramework
 {
@@ -15,7 +17,8 @@ namespace DataAccess.Concrete.EntityFramework
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(new AppConfiguration().GetConnectionString("MsSql"));
+            optionsBuilder.UseSqlServer(ServiceTool.ServiceProvider.GetService<AppConfiguration>()
+                .GetConnectionString("MsSql"));
         }
     }
 }

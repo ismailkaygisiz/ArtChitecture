@@ -6,7 +6,13 @@ namespace Core.Business
 {
     public class RequestUserManager : IRequestUserService
     {
+        private readonly CoreMessages _coreMessages;
         private RequestUser _requestUser;
+
+        public RequestUserManager()
+        {
+            _coreMessages = new CoreMessages();
+        }
 
         public IDataResult<RequestUser> GetUser()
         {
@@ -28,7 +34,7 @@ namespace Core.Business
             if (user != null)
             {
                 if (user.Id != userId)
-                    return new ErrorResult(CoreMessages.AuthorizationDenied);
+                    return new ErrorResult(_coreMessages.AuthorizationDenied());
                 return new SuccessResult();
             }
 
@@ -40,7 +46,7 @@ namespace Core.Business
             var user = GetUser().Data;
             if (user != null)
             {
-                if (user.Email != email) return new ErrorResult(CoreMessages.AuthorizationDenied);
+                if (user.Email != email) return new ErrorResult(_coreMessages.AuthorizationDenied());
                 return new SuccessResult();
             }
 

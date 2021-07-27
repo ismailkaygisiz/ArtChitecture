@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Transactions;
 using Castle.DynamicProxy;
-using Core.Utilities.Constants;
 using Core.Utilities.Helpers.InterceptorHelpers;
 using Core.Utilities.Interceptors;
 using Core.Utilities.Results.Concrete;
@@ -24,9 +23,9 @@ namespace Core.Aspects.Autofac.Transaction
                     _ = e.Message;
                     transactionScope.Dispose();
 
-                    var transactionError = "Beklenmedik Bir Hata Meydana Geldi Yapılan İşlem Geri ALınıyor";
+                    var transactionError = _translateContext.Translates["Transaction_Error_Key"];
                     InterceptorHelper.ChangeReturnValue(invocation, typeof(TransactionScopeErrorDataResult<>),
-                        transactionError, CoreMessages.TransactionScopeError);
+                        transactionError, _coreMessages.TransactionScopeError());
                 }
             }
         }

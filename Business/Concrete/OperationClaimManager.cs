@@ -13,7 +13,7 @@ using DataAccess.Abstract;
 
 namespace Business.Concrete
 {
-    public class OperationClaimManager : IOperationClaimService
+    public class OperationClaimManager : BusinessService, IOperationClaimService
     {
         private readonly IOperationClaimDal _operationClaimDal;
 

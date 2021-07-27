@@ -8,7 +8,7 @@ using DataAccess.Abstract;
 
 namespace Business.Concrete
 {
-    public class TranslateManager : ITranslateService
+    public class TranslateManager : BusinessService, ITranslateService
     {
         private readonly ILanguageService _languageService;
         private readonly ITranslateDal _translateDal;
@@ -77,6 +77,8 @@ namespace Business.Concrete
             var language = _languageService.GetByCode(languageCode).Data;
             if (language != null)
                 GetByLanguageId(language.Id).Data.ForEach(t => { dictionary.Add(t.Key, t.Value); });
+
+            _translateContext.Translates = dictionary;
 
             return new SuccessDataResult<Dictionary<string, string>>(dictionary);
         }

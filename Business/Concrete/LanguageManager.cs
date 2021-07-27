@@ -8,7 +8,7 @@ using DataAccess.Abstract;
 
 namespace Business.Concrete
 {
-    public class LanguageManager : ILanguageService
+    public class LanguageManager : BusinessService, ILanguageService
     {
         private readonly ILanguageDal _languageDal;
 

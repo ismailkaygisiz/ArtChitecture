@@ -3,11 +3,12 @@ using FluentValidation;
 
 namespace Business.ValidationRules.FluentValidation
 {
-    public class OperationClaimValidator : AbstractValidator<OperationClaim>
+    public class OperationClaimValidator : FluentValidator<OperationClaim>
     {
         public OperationClaimValidator()
         {
-            RuleFor(o => o.Name).MinimumLength(2).WithMessage("Rol Adı Minimum 2 Karakter Uzunluğunda Olmalıdır");
+            RuleFor(o => o.Name).MinimumLength(2)
+                .WithMessage(Translates["Role_Name_Must_Be_At_Least_2_Characters_Long"]);
         }
     }
 }
