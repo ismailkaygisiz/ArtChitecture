@@ -41,7 +41,10 @@ class ValidationService extends Service {
       print(jsonData["ErrorMessage"]);
 
       return true;
-    } else if (jsonData.containsKey("message")) {
+    }
+
+    // BusinessRule Control
+    else if (jsonData.containsKey("message")) {
       print(jsonData["message"]);
 
       return true;
