@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_ui/environments/api.dart';
 import 'package:flutter_ui/pages/main/homePage/homePageComponent.dart';
 
 class HomePageUI extends StatefulWidget {
@@ -17,7 +18,7 @@ class _HomePageUIState extends State<HomePageUI> with HomePageComponent {
       appBar: AppBar(
         title: Center(
           child: Text(
-            "Hello World",
+            TRANSLATES["Hello_World_Key"],
             style: TextStyle(
               color: Colors.black54,
               fontSize: 30,
@@ -31,7 +32,7 @@ class _HomePageUIState extends State<HomePageUI> with HomePageComponent {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                "Welcome to ArtChitecture",
+                TRANSLATES["Welcome_Key"],
                 style: TextStyle(
                   color: Colors.teal,
                   fontSize: 25,
@@ -44,7 +45,7 @@ class _HomePageUIState extends State<HomePageUI> with HomePageComponent {
                       padding: const EdgeInsets.all(30.0),
                       child: ElevatedButton(
                         onPressed: _handleTextButton,
-                        child: Text("Click Me"),
+                        child: Text(TRANSLATES["Increment_Key"]),
                         style: ButtonStyle(
                           shape:
                               MaterialStateProperty.all<RoundedRectangleBorder>(
@@ -59,7 +60,7 @@ class _HomePageUIState extends State<HomePageUI> with HomePageComponent {
                 ],
               ),
               Text(
-                "Value : $value",
+                "${TRANSLATES["Value_Key"]} : $value",
                 style: TextStyle(color: Colors.black54, fontSize: 20),
               ),
             ],
@@ -69,7 +70,7 @@ class _HomePageUIState extends State<HomePageUI> with HomePageComponent {
       floatingActionButton: FloatingActionButton(
         onPressed: _handleFloatingActionButton,
         child: Text(
-          "Reset",
+          TRANSLATES["Reset_Key"],
         ),
       ),
     );

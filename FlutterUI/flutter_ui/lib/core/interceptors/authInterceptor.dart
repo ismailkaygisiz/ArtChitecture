@@ -22,10 +22,12 @@ class AuthInterceptor extends http.BaseClient {
   @override
   Future<http.StreamedResponse> send(http.BaseRequest request) async {
     var token = await getToken();
+    var lang = await getLang();
 
     request.headers.addAll({
       "content-type": "application/json",
-      'Authorization': "Bearer " + token
+      'Authorization': "Bearer " + token,
+      'lang': lang,
     });
 
     return await _httpClient.send(request);
@@ -36,12 +38,30 @@ class AuthInterceptor extends http.BaseClient {
     var prefs = await SharedPreferences.getInstance();
     final encrypter = Encrypter(AES(Key.fromUtf8(KEY), mode: AESMode.cbc));
 
-    token = prefs.get("token") ?? "";
+    token = await prefs.get("token") ?? "";
     if (token != "") {
-      token = encrypter.decrypt(Encrypted.fromBase64(token),
-          iv: IV.fromUtf8(TOKEN));
+      token = encrypter.decrypt(
+        Encrypted.fromBase64(token),
+        iv: IV.fromUtf8(TOKEN),
+      );
     }
 
     return token;
+  }
+
+  Future<String> getLang() async {
+    String lang;
+    var prefs = await SharedPreferences.getInstance();
+    final encrypter = Encrypter(AES(Key.fromUtf8(KEY), mode: AESMode.cbc));
+
+    lang = await prefs.get("lang");
+    if (lang != null) {
+      lang = encrypter.decrypt(
+        Encrypted.fromBase64(lang),
+        iv: IV.fromUtf8(TOKEN),
+      );
+    }
+
+    return lang;
   }
 }

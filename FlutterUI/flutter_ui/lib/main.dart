@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_ui/core/services/sessionService.dart';
-import 'package:flutter_ui/core/services/translateService.dart';
 import 'package:flutter_ui/environments/api.dart';
 import 'package:flutter_ui/pages/main/homePage/homePageUI.dart';
+import 'core/utilities/dependencyResolver.dart';
 import 'environments/environment.development.dart';
 import 'main.reflectable.dart';
 
@@ -32,19 +31,12 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  TranslateService _translateService = TranslateService();
-  SessionService _sessionService = SessionService();
-
   void getTranslates() {
-    _sessionService.set("lang", "tr-Tr");
-
-    _sessionService.get("lang").then((value) {
-      if (value != null) {
-        _translateService.getTranslates(value).then((dynamic value) {
-          TRANSLATES = value["data"];
-          setState(() {});
-        });
-      }
+    sessionService.get("lang").then((value) {
+      translateService.getTranslates(value).then((dynamic value) {
+        TRANSLATES = value["data"];
+        setState(() {});
+      });
     });
   }
 

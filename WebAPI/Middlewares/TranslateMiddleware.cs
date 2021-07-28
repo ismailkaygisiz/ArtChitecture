@@ -24,8 +24,6 @@ namespace WebAPI.Middlewares
         public async Task InvokeAsync(HttpContext context)
         {
             StringValues lang;
-            var x = context.Request.Headers.TryGetValue("lang", out lang);
-
             if (_translateContext.Translates.Count > 0)
             {
                 if (context.Request.Headers.TryGetValue("lang", out lang))

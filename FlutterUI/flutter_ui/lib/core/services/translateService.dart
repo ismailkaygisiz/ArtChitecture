@@ -86,8 +86,9 @@ class TranslateService extends Service
 
   Future<Map> getTranslates(String languageCode) async {
     var response = await httpClient.get(
-      Uri.parse(
-          API_URL + "translates/gettranslates?languageCode=" + languageCode),
+      Uri.parse(API_URL +
+          "translates/gettranslates?languageCode=" +
+          languageCode.toString()),
     );
 
     return Map.from(json.decode(response.body));

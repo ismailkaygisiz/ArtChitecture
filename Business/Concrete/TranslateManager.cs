@@ -77,6 +77,8 @@ namespace Business.Concrete
             var language = _languageService.GetByCode(languageCode).Data;
             if (language != null)
                 GetByLanguageId(language.Id).Data.ForEach(t => { dictionary.Add(t.Key, t.Value); });
+            else
+                GetByLanguageId(_languageService.GetByCode("en-Us").Data.Id).Data.ForEach(t => { dictionary.Add(t.Key, t.Value); });
 
             return new SuccessDataResult<Dictionary<string, string>>(dictionary);
         }
