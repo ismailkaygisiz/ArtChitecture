@@ -83,6 +83,8 @@ namespace WebAPI
 
             app.UseRequestUser(); // For Authorization Security
 
+            app.CreateSuperUser(); // For Create Default Super User. !!! Don't Use This Method for Production Mode
+
             app.UseStaticFiles();
 
             app.UseEndpoints(endpoints =>

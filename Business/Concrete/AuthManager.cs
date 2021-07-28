@@ -34,8 +34,8 @@ namespace Business.Concrete
 
         [TransactionScopeAspect]
         [SecuredOperation("User", "userForLoginDto.Email")]
-        [ValidationAspect(typeof(LoginValidator))]
-        public IDataResult<AccessToken> ChangePassword(UserForLoginDto userForLoginDto, string newPassword)
+        [ValidationAspect(typeof(LoginValidator))] // Will be Upgrade
+        public IDataResult<AccessToken> ChangePassword(UserForLoginDto userForLoginDto, string newPassword) // New Model Will be Added for ChangePassword
         {
             var result = BusinessRules.Run(
                 CheckIfUserIsNotExists(userForLoginDto),

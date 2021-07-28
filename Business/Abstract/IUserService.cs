@@ -8,6 +8,7 @@ namespace Business.Abstract
 {
     public interface IUserService : IServiceRepository<User>
     {
+        IDataResult<User> AddWithId(User entity);
         IDataResult<List<User>> GetByFirstName(string firstName);
         IDataResult<List<User>> GetByLastName(string lastName);
         IDataResult<List<User>> GetByStatus(bool status);

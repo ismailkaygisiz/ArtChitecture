@@ -120,5 +120,26 @@ namespace Business.Concrete
         {
             return new SuccessDataResult<List<OperationClaim>>(_userDal.GetClaims(user));
         }
+
+        public IDataResult<User> AddWithId(User entity)
+        {
+            var result = BusinessRules.Run(CheckIfUserAlreadyExists(entity.Email));
+
+            if (result != null) return new ErrorDataResult<User>(result.Message);
+
+            return new SuccessDataResult<User>(_userDal.AddWithId(entity));
+        }
+
+        private IResult CheckIfUserAlreadyExists(string email)
+        {
+            var result = GetByEmail(email).Data;
+
+            if (result != null)
+            {
+                return new ErrorResult();
+            }
+
+            return new SuccessResult();
+        }
     }
 }

@@ -31,7 +31,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  void getTranslates() {
+  void _getTranslates() {
     sessionService.get("lang").then((value) {
       translateService.getTranslates(value).then((dynamic value) {
         TRANSLATES = value["data"];
@@ -42,7 +42,7 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    getTranslates();
+    _getTranslates();
     return TRANSLATES.values.length > 0
         ? HomePageUI()
         : Scaffold(

@@ -104,9 +104,13 @@ namespace DataAccess.Migrations
                 "UserOperationClaims",
                 "UserId");
 
+
+            // OperationClaims
             migrationBuilder.InsertData("OperationClaims", "Name", "Admin");
             migrationBuilder.InsertData("OperationClaims", "Name", "User");
 
+
+            // Languages
             migrationBuilder.InsertData("Languages", new[] { "Id", "LanguageCode", "LanguageName" },
                 new object[] { 1, "tr-Tr", "Türkçe" });
             migrationBuilder.InsertData("Languages", new[] { "Id", "LanguageCode", "LanguageName" },
@@ -264,6 +268,7 @@ namespace DataAccess.Migrations
                 });
 
 
+            // AngularUI
             migrationBuilder.InsertData("Translates", new[] { "LanguageId", "Key", "Value" },
                 new object[] { 1, "Login_Title_Key", "Giriş Yap" });
             migrationBuilder.InsertData("Translates", new[] { "LanguageId", "Key", "Value" },
@@ -294,6 +299,8 @@ namespace DataAccess.Migrations
             migrationBuilder.InsertData("Translates", new[] { "LanguageId", "Key", "Value" },
                 new object[] { 2, "Placeholder_Password_Key", "Password" });
 
+
+            // FlutterUI
             migrationBuilder.InsertData("Translates", new[] { "LanguageId", "Key", "Value" },
                 new object[] { 1, "Hello_World_Key", "Merhaba Dünya" });
             migrationBuilder.InsertData("Translates", new[] { "LanguageId", "Key", "Value" },

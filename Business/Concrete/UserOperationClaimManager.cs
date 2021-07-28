@@ -94,5 +94,15 @@ namespace Business.Concrete
             return new SuccessDataResult<List<UserOperationClaim>>(
                 _userOperationClaimDal.GetAll(u => u.UserId == userId));
         }
+
+        public IResult AddForSuperUser(UserOperationClaim entity)
+        {
+            var result = BusinessRules.Run();
+
+            if (result != null) return result;
+
+            _userOperationClaimDal.Add(entity);
+            return new SuccessResult();
+        }
     }
 }
