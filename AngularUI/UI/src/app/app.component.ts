@@ -20,14 +20,20 @@ export class AppComponent implements OnInit {
   ) {}
   ngOnInit(): void {
     this.titleService.setTitle('ArtChitecture AngularUI');
-    this.translateService.getTranslates(localStorage.getItem('lang')).subscribe(
-      (response) => {
-        translates.keys = response.data;
-        this.translateKeys = translates;
-      },
-      (responseError) => {
-        this.validationService.showErrors(responseError);
-      }
-    );
+    this.translateService
+      .getTranslates(
+        localStorage.getItem('lang') != null
+          ? localStorage.getItem('lang')
+          : 'en-Us'
+      )
+      .subscribe(
+        (response) => {
+          translates.keys = response.data;
+          this.translateKeys = translates;
+        },
+        (responseError) => {
+          this.validationService.showErrors(responseError);
+        }
+      );
   }
 }

@@ -4,6 +4,7 @@ using Core.Business.Translate;
 using Core.Utilities.IoC;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Primitives;
 
 namespace WebAPI.Middlewares
 {
@@ -18,22 +19,33 @@ namespace WebAPI.Middlewares
             _next = next;
             _translateService = translateService;
             _translateContext = ServiceTool.ServiceProvider.GetService<ITranslateContext>();
-            if (_translateContext.Translates.Count > 0)
-                return;
-            _translateContext.Translates = _translateService.GetTranslates("tr-Tr").Data;
         }
 
         public async Task InvokeAsync(HttpContext context)
         {
+            StringValues lang;
+            var x = context.Request.Headers.TryGetValue("lang", out lang);
+
             if (_translateContext.Translates.Count > 0)
             {
-                await _next.Invoke(context);
+                if (context.Request.Headers.TryGetValue("lang", out lang))
+                {
+                    _translateContext.Translates = _translateService.GetTranslates(lang).Data;
+                }
             }
             else
             {
-                _translateContext.Translates = _translateService.GetTranslates("tr-Tr").Data;
-                await _next.Invoke(context);
+                if (context.Request.Headers.TryGetValue("lang", out lang))
+                {
+                    _translateContext.Translates = _translateService.GetTranslates(lang).Data;
+                }
+                else
+                {
+                    _translateContext.Translates = _translateService.GetTranslates("en-Us").Data;
+                }
             }
+
+            await _next.Invoke(context);
         }
     }
 }

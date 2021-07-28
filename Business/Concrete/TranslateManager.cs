@@ -78,8 +78,6 @@ namespace Business.Concrete
             if (language != null)
                 GetByLanguageId(language.Id).Data.ForEach(t => { dictionary.Add(t.Key, t.Value); });
 
-            _translateContext.Translates = dictionary;
-
             return new SuccessDataResult<Dictionary<string, string>>(dictionary);
         }
     }
