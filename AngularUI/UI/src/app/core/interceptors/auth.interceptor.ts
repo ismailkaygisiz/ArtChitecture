@@ -30,15 +30,8 @@ export class AuthInterceptor implements HttpInterceptor {
     newRequest = request.clone({
       headers: request.headers
         .set('Authorization', 'Bearer ' + this.token)
-        .append(
-          'lang',
-          localStorage.getItem('lang') != null
-            ? localStorage.getItem('lang')
-            : 'en-Us'
-        ),
+        .append('lang', localStorage.getItem('lang') ?? ''),
     });
-
-    console.log(request.headers);
 
     return next.handle(newRequest);
   }
