@@ -1,15 +1,17 @@
 ﻿using Business.Constants;
 using Core.Business;
+using Core.Utilities.IoC;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Business.Concrete
 {
     public class BusinessService : ServiceBase
     {
-        protected readonly BusinessMessages _businessMessages;
+        protected BusinessMessages BusinessMessages { get; }
 
         public BusinessService()
         {
-            _businessMessages = new BusinessMessages();
+            BusinessMessages = ServiceTool.ServiceProvider.GetService<BusinessMessages>();
         }
     }
 }

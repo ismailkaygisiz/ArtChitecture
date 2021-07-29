@@ -62,7 +62,7 @@ namespace Business.Concrete
 
             _userService.Update(user);
             return new SuccessDataResult<AccessToken>(CreateAccessToken(user).Data,
-                _businessMessages.PasswordChanged());
+                BusinessMessages.PasswordChanged());
         }
 
         [TransactionScopeAspect]
@@ -77,7 +77,7 @@ namespace Business.Concrete
 
             var user = _userService.GetByEmailForAuth(userForLoginDto.Email).Data;
             return new SuccessDataResult<AccessToken>(CreateAccessToken(user).Data,
-                _businessMessages.SuccessfulLogin());
+                BusinessMessages.SuccessfulLogin());
         }
 
         [TransactionScopeAspect]
@@ -106,13 +106,13 @@ namespace Business.Concrete
 
             _userService.Add(user);
             return new SuccessDataResult<AccessToken>(CreateAccessToken(user).Data,
-                _businessMessages.SuccessfulRegister());
+                BusinessMessages.SuccessfulRegister());
         }
 
         private IResult CheckIfUserIsAlreadyExists(string email)
         {
             if (_userService.GetByEmailForAuth(email).Data != null)
-                return new ErrorResult(_businessMessages.UserIsAlreadyExists());
+                return new ErrorResult(BusinessMessages.UserIsAlreadyExists());
 
             return new SuccessResult();
         }
@@ -120,11 +120,11 @@ namespace Business.Concrete
         private IResult CheckIfUserIsNotExists(UserForLoginDto userForLoginDto)
         {
             var user = _userService.GetByEmailForAuth(userForLoginDto.Email).Data;
-            if (user == null) return new ErrorResult(_businessMessages.UserIsNotExists());
+            if (user == null) return new ErrorResult(BusinessMessages.UserIsNotExists());
 
             if (user != null)
                 if (!HashingHelper.VerifyPasswordHash(userForLoginDto.Password, user.PasswordHash, user.PasswordSalt))
-                    return new ErrorResult(_businessMessages.PasswordIsNotTrue());
+                    return new ErrorResult(BusinessMessages.PasswordIsNotTrue());
 
             return new SuccessResult();
         }
@@ -132,7 +132,7 @@ namespace Business.Concrete
         private IResult CheckIfNewPasswordIsEqualsOldPassword(UserForLoginDto userForLoginDto, string newPassword)
         {
             if (userForLoginDto.Password == newPassword)
-                return new ErrorResult(_businessMessages.NewPasswordCannotBeTheSameAsTheOldPassword());
+                return new ErrorResult(BusinessMessages.NewPasswordCannotBeTheSameAsTheOldPassword());
 
             return new SuccessResult();
         }
