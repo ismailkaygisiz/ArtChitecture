@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using Core.DataAccess;
+﻿using Core.DataAccess;
 using Core.Entities.Concrete;
 using Core.Entities.DTOs;
+using System.Collections.Generic;
 
 namespace DataAccess.Abstract
 {

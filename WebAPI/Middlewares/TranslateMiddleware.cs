@@ -1,10 +1,10 @@
-﻿using System.Threading.Tasks;
-using Business.Abstract;
+﻿using Business.Abstract;
 using Core.Business.Translate;
 using Core.Utilities.IoC;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Primitives;
+using System.Threading.Tasks;
 
 namespace WebAPI.Middlewares
 {

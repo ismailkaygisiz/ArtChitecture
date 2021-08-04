@@ -1,8 +1,8 @@
-﻿using System;
-using System.IO;
-using Core.Utilities.Results.Abstract;
+﻿using Core.Utilities.Results.Abstract;
 using Core.Utilities.Results.Concrete;
 using Microsoft.AspNetCore.Http;
+using System;
+using System.IO;
 
 namespace Core.Utilities.Helpers.FileHelpers
 {

@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
-using Core.Entities.Abstract;
+﻿using Core.Entities.Abstract;
 using Core.Entities.Concrete;
+using System.Collections.Generic;
 
 namespace Core.Entities.DTOs
 {

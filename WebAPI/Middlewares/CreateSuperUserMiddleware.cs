@@ -1,7 +1,6 @@
 ﻿using Business.Abstract;
 using Core.Entities.Concrete;
 using Core.Utilities.Security.Hashing;
-using Core.Utilities.Security.JWT;
 using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
 

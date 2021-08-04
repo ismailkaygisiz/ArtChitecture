@@ -1,9 +1,9 @@
-﻿using System;
-using Castle.DynamicProxy;
+﻿using Castle.DynamicProxy;
 using Core.Business.Translate;
 using Core.Utilities.Constants;
 using Core.Utilities.IoC;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace Core.Utilities.Interceptors
 {

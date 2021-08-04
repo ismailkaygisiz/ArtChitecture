@@ -1,5 +1,4 @@
-﻿using System;
-using Castle.Core.Internal;
+﻿using Castle.Core.Internal;
 using Castle.DynamicProxy;
 using Core.Business;
 using Core.Extensions;
@@ -10,85 +9,100 @@ using Core.Utilities.Results.Abstract;
 using Core.Utilities.Results.Concrete;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Core.Aspects.Autofac.Authorization
 {
     public class SecuredOperation : MethodInterception
     {
-        private readonly string _arg;
-        private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly string _propertyName;
-        private readonly IRequestUserService _requestUserService;
-        private readonly string[] _roles;
+        private IHttpContextAccessor HttpContextAccessor { get; }
+        private IRequestUserService RequestUserService { get; }
 
-        private bool _error;
+        private List<string> Args { get; }
+        private string Arg { get; }
+        private string[] Roles { get; }
+        private bool Error { get; set; }
 
         public SecuredOperation(string roles)
         {
-            _roles = roles.Split(',');
+            Roles = roles.Split(',');
 
-            _requestUserService = ServiceTool.ServiceProvider.GetService<IRequestUserService>();
-            _httpContextAccessor = ServiceTool.ServiceProvider.GetService<IHttpContextAccessor>();
+            RequestUserService = ServiceTool.ServiceProvider.GetService<IRequestUserService>();
+            HttpContextAccessor = ServiceTool.ServiceProvider.GetService<IHttpContextAccessor>();
         }
 
         public SecuredOperation(string roles, string arg) : this(roles)
         {
-            _arg = arg;
+            Arg = arg;
 
             if (arg.Contains("."))
             {
-                string[] _args;
-                _args = arg.Split('.');
-                _arg = _args[0];
-                _propertyName = _args[1];
+                Args = arg.Split('.').ToList();
+                Arg = Args[0];
+
+                var argToDel = Args.SingleOrDefault(a => a == Arg);
+                Args.Remove(argToDel);
+            }
+            else
+            {
+                Args = new List<string>();
             }
         }
 
         protected override void OnBefore(IInvocation invocation)
         {
-            var roleClaims = _httpContextAccessor.HttpContext.User.ClaimRoles();
+            var roleClaims = HttpContextAccessor.HttpContext.User.ClaimRoles();
 
             if (roleClaims.Contains("Admin"))
                 return;
 
             var parameters = invocation.Method.GetParameters();
-            var parameter = parameters.Find(p => p.Name == _arg);
+            var parameter = parameters.Find(p => p.Name == Arg);
+
             dynamic methodArg = new int();
 
             if (invocation.Arguments != null && parameter != null)
             {
                 methodArg = invocation.Arguments.GetValue(parameter.Position);
-                if (_propertyName != null)
+                Type entity = methodArg.GetType();
+
+                int index = 0;
+                foreach (var arg in Args)
                 {
-                    Type myObject = methodArg.GetType();
-                    methodArg = myObject.GetProperty(_propertyName).GetValue(methodArg, null);
+                    if (index == 0)
+                        methodArg = entity.GetProperty(arg).GetValue(methodArg, null);
+                    else
+                        methodArg = methodArg.GetType().GetProperty(arg).GetValue(methodArg, null);
+
+                    index++;
                 }
 
-                foreach (var role in _roles)
+                foreach (var role in Roles)
                     if (roleClaims.Contains(role))
                         if (Control(methodArg).Success)
                             return;
 
                 Invoke = false;
-                _error = true;
-
+                Error = true;
                 return;
             }
 
-            foreach (var role in _roles)
+            foreach (var role in Roles)
                 if (roleClaims.Contains(role))
                     return;
 
             Invoke = false;
-            _error = true;
+            Error = true;
         }
 
         protected override void OnAfter(IInvocation invocation)
         {
             Invoke = true;
-            if (_error)
+            if (Error)
             {
-                _error = false;
+                Error = false;
                 var securityError = TranslateContext.Translates["Cannot_Cal_Property_Error_Key"] + " : " +
                                     invocation.Method.Name;
                 AutofacInterceptorHelper.ChangeReturnValue(invocation, typeof(SecurityErrorDataResult<>), securityError,
@@ -98,8 +112,8 @@ namespace Core.Aspects.Autofac.Authorization
 
         private IResult Control(dynamic methodArg)
         {
-            if (_requestUserService.CheckIfRequestUserIsNotEqualsUser(methodArg) != null)
-                if (_requestUserService.CheckIfRequestUserIsNotEqualsUser(methodArg).Success)
+            if (RequestUserService.CheckIfRequestUserIsNotEqualsUser(methodArg) != null)
+                if (RequestUserService.CheckIfRequestUserIsNotEqualsUser(methodArg).Success)
                     return new SuccessResult();
 
             return new ErrorResult();

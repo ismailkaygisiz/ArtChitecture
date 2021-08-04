@@ -1,10 +1,10 @@
-﻿using System;
-using System.Net;
-using System.Threading.Tasks;
-using Core.Utilities.Constants;
+﻿using Core.Utilities.Constants;
 using Core.Utilities.IoC;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Net;
+using System.Threading.Tasks;
 
 namespace Core.Extensions.Middlewares
 {
@@ -34,7 +34,7 @@ namespace Core.Extensions.Middlewares
         private Task HandleExceptionAsync(HttpContext httpContext, Exception e)
         {
             httpContext.Response.ContentType = "application/json";
-            httpContext.Response.StatusCode = (int) HttpStatusCode.InternalServerError;
+            httpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
 
             return httpContext.Response.WriteAsync(new ErrorDetails
             {
