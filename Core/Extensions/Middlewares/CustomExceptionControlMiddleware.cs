@@ -1,17 +1,22 @@
 ﻿using System;
 using System.Net;
 using System.Threading.Tasks;
+using Core.Utilities.Constants;
+using Core.Utilities.IoC;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Core.Extensions.Middlewares
 {
     public class CustomExceptionControlMiddleware
     {
         private readonly RequestDelegate _next;
+        private CoreMessages CoreMessages { get; }
 
         public CustomExceptionControlMiddleware(RequestDelegate next)
         {
             _next = next;
+            CoreMessages = ServiceTool.ServiceProvider.GetService<CoreMessages>();
         }
 
         public async Task InvokeAsync(HttpContext context)
@@ -34,8 +39,8 @@ namespace Core.Extensions.Middlewares
             return httpContext.Response.WriteAsync(new ErrorDetails
             {
                 StatusCode = httpContext.Response.StatusCode,
-                ErrorMessage = "Internal Server Error"
-            }.ToString());
+                ErrorMessage = CoreMessages.InternalServerError()
+            }.ToString()); ;
         }
     }
 }

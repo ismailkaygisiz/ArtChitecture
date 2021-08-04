@@ -3,7 +3,7 @@ using Castle.DynamicProxy;
 
 namespace Core.Utilities.Helpers.InterceptorHelpers
 {
-    public static class InterceptorHelper
+    public static class AutofacInterceptorHelper
     {
         public static void ChangeReturnValue(IInvocation invocation, Type returnType, dynamic errorMessage,
             string message)

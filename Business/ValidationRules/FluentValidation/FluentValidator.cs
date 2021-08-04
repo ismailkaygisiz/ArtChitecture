@@ -8,12 +8,12 @@ namespace Business.ValidationRules
 {
     public class FluentValidator<T> : AbstractValidator<T>
     {
-        protected readonly ITranslateContext _translateContext;
+        protected ITranslateContext TranslateContext { get; }
 
         public FluentValidator()
         {
-            _translateContext = ServiceTool.ServiceProvider.GetService<ITranslateContext>();
-            Translates = _translateContext.Translates;
+            TranslateContext = ServiceTool.ServiceProvider.GetService<ITranslateContext>();
+            Translates = TranslateContext.Translates;
         }
 
         protected Dictionary<string, string> Translates { get; }

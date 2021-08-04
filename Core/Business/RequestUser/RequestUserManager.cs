@@ -1,6 +1,8 @@
 ﻿using Core.Utilities.Constants;
+using Core.Utilities.IoC;
 using Core.Utilities.Results.Abstract;
 using Core.Utilities.Results.Concrete;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Core.Business
 {
@@ -11,7 +13,7 @@ namespace Core.Business
 
         public RequestUserManager()
         {
-            _coreMessages = new CoreMessages();
+            _coreMessages = ServiceTool.ServiceProvider.GetService<CoreMessages>();
         }
 
         public IDataResult<RequestUser> GetUser()

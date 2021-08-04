@@ -54,7 +54,6 @@ namespace Core.Utilities.Helpers.FileHelpers
         public IDataResult<string> UpdateFile(IFormFile file, string filePath)
         {
             DeleteFile(filePath);
-
             return CreateFile(file);
         }
     }

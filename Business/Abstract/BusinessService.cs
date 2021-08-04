@@ -3,7 +3,7 @@ using Core.Business;
 using Core.Utilities.IoC;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Business.Concrete
+namespace Business.Abstract
 {
     public class BusinessService : ServiceBase
     {

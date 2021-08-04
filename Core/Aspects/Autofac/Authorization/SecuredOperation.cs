@@ -69,7 +69,6 @@ namespace Core.Aspects.Autofac.Authorization
                         if (Control(methodArg).Success)
                             return;
 
-
                 Invoke = false;
                 _error = true;
 
@@ -90,10 +89,10 @@ namespace Core.Aspects.Autofac.Authorization
             if (_error)
             {
                 _error = false;
-                var securityError = _translateContext.Translates["Cannot_Cal_Property_Error_Key"] + " : " +
+                var securityError = TranslateContext.Translates["Cannot_Cal_Property_Error_Key"] + " : " +
                                     invocation.Method.Name;
-                InterceptorHelper.ChangeReturnValue(invocation, typeof(SecurityErrorDataResult<>), securityError,
-                    _coreMessages.AuthorizationDenied());
+                AutofacInterceptorHelper.ChangeReturnValue(invocation, typeof(SecurityErrorDataResult<>), securityError,
+                    CoreMessages.AuthorizationDenied());
             }
         }
 

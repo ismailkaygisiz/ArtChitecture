@@ -9,14 +9,14 @@ namespace Core.Utilities.Interceptors
 {
     public abstract class MethodInterception : MethodInterceptionBaseAttribute
     {
-        protected readonly CoreMessages _coreMessages;
-        protected readonly ITranslateContext _translateContext;
-        protected bool Invoke = true;
+        protected CoreMessages CoreMessages { get; }
+        protected ITranslateContext TranslateContext { get; }
+        protected bool Invoke { get; set; } = true;
 
         public MethodInterception()
         {
-            _translateContext = ServiceTool.ServiceProvider.GetService<ITranslateContext>();
-            _coreMessages = new CoreMessages();
+            TranslateContext = ServiceTool.ServiceProvider.GetService<ITranslateContext>();
+            CoreMessages = ServiceTool.ServiceProvider.GetService<CoreMessages>();
         }
 
         protected virtual void OnBefore(IInvocation invocation)
@@ -37,7 +37,7 @@ namespace Core.Utilities.Interceptors
 
         public override void Intercept(IInvocation invocation)
         {
-            var isSuccess = true;
+            bool isSuccess = true;
             OnBefore(invocation);
             try
             {

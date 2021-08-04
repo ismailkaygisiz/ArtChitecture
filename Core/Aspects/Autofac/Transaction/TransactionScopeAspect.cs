@@ -23,9 +23,9 @@ namespace Core.Aspects.Autofac.Transaction
                     _ = e.Message;
                     transactionScope.Dispose();
 
-                    var transactionError = _translateContext.Translates["Transaction_Error_Key"];
-                    InterceptorHelper.ChangeReturnValue(invocation, typeof(TransactionScopeErrorDataResult<>),
-                        transactionError, _coreMessages.TransactionScopeError());
+                    var transactionError = TranslateContext.Translates["Transaction_Error_Key"];
+                    AutofacInterceptorHelper.ChangeReturnValue(invocation, typeof(TransactionScopeErrorDataResult<>),
+                        transactionError, CoreMessages.TransactionScopeError());
                 }
             }
         }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Castle.DynamicProxy;
-using Core.CrossCuttingConcerns.Validation;
+using Core.CrossCuttingConcerns.Validation.FluentValidation;
 using Core.Utilities.Helpers.InterceptorHelpers;
 using Core.Utilities.Interceptors;
 using Core.Utilities.Results.Concrete;
@@ -19,7 +19,7 @@ namespace Core.Aspects.Autofac.Validation
         public ValidationAspect(Type validatorType)
         {
             if (!typeof(IValidator).IsAssignableFrom(validatorType))
-                throw new Exception(_coreMessages.IsNotAValidationClass());
+                throw new Exception(CoreMessages.IsNotAValidationClass());
 
             _validatorType = validatorType;
         }
@@ -44,8 +44,8 @@ namespace Core.Aspects.Autofac.Validation
                 var validationErrors = new List<string>();
 
                 foreach (var error in _errors) validationErrors.Add(error.ErrorMessage);
-                InterceptorHelper.ChangeReturnValue(invocation, typeof(ValidationErrorDataResult<>), validationErrors,
-                    _coreMessages.ValidationError());
+                AutofacInterceptorHelper.ChangeReturnValue(invocation, typeof(ValidationErrorDataResult<>), validationErrors,
+                    CoreMessages.ValidationError());
             }
         }
     }

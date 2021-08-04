@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Core.Business.Translate;
 using Core.Utilities.IoC;
 using Microsoft.Extensions.DependencyInjection;
@@ -32,10 +33,16 @@ namespace Core.Utilities.Constants
             return GetTranslates()["Transaction_Scope_Error_Message_Key"];
         }
 
+        public string InternalServerError()
+        {
+            return GetTranslates()["Internal_Server_Error_Key"];
+        }
+
         private Dictionary<string, string> GetTranslates()
         {
             var Translates = GetTranslateContext().Translates;
             return Translates;
         }
+
     }
 }

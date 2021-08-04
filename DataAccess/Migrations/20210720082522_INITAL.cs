@@ -152,6 +152,11 @@ namespace DataAccess.Migrations
                     2, "Transaction_Error_Key", "An Unexpected Error Occurred While Running Transaction Rolling Back"
                 });
 
+            migrationBuilder.InsertData("Translates", new[] { "LanguageId", "Key", "Value" }, 
+                new object[] { 1, "Internal_Server_Erorr_Key", "Beklenmeyen Sunucu Hatası" });
+            migrationBuilder.InsertData("Translates", new[] { "LanguageId", "Key", "Value" },
+                new object[] { 2, "Internal_Server_Erorr_Key", "Internal Server Error" });
+
             migrationBuilder.InsertData("Translates", new[] { "LanguageId", "Key", "Value" },
                 new object[] { 1, "User_Is_Already_Exists_Key", "Kullanıcı Zaten Mevcut" });
             migrationBuilder.InsertData("Translates", new[] { "LanguageId", "Key", "Value" },
