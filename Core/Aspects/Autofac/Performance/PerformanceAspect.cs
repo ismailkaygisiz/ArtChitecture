@@ -13,6 +13,7 @@ namespace Core.Aspects.Autofac.Performance
 
         public PerformanceAspect(int interval)
         {
+            Priority = 6;
             _interval = interval;
             _stopwatch = ServiceTool.ServiceProvider.GetService<Stopwatch>();
         }

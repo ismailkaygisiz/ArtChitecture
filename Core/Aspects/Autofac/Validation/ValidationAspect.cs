@@ -18,6 +18,7 @@ namespace Core.Aspects.Autofac.Validation
 
         public ValidationAspect(Type validatorType)
         {
+            Priority = 3;
             if (!typeof(IValidator).IsAssignableFrom(validatorType))
                 throw new Exception(CoreMessages.IsNotAValidationClass());
 

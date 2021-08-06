@@ -4,7 +4,7 @@ using Core.Utilities.Security.Hashing;
 using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
 
-namespace WebAPI.Middlewares
+namespace Business.Extensions.Middlewares
 {
     public class CreateSuperUserMiddleware
     {

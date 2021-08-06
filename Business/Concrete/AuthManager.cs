@@ -10,6 +10,8 @@ using Core.Utilities.Results.Abstract;
 using Core.Utilities.Results.Concrete;
 using Core.Utilities.Security.Hashing;
 using Core.Utilities.Security.JWT;
+using Microsoft.Extensions.Configuration;
+using System;
 
 namespace Business.Concrete
 {
@@ -17,6 +19,7 @@ namespace Business.Concrete
     {
         private readonly ITokenHelper _tokenHelper;
         private readonly IUserService _userService;
+        public bool UseRefreshTokenEndDate { get; set; }
 
         public AuthManager(IUserService userService, ITokenHelper tokenHelper)
         {
@@ -29,6 +32,19 @@ namespace Business.Concrete
             var roles = _userService.GetClaims(user).Data;
             var accessToken = _tokenHelper.CreateToken(user, roles);
 
+            while (_userService.GetByRefreshToken(accessToken.RefreshToken).Data != null)
+            {
+                accessToken.RefreshToken = _tokenHelper.CreateRefreshToken();
+            }
+
+            user.RefreshToken = accessToken.RefreshToken;
+
+            if (UseRefreshTokenEndDate)
+                user.RefreshTokenEndDate = DateTime.Now.AddMinutes(Configuration.GetSection("TokenOptions").Get<TokenOptions>().RefreshTokenExpiration);
+            else
+                user.RefreshTokenEndDate = null;
+
+            _userService.UpdateForAuth(user);
             return new SuccessDataResult<AccessToken>(accessToken);
         }
 

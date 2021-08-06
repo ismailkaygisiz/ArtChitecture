@@ -9,6 +9,11 @@ namespace Core.Aspects.Autofac.Transaction
 {
     public class TransactionScopeAspect : MethodInterception
     {
+        public TransactionScopeAspect()
+        {
+            Priority = 1;
+        }
+
         public override void Intercept(IInvocation invocation)
         {
             using (TransactionScope transactionScope = new TransactionScope())

@@ -1,6 +1,7 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Business.Extensions.Middlewares;
+using Microsoft.AspNetCore.Builder;
 
-namespace WebAPI.Middlewares
+namespace Business.Extensions
 {
     public static class TranslateMiddlewareExtensions
     {

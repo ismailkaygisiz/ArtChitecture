@@ -1,4 +1,5 @@
 using Business.DependencyResolvers;
+using Business.Extensions;
 using Business.Hubs;
 using Core.DependencyResolvers;
 using Core.Extensions;
@@ -12,7 +13,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using WebAPI.Middlewares;
 
 namespace WebAPI
 {
@@ -67,7 +67,7 @@ namespace WebAPI
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebAPI v1"));
             }
 
-            app.UseCustomExceptionMiddleware();
+            //app.UseCustomExceptionMiddleware();
 
             app.UseCors(builder => builder.WithOrigins("http://localhost:4200").AllowAnyHeader().AllowAnyMethod().AllowCredentials());
 
@@ -84,6 +84,8 @@ namespace WebAPI
             app.UseRequestUser(); // For Authorization Security
 
             app.CreateSuperUser(); // For Create Default Super User. !!! Don't Use This Method for Production Mode
+            
+            app.UseRefreshTokenEndDate(false); // For RefreshTokenEndDate.
 
             app.UseStaticFiles();
 

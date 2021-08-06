@@ -4,9 +4,7 @@ namespace Core.Business
 {
     public interface IRequestUserService
     {
-        IDataResult<RequestUser> GetUser();
-        IResult SetUser(RequestUser requestUser);
-
+        RequestUser RequestUser { get; set; }
         IResult CheckIfRequestUserIsNotEqualsUser(int id);
         IResult CheckIfRequestUserIsNotEqualsUser(string email);
     }

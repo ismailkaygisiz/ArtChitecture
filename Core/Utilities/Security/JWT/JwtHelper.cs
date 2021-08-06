@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
+using System.Security.Cryptography;
 
 namespace Core.Utilities.Security.JWT
 {
@@ -36,7 +37,8 @@ namespace Core.Utilities.Security.JWT
             return new AccessToken
             {
                 Token = token,
-                Expiration = _accessTokenExpiration
+                Expiration = _accessTokenExpiration,
+                RefreshToken = CreateRefreshToken()
             };
         }
 
@@ -67,6 +69,16 @@ namespace Core.Utilities.Security.JWT
             claims.AddStatus(user.Status);
 
             return claims;
+        }
+
+        public string CreateRefreshToken()
+        {
+            byte[] number = new byte[32];
+            using (RandomNumberGenerator random = RandomNumberGenerator.Create())
+            {
+                random.GetBytes(number);
+                return Convert.ToBase64String(number);
+            }
         }
     }
 }

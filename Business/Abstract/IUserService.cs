@@ -8,6 +8,7 @@ namespace Business.Abstract
 {
     public interface IUserService : IServiceRepository<User>
     {
+        IResult UpdateForAuth(User entity);
         IDataResult<User> AddWithId(User entity);
         IDataResult<List<User>> GetByFirstName(string firstName);
         IDataResult<List<User>> GetByLastName(string lastName);
@@ -16,5 +17,6 @@ namespace Business.Abstract
         IDataResult<User> GetByEmailForAuth(string email);
         IDataResult<UserOperationClaimDetailDto> GetUserOperationClaims(int userId);
         IDataResult<List<OperationClaim>> GetClaims(User user);
+        IDataResult<User> GetByRefreshToken(string refreshToken);
     }
 }

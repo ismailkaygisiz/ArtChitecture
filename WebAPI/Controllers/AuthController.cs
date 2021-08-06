@@ -1,6 +1,9 @@
 ﻿using Business.Abstract;
+using Core.Entities.Concrete;
 using Core.Entities.DTOs;
+using Core.Utilities.Results.Concrete;
 using Microsoft.AspNetCore.Mvc;
+using System;
 
 namespace WebAPI.Controllers
 {
@@ -9,10 +12,12 @@ namespace WebAPI.Controllers
     public class AuthController : Controller
     {
         private readonly IAuthService _authService;
+        private readonly IUserService _userService;
 
-        public AuthController(IAuthService authService)
+        public AuthController(IAuthService authService, IUserService userService)
         {
             _authService = authService;
+            _userService = userService;
         }
 
         [HttpPost("login")]
@@ -29,6 +34,39 @@ namespace WebAPI.Controllers
         {
             var result = _authService.Register(userForRegisterDto, userForRegisterDto.Password);
             if (result.Success) return Ok(result);
+
+            return BadRequest(result);
+        }
+
+        [HttpPost("refreshtoken")]
+        public IActionResult RefreshToken(string refreshToken)
+        {
+            var user = _userService.GetByRefreshToken(refreshToken);
+            if (user.Data != null)
+            {
+                if (_authService.UseRefreshTokenEndDate)
+                {
+                    if (user.Data.RefreshTokenEndDate > DateTime.Now)
+                    {
+                        return RefreshTokenControl(user.Data);
+                    }
+
+                    return BadRequest(new ErrorResult());
+                }
+
+                return RefreshTokenControl(user.Data);
+            }
+
+            return BadRequest(new ErrorResult());
+        }
+
+        private IActionResult RefreshTokenControl(User user)
+        {
+            var result = _authService.CreateAccessToken(user);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
 
             return BadRequest(result);
         }

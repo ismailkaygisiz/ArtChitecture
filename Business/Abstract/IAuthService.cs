@@ -7,6 +7,7 @@ namespace Business.Abstract
 {
     public interface IAuthService
     {
+        bool UseRefreshTokenEndDate { get; set; }
         IDataResult<AccessToken> Register(UserForRegisterDto userForRegisterDto, string password);
         IDataResult<AccessToken> Login(UserForLoginDto userForLoginDto);
         IDataResult<AccessToken> CreateAccessToken(User user);

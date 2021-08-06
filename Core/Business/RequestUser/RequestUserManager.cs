@@ -8,35 +8,32 @@ namespace Core.Business
 {
     public class RequestUserManager : IRequestUserService
     {
-        private readonly CoreMessages _coreMessages;
-        private RequestUser _requestUser;
-
-        public RequestUserManager()
+        private CoreMessages CoreMessages { get; }
+        public RequestUser RequestUser
         {
-            _coreMessages = ServiceTool.ServiceProvider.GetService<CoreMessages>();
+            get
+            {
+                if (RequestUser != null)
+                {
+                    return RequestUser;
+                }
+
+                return new RequestUser();
+            }
+            set { }
         }
 
-        public IDataResult<RequestUser> GetUser()
+        public RequestUserManager(CoreMessages coreMessages)
         {
-            if (_requestUser != null)
-                return new SuccessDataResult<RequestUser>(_requestUser);
-
-            return new SuccessDataResult<RequestUser>(new RequestUser());
-        }
-
-        public IResult SetUser(RequestUser requestUser)
-        {
-            _requestUser = requestUser;
-            return new SuccessResult();
+            CoreMessages = coreMessages;
         }
 
         public IResult CheckIfRequestUserIsNotEqualsUser(int userId)
         {
-            var user = GetUser().Data;
-            if (user != null)
+            if (RequestUser != null)
             {
-                if (user.Id != userId)
-                    return new ErrorResult(_coreMessages.AuthorizationDenied());
+                if (RequestUser.Id != userId)
+                    return new ErrorResult(CoreMessages.AuthorizationDenied());
                 return new SuccessResult();
             }
 
@@ -45,10 +42,9 @@ namespace Core.Business
 
         public IResult CheckIfRequestUserIsNotEqualsUser(string email)
         {
-            var user = GetUser().Data;
-            if (user != null)
+            if (RequestUser != null)
             {
-                if (user.Email != email) return new ErrorResult(_coreMessages.AuthorizationDenied());
+                if (RequestUser.Email != email) return new ErrorResult(CoreMessages.AuthorizationDenied());
                 return new SuccessResult();
             }
 

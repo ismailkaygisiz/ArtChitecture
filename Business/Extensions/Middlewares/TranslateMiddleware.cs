@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Primitives;
 using System.Threading.Tasks;
 
-namespace WebAPI.Middlewares
+namespace Business.Extensions.Middlewares
 {
     public class TranslateMiddleware
     {

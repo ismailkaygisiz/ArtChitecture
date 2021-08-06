@@ -24,9 +24,10 @@ namespace Core.Aspects.Autofac.Authorization
         private string Arg { get; }
         private string[] Roles { get; }
         private bool Error { get; set; }
-
+        
         public SecuredOperation(string roles)
         {
+            Priority = 2;
             Roles = roles.Split(',');
 
             RequestUserService = ServiceTool.ServiceProvider.GetService<IRequestUserService>();

@@ -141,5 +141,21 @@ namespace Business.Concrete
 
             return new SuccessResult();
         }
+
+        [TransactionScopeAspect]
+        public IResult UpdateForAuth(User entity)
+        {
+            var result = BusinessRules.Run();
+
+            if (result != null) return result;
+
+            _userDal.Update(entity);
+            return new SuccessResult();
+        }
+
+        public IDataResult<User> GetByRefreshToken(string refreshToken)
+        {
+            return new SuccessDataResult<User>(_userDal.Get(u => u.RefreshToken == refreshToken));
+        }
     }
 }

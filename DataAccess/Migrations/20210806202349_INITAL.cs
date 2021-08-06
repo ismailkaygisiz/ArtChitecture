@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DataAccess.Migrations
 {
@@ -7,29 +8,35 @@ namespace DataAccess.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                "Languages",
-                table => new
+                name: "Languages",
+                columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     LanguageCode = table.Column<string>(nullable: true),
                     LanguageName = table.Column<string>(nullable: true)
                 },
-                constraints: table => { table.PrimaryKey("PK_Languages", x => x.Id); });
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Languages", x => x.Id);
+                });
 
             migrationBuilder.CreateTable(
-                "OperationClaims",
-                table => new
+                name: "OperationClaims",
+                columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(nullable: true)
                 },
-                constraints: table => { table.PrimaryKey("PK_OperationClaims", x => x.Id); });
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OperationClaims", x => x.Id);
+                });
 
             migrationBuilder.CreateTable(
-                "Users",
-                table => new
+                name: "Users",
+                columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
@@ -38,13 +45,18 @@ namespace DataAccess.Migrations
                     Email = table.Column<string>(nullable: true),
                     PasswordSalt = table.Column<byte[]>(nullable: true),
                     PasswordHash = table.Column<byte[]>(nullable: true),
-                    Status = table.Column<bool>(nullable: false)
+                    Status = table.Column<bool>(nullable: false),
+                    RefreshToken = table.Column<string>(nullable: true),
+                    RefreshTokenEndDate = table.Column<DateTime>(nullable: true)
                 },
-                constraints: table => { table.PrimaryKey("PK_Users", x => x.Id); });
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.Id);
+                });
 
             migrationBuilder.CreateTable(
-                "Translates",
-                table => new
+                name: "Translates",
+                columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
@@ -56,16 +68,16 @@ namespace DataAccess.Migrations
                 {
                     table.PrimaryKey("PK_Translates", x => x.Id);
                     table.ForeignKey(
-                        "FK_Translates_Languages_LanguageId",
-                        x => x.LanguageId,
-                        "Languages",
-                        "Id",
+                        name: "FK_Translates_Languages_LanguageId",
+                        column: x => x.LanguageId,
+                        principalTable: "Languages",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                "UserOperationClaims",
-                table => new
+                name: "UserOperationClaims",
+                columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
@@ -76,33 +88,33 @@ namespace DataAccess.Migrations
                 {
                     table.PrimaryKey("PK_UserOperationClaims", x => x.Id);
                     table.ForeignKey(
-                        "FK_UserOperationClaims_OperationClaims_OperationClaimId",
-                        x => x.OperationClaimId,
-                        "OperationClaims",
-                        "Id",
+                        name: "FK_UserOperationClaims_OperationClaims_OperationClaimId",
+                        column: x => x.OperationClaimId,
+                        principalTable: "OperationClaims",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        "FK_UserOperationClaims_Users_UserId",
-                        x => x.UserId,
-                        "Users",
-                        "Id",
+                        name: "FK_UserOperationClaims_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                "IX_Translates_LanguageId",
-                "Translates",
-                "LanguageId");
+                name: "IX_Translates_LanguageId",
+                table: "Translates",
+                column: "LanguageId");
 
             migrationBuilder.CreateIndex(
-                "IX_UserOperationClaims_OperationClaimId",
-                "UserOperationClaims",
-                "OperationClaimId");
+                name: "IX_UserOperationClaims_OperationClaimId",
+                table: "UserOperationClaims",
+                column: "OperationClaimId");
 
             migrationBuilder.CreateIndex(
-                "IX_UserOperationClaims_UserId",
-                "UserOperationClaims",
-                "UserId");
+                name: "IX_UserOperationClaims_UserId",
+                table: "UserOperationClaims",
+                column: "UserId");
 
 
             // OperationClaims
@@ -153,9 +165,9 @@ namespace DataAccess.Migrations
                 });
 
             migrationBuilder.InsertData("Translates", new[] { "LanguageId", "Key", "Value" },
-                new object[] { 1, "Internal_Server_Erorr_Key", "Beklenmeyen Sunucu Hatası" });
+                new object[] { 1, "Internal_Server_Error_Key", "Beklenmeyen Sunucu Hatası" });
             migrationBuilder.InsertData("Translates", new[] { "LanguageId", "Key", "Value" },
-                new object[] { 2, "Internal_Server_Erorr_Key", "Internal Server Error" });
+                new object[] { 2, "Internal_Server_Error_Key", "Internal Server Error" });
 
             migrationBuilder.InsertData("Translates", new[] { "LanguageId", "Key", "Value" },
                 new object[] { 1, "User_Is_Already_Exists_Key", "Kullanıcı Zaten Mevcut" });
@@ -335,19 +347,19 @@ namespace DataAccess.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                "Translates");
+                name: "Translates");
 
             migrationBuilder.DropTable(
-                "UserOperationClaims");
+                name: "UserOperationClaims");
 
             migrationBuilder.DropTable(
-                "Languages");
+                name: "Languages");
 
             migrationBuilder.DropTable(
-                "OperationClaims");
+                name: "OperationClaims");
 
             migrationBuilder.DropTable(
-                "Users");
+                name: "Users");
         }
     }
 }

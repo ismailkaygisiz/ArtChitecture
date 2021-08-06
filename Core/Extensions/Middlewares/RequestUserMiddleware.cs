@@ -13,17 +13,17 @@ namespace Core.Extensions.Middlewares
         private readonly RequestDelegate _next;
         private readonly IRequestUserService _requestUserService;
 
-        public RequestUserMiddleware(RequestDelegate next)
+        public RequestUserMiddleware(RequestDelegate next, IRequestUserService requestUserService)
         {
-            _requestUserService = ServiceTool.ServiceProvider.GetService<IRequestUserService>();
+            _requestUserService = requestUserService;
             _next = next;
         }
 
         public async Task InvokeAsync(HttpContext context)
         {
-            var claims = context.User.Identities.First().Claims.ToList();
+             var claims = context.User.Identities.First().Claims.ToList(); 
 
-            if (claims.Count > 0)
+            if (claims.Count > 0 && context.User.Identity.IsAuthenticated)
             {
                 var id = claims.Find(c => c.Type == ClaimTypes.NameIdentifier).Value;
                 var firstName = claims.Find(c => c.Type == ClaimTypes.Name).Value;
@@ -32,7 +32,7 @@ namespace Core.Extensions.Middlewares
                 var status = claims.Find(c => c.Type == CustomClaimTypes.Status).Value;
                 var roles = context.User.ClaimRoles();
 
-                _requestUserService.SetUser(new RequestUser
+                _requestUserService.RequestUser = new RequestUser
                 {
                     Id = int.Parse(id),
                     FirstName = firstName,
@@ -40,11 +40,11 @@ namespace Core.Extensions.Middlewares
                     Email = email,
                     Status = status,
                     Roles = roles
-                });
+                };
             }
             else
             {
-                _requestUserService.SetUser(null);
+                _requestUserService.RequestUser = null;
             }
 
             await _next.Invoke(context);

@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(ProjectDbContext))]
-    [Migration("20210720082522_INITAL")]
+    [Migration("20210806202349_INITAL")]
     partial class INITAL
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -20,43 +20,6 @@ namespace DataAccess.Migrations
                 .HasAnnotation("ProductVersion", "3.1.11")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-            modelBuilder.Entity("Core.Entities.Concrete.Group", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Groups");
-                });
-
-            modelBuilder.Entity("Core.Entities.Concrete.GroupOperationClaim", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("GroupId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("OperationClaimId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("GroupId");
-
-                    b.HasIndex("OperationClaimId");
-
-                    b.ToTable("GroupOperationClaims");
-                });
 
             modelBuilder.Entity("Core.Entities.Concrete.Language", b =>
                 {
@@ -136,6 +99,12 @@ namespace DataAccess.Migrations
                     b.Property<byte[]>("PasswordSalt")
                         .HasColumnType("varbinary(max)");
 
+                    b.Property<string>("RefreshToken")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("RefreshTokenEndDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<bool>("Status")
                         .HasColumnType("bit");
 
@@ -164,21 +133,6 @@ namespace DataAccess.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("UserOperationClaims");
-                });
-
-            modelBuilder.Entity("Core.Entities.Concrete.GroupOperationClaim", b =>
-                {
-                    b.HasOne("Core.Entities.Concrete.Group", "Group")
-                        .WithMany()
-                        .HasForeignKey("GroupId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Core.Entities.Concrete.OperationClaim", "OperationClaim")
-                        .WithMany()
-                        .HasForeignKey("OperationClaimId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Core.Entities.Concrete.Translate", b =>
