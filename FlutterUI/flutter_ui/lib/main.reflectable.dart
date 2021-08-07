@@ -127,8 +127,9 @@ final _data = <r.Reflectable, r.ReflectorData>{
             {},
             {},
             {
-              r'': (bool b) => (token, expiration) =>
-                  b ? prefix3.TokenModel(token, expiration) : null,
+              r'': (bool b) => (token, expiration, refreshToken) => b
+                  ? prefix3.TokenModel(token, expiration, refreshToken)
+                  : null,
               r'fromJson': (bool b) =>
                   (json) => b ? prefix3.TokenModel.fromJson(json) : null
             },
@@ -145,7 +146,9 @@ final _data = <r.Reflectable, r.ReflectorData>{
               r'token': 0,
               r'token=': 1,
               r'expiration': 0,
-              r'expiration=': 1
+              r'expiration=': 1,
+              r'refreshToken': 0,
+              r'refreshToken=': 1
             }),
         r.NonGenericClassMirrorImpl(
             r'RegisterModel',
@@ -571,6 +574,7 @@ final _data = <r.Reflectable, r.ReflectorData>{
         r'id': (dynamic instance) => instance.id,
         r'token': (dynamic instance) => instance.token,
         r'expiration': (dynamic instance) => instance.expiration,
+        r'refreshToken': (dynamic instance) => instance.refreshToken,
         r'firstName': (dynamic instance) => instance.firstName,
         r'lastName': (dynamic instance) => instance.lastName,
         r'email': (dynamic instance) => instance.email,
@@ -592,6 +596,8 @@ final _data = <r.Reflectable, r.ReflectorData>{
         r'token=': (dynamic instance, value) => instance.token = value,
         r'expiration=': (dynamic instance, value) =>
             instance.expiration = value,
+        r'refreshToken=': (dynamic instance, value) =>
+            instance.refreshToken = value,
         r'firstName=': (dynamic instance, value) => instance.firstName = value,
         r'lastName=': (dynamic instance, value) => instance.lastName = value,
         r'email=': (dynamic instance, value) => instance.email = value,

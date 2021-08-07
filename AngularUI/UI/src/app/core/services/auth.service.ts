@@ -31,6 +31,14 @@ export class AuthService {
     return this.httpClient.post<SingleResponseModel<TokenModel>>(newPath, user);
   }
 
+  refreshToken(
+    refreshToken: string
+  ): Observable<SingleResponseModel<TokenModel>> {
+    let newPath = apiUrl + 'auth/refreshtoken?refreshToken=' + refreshToken;
+
+    return this.httpClient.get<SingleResponseModel<TokenModel>>(newPath);
+  }
+
   logout() {
     if (this.isAuthenticated()) {
       this.tokenService.removeToken();
@@ -47,5 +55,4 @@ export class AuthService {
 
     return false;
   }
-
 }

@@ -21,6 +21,18 @@ class TokenService extends Service {
     await sessionService.remove('token');
   }
 
+  Future<String> getRefreshToken() async {
+    return await sessionService.get("refresh-token");
+  }
+
+  Future<void> setRefreshToken(String token) async {
+    await sessionService.set('refresh-token', token);
+  }
+
+  Future<void> removeRefreshToken() async {
+    await sessionService.remove('refresh-token');
+  }
+
   Future<bool> isTokenExpired() async {
     var isExpired = Jwt.isExpired(await getToken());
 

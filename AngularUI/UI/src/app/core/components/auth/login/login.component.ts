@@ -47,6 +47,7 @@ export class LoginComponent implements OnInit {
       this.authService.login(loginModel).subscribe(
         (response) => {
           this.tokenService.setToken(response.data.token);
+          this.tokenService.setRefreshToken(response.data.refreshToken);
 
           this.toastrService.success(response.message);
           this.router.navigate(['']);

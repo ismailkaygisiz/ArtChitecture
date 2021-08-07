@@ -27,6 +27,18 @@ export class TokenService {
     this.localStorageService.removeItem('token');
   }
 
+  setRefreshToken(refreshToken: string): void {
+    this.localStorageService.setItem('refresh-token', refreshToken);
+  }
+
+  getRefreshToken(): string {
+    return this.localStorageService.getItem('refresh-token');
+  }
+
+  removeRefreshToken() {
+    this.localStorageService.removeItem('refresh-token');
+  }
+
   isTokenExpired(): boolean {
     let isExpired = this.jwtHelperService.isTokenExpired(this.getToken());
 
@@ -41,7 +53,8 @@ export class TokenService {
     let token = this.decodeToken(this.getToken());
 
     if (token != null) {
-      let roles = token[Object.keys(token).filter((r) => r.endsWith('/role'))[0]];
+      let roles =
+        token[Object.keys(token).filter((r) => r.endsWith('/role'))[0]];
 
       if (!Array.isArray(roles)) {
         let array = [];
@@ -61,10 +74,14 @@ export class TokenService {
 
     if (token != null) {
       let userModel = {
-        id: +token[Object.keys(token).filter((t) => t.endsWith('nameidentifier'))[0]],
+        id: +token[
+          Object.keys(token).filter((t) => t.endsWith('nameidentifier'))[0]
+        ],
         email: token.email,
-        firstName: token[Object.keys(token).filter((t) => t.endsWith('name'))[0]],
-        lastName: token[Object.keys(token).filter((t) => t.endsWith('surname'))[0]],
+        firstName:
+          token[Object.keys(token).filter((t) => t.endsWith('name'))[0]],
+        lastName:
+          token[Object.keys(token).filter((t) => t.endsWith('surname'))[0]],
         status: Boolean(token.status),
       };
 

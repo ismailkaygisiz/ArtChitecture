@@ -9,7 +9,6 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   initializeReflectable();
   EnvironmentDev();
-
   runApp(App());
 }
 
@@ -31,8 +30,18 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  String _lang;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
   void _getTranslates() {
     sessionService.get("lang").then((value) {
+      _lang = value;
+
       translateService.getTranslates(value).then((dynamic value) {
         TRANSLATES = value["data"];
         setState(() {});
@@ -42,11 +51,19 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    _getTranslates();
+    sessionService.get("lang").then((value) {
+      if (_lang != value) {
+        _getTranslates();
+      }
+    });
+
     return TRANSLATES.values.length > 0
         ? HomePageUI()
         : Scaffold(
-            appBar: AppBar(),
+            appBar: AppBar(
+              title: Text("Loading"),
+              centerTitle: true,
+            ),
             body: Center(),
           );
   }

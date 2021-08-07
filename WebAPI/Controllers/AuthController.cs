@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Core.Business;
 using Core.Entities.Concrete;
 using Core.Entities.DTOs;
 using Core.Utilities.Results.Concrete;
@@ -13,11 +14,13 @@ namespace WebAPI.Controllers
     {
         private readonly IAuthService _authService;
         private readonly IUserService _userService;
+        private readonly IRequestUserService _requestUserService;
 
-        public AuthController(IAuthService authService, IUserService userService)
+        public AuthController(IAuthService authService, IUserService userService, IRequestUserService requestUserService)
         {
             _authService = authService;
             _userService = userService;
+            _requestUserService = requestUserService;
         }
 
         [HttpPost("login")]
@@ -38,7 +41,7 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-        [HttpPost("refreshtoken")]
+        [HttpGet("refreshtoken")]
         public IActionResult RefreshToken(string refreshToken)
         {
             var user = _userService.GetByRefreshToken(refreshToken);
@@ -51,12 +54,14 @@ namespace WebAPI.Controllers
                         return RefreshTokenControl(user.Data);
                     }
 
+                    _requestUserService.RequestUser = null;
                     return BadRequest(new ErrorResult());
                 }
 
                 return RefreshTokenControl(user.Data);
             }
 
+            _requestUserService.RequestUser = null;
             return BadRequest(new ErrorResult());
         }
 

@@ -39,7 +39,7 @@ namespace Business.Concrete
 
             user.RefreshToken = accessToken.RefreshToken;
 
-            if (UseRefreshTokenEndDate)
+            if(UseRefreshTokenEndDate)
                 user.RefreshTokenEndDate = DateTime.Now.AddMinutes(Configuration.GetSection("TokenOptions").Get<TokenOptions>().RefreshTokenExpiration);
             else
                 user.RefreshTokenEndDate = null;
