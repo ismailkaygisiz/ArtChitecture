@@ -10,7 +10,7 @@ namespace Business.Abstract
         bool UseRefreshTokenEndDate { get; set; }
         IDataResult<AccessToken> Register(UserForRegisterDto userForRegisterDto, string password);
         IDataResult<AccessToken> Login(UserForLoginDto userForLoginDto);
-        IDataResult<AccessToken> CreateAccessToken(User user);
+        IDataResult<AccessToken> CreateAccessToken(User user,string refreshToken, string clientName);
         IDataResult<AccessToken> ChangePassword(UserForLoginDto userForLoginDto, string newPassword);
     }
 }

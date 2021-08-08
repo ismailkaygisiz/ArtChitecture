@@ -1,11 +1,9 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:encrypt/encrypt.dart';
 import 'package:flutter_ui/core/models/response/singleResponseModel.dart';
 import 'package:flutter_ui/core/models/user/tokenModel.dart';
 import 'package:flutter_ui/core/utilities/dependencyResolver.dart';
-import 'package:flutter_ui/environments/environment.development.dart';
-import 'package:flutter_ui/core/services/cryptoService.dart';
-import 'package:flutter_ui/core/utilities/service.dart';
 import 'package:flutter_ui/environments/api.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/io_client.dart';
@@ -34,11 +32,13 @@ class AuthInterceptor extends http.BaseClient {
     });
 
     if (tokenModel.refreshToken != "" && await tokenService.isTokenExpired()) {
-      var newRequest = await _httpClient.get(
-          Uri.parse(API_URL +
-              "auth/refreshtoken?refreshToken=" +
-              tokenModel.refreshToken),
-          headers: {
+      var newRequest =
+          await _httpClient.post(Uri.parse(API_URL + "auth/refreshtoken"),
+              body: json.encode({
+                "refreshToken": tokenModel.refreshToken,
+                "clientName": CLIENT_NAME,
+              }),
+              headers: {
             "content-type": "application/json",
             'Authorization': "Bearer " + tokenModel.token,
             'lang': lang,

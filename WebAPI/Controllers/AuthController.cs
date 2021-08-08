@@ -15,12 +15,14 @@ namespace WebAPI.Controllers
         private readonly IAuthService _authService;
         private readonly IUserService _userService;
         private readonly IRequestUserService _requestUserService;
+        private readonly IRefreshTokenService _refreshTokenService;
 
-        public AuthController(IAuthService authService, IUserService userService, IRequestUserService requestUserService)
+        public AuthController(IAuthService authService, IUserService userService, IRequestUserService requestUserService, IRefreshTokenService refreshTokenService)
         {
             _authService = authService;
             _userService = userService;
             _requestUserService = requestUserService;
+            _refreshTokenService = refreshTokenService;
         }
 
         [HttpPost("login")]
@@ -41,33 +43,34 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-        [HttpGet("refreshtoken")]
-        public IActionResult RefreshToken(string refreshToken)
+        [HttpPost("refreshtoken")]
+        public IActionResult RefreshToken(RefreshTokenRequest refreshTokenRequest)
         {
-            var user = _userService.GetByRefreshToken(refreshToken);
-            if (user.Data != null)
+            var newRefreshToken = _refreshTokenService.GetByRefreshToken(refreshTokenRequest.RefreshToken).Data;
+            if (newRefreshToken != null)
             {
+                var user = _userService.GetByIdForAuth(newRefreshToken.UserId).Data;
                 if (_authService.UseRefreshTokenEndDate)
                 {
-                    if (user.Data.RefreshTokenEndDate > DateTime.Now)
+                    if (newRefreshToken.RefreshTokenEndDate > DateTime.Now)
                     {
-                        return RefreshTokenControl(user.Data);
+                        return RefreshTokenControl(user, newRefreshToken.RefreshTokenValue, refreshTokenRequest.ClientName);
                     }
 
                     _requestUserService.RequestUser = null;
                     return BadRequest(new ErrorResult());
                 }
 
-                return RefreshTokenControl(user.Data);
+                return RefreshTokenControl(user, newRefreshToken.RefreshTokenValue, refreshTokenRequest.ClientName);
             }
 
             _requestUserService.RequestUser = null;
             return BadRequest(new ErrorResult());
         }
 
-        private IActionResult RefreshTokenControl(User user)
+        private IActionResult RefreshTokenControl(User user, string refreshToken, string clientName)
         {
-            var result = _authService.CreateAccessToken(user);
+            var result = _authService.CreateAccessToken(user, refreshToken, clientName);
             if (result.Success)
             {
                 return Ok(result);
@@ -84,5 +87,11 @@ namespace WebAPI.Controllers
 
             return BadRequest(result);
         }
+    }
+
+    public class RefreshTokenRequest
+    {
+        public string RefreshToken { get; set; }
+        public string ClientName { get; set; }
     }
 }

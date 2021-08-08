@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(ProjectDbContext))]
-    [Migration("20210806202349_INITAL")]
+    [Migration("20210808115627_INITAL")]
     partial class INITAL
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -52,6 +52,32 @@ namespace DataAccess.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("OperationClaims");
+                });
+
+            modelBuilder.Entity("Core.Entities.Concrete.RefreshToken", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("ClientName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("RefreshTokenEndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("RefreshTokenValue")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("RefreshTokens");
                 });
 
             modelBuilder.Entity("Core.Entities.Concrete.Translate", b =>
@@ -99,12 +125,6 @@ namespace DataAccess.Migrations
                     b.Property<byte[]>("PasswordSalt")
                         .HasColumnType("varbinary(max)");
 
-                    b.Property<string>("RefreshToken")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("RefreshTokenEndDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<bool>("Status")
                         .HasColumnType("bit");
 
@@ -133,6 +153,15 @@ namespace DataAccess.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("UserOperationClaims");
+                });
+
+            modelBuilder.Entity("Core.Entities.Concrete.RefreshToken", b =>
+                {
+                    b.HasOne("Core.Entities.Concrete.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Core.Entities.Concrete.Translate", b =>

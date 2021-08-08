@@ -6,15 +6,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="UI\src\app\components\" />
-    <Folder Include="UI\src\app\core\components\main\" />
-    <Folder Include="UI\src\app\core\pipes\" />
-    <Folder Include="UI\src\app\guards\" />
-    <Folder Include="UI\src\app\interceptors\" />
-    <Folder Include="UI\src\app\layouts\" />
-    <Folder Include="UI\src\app\models\" />
-    <Folder Include="UI\src\app\pipes\" />
-    <Folder Include="UI\src\app\services\" />
+    <Folder Include="angular-ui\src\app\components\" />
+    <Folder Include="angular-ui\src\app\core\components\main\" />
+    <Folder Include="angular-ui\src\app\core\pipes\" />
+    <Folder Include="angular-ui\src\app\guards\" />
+    <Folder Include="angular-ui\src\app\interceptors\" />
+    <Folder Include="angular-ui\src\app\layouts\" />
+    <Folder Include="angular-ui\src\app\models\" />
+    <Folder Include="angular-ui\src\app\pipes\" />
+    <Folder Include="angular-ui\src\app\services\" />
   </ItemGroup>
 
 </Project>

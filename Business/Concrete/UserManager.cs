@@ -153,9 +153,9 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
-        public IDataResult<User> GetByRefreshToken(string refreshToken)
+        public IDataResult<User> GetByIdForAuth(int id)
         {
-            return new SuccessDataResult<User>(_userDal.Get(u => u.RefreshToken == refreshToken));
+            return new SuccessDataResult<User>(_userDal.Get(u => u.Id == id));
         }
     }
 }

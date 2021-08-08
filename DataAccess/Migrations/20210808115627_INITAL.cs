@@ -45,9 +45,7 @@ namespace DataAccess.Migrations
                     Email = table.Column<string>(nullable: true),
                     PasswordSalt = table.Column<byte[]>(nullable: true),
                     PasswordHash = table.Column<byte[]>(nullable: true),
-                    Status = table.Column<bool>(nullable: false),
-                    RefreshToken = table.Column<string>(nullable: true),
-                    RefreshTokenEndDate = table.Column<DateTime>(nullable: true)
+                    Status = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -71,6 +69,28 @@ namespace DataAccess.Migrations
                         name: "FK_Translates_Languages_LanguageId",
                         column: x => x.LanguageId,
                         principalTable: "Languages",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "RefreshTokens",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<int>(nullable: false),
+                    ClientName = table.Column<string>(nullable: true),
+                    RefreshTokenValue = table.Column<string>(nullable: true),
+                    RefreshTokenEndDate = table.Column<DateTime>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RefreshTokens", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_RefreshTokens_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -102,6 +122,11 @@ namespace DataAccess.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_RefreshTokens_UserId",
+                table: "RefreshTokens",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Translates_LanguageId",
                 table: "Translates",
                 column: "LanguageId");
@@ -115,6 +140,7 @@ namespace DataAccess.Migrations
                 name: "IX_UserOperationClaims_UserId",
                 table: "UserOperationClaims",
                 column: "UserId");
+
 
 
             // OperationClaims
@@ -346,6 +372,9 @@ namespace DataAccess.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "RefreshTokens");
+
             migrationBuilder.DropTable(
                 name: "Translates");
 

@@ -12,7 +12,7 @@ class TokenModel {
     return TokenModel(
       json["token"] as String,
       json["expiration"] as String,
-      json["refreshToken"] as String,
+      json["refreshToken"]["refreshTokenValue"] as String,
     );
   }
 }

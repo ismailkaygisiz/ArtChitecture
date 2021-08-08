@@ -23,6 +23,7 @@ namespace Business.DependencyResolvers.Autofac
             builder.RegisterType<EfUserDal>().As<IUserDal>().SingleInstance();
             builder.RegisterType<EfLanguageDal>().As<ILanguageDal>().SingleInstance();
             builder.RegisterType<EfTranslateDal>().As<ITranslateDal>().SingleInstance();
+            builder.RegisterType<EfRefreshTokenDal>().As<IRefreshTokenDal>().SingleInstance();
 
             // BusinessLayer
             builder.RegisterType<AuthManager>().As<IAuthService>().SingleInstance();
@@ -31,6 +32,7 @@ namespace Business.DependencyResolvers.Autofac
             builder.RegisterType<UserManager>().As<IUserService>().SingleInstance();
             builder.RegisterType<LanguageManager>().As<ILanguageService>().SingleInstance();
             builder.RegisterType<TranslateManager>().As<ITranslateService>().SingleInstance();
+            builder.RegisterType<RefreshTokenManager>().As<IRefreshTokenService>().SingleInstance();
 
             // CoreLayer
             builder.RegisterType<JwtHelper>().As<ITokenHelper>().SingleInstance();

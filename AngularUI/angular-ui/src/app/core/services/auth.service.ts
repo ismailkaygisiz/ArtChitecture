@@ -2,7 +2,7 @@ import { TokenService } from './token.service';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { apiUrl } from 'src/api';
+import { apiUrl, clientName } from 'src/api';
 import { SingleResponseModel } from '../models/response/singleResponseModel';
 import { LoginModel } from '../models/user/loginModel';
 import { RegisterModel } from '../models/user/registerModel';
@@ -22,21 +22,30 @@ export class AuthService {
   login(user: LoginModel): Observable<SingleResponseModel<TokenModel>> {
     let newPath = apiUrl + 'auth/login';
 
-    return this.httpClient.post<SingleResponseModel<TokenModel>>(newPath, user);
+    let userForLoginDto = {
+      email: user.email,
+      password: user.password,
+      clientName: clientName,
+    };
+
+    return this.httpClient.post<SingleResponseModel<TokenModel>>(
+      newPath,
+      userForLoginDto
+    );
   }
 
   register(user: RegisterModel): Observable<SingleResponseModel<TokenModel>> {
     let newPath = apiUrl + 'auth/register';
 
+    let userForRegisterDto = {
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      password: user.password,
+      clientName: clientName,
+    };
+
     return this.httpClient.post<SingleResponseModel<TokenModel>>(newPath, user);
-  }
-
-  refreshToken(
-    refreshToken: string
-  ): Observable<SingleResponseModel<TokenModel>> {
-    let newPath = apiUrl + 'auth/refreshtoken?refreshToken=' + refreshToken;
-
-    return this.httpClient.get<SingleResponseModel<TokenModel>>(newPath);
   }
 
   logout() {

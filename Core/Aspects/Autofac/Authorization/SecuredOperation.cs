@@ -54,7 +54,13 @@ namespace Core.Aspects.Autofac.Authorization
 
         protected override void OnBefore(IInvocation invocation)
         {
-            var roleClaims = HttpContextAccessor.HttpContext.User.ClaimRoles();
+            List<string> roleClaims = RequestUserService.RequestUser?.Roles;
+            if (roleClaims != null)
+            {
+                Invoke = false;
+                Error = true;
+                return;
+            }
 
             if (roleClaims.Contains("Admin"))
                 return;

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_ui/core/models/user/loginModel.dart';
 import 'package:flutter_ui/environments/api.dart';
 import 'package:flutter_ui/pages/main/homePage/homePageUI.dart';
 import 'core/utilities/dependencyResolver.dart';
@@ -36,12 +37,12 @@ class _HomeState extends State<Home> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    _getTranslates();
   }
 
   void _getTranslates() {
     sessionService.get("lang").then((value) {
       _lang = value;
-
       translateService.getTranslates(value).then((dynamic value) {
         TRANSLATES = value["data"];
         setState(() {});
