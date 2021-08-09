@@ -55,7 +55,7 @@ namespace Core.Aspects.Autofac.Authorization
         protected override void OnBefore(IInvocation invocation)
         {
             List<string> roleClaims = RequestUserService.RequestUser?.Roles;
-            if (roleClaims != null)
+            if (roleClaims == null)
             {
                 Invoke = false;
                 Error = true;

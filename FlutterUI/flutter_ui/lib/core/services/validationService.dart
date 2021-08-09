@@ -1,6 +1,7 @@
 import 'package:flutter_ui/core/utilities/service.dart';
 
 class ValidationService extends Service {
+  /// If response has error returns true
   showErrors(Map<String, dynamic> jsonData) {
     if (jsonData["success"] as bool == true) {
       print("İşlem Başarılı");
@@ -16,7 +17,6 @@ class ValidationService extends Service {
       });
 
       print(jsonData["message"]);
-
       return true;
     }
 
