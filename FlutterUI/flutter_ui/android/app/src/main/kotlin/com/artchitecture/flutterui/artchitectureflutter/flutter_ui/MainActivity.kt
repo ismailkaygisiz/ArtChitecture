@@ -1,4 +1,4 @@
-package com.arthitecture.flutterui.arthitectureflutterui.flutter_ui
+package com.artchitecture.flutterui.artchitectureflutter.flutter_ui
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -34,7 +34,7 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId "com.arthitecture.flutterui.arthitectureflutterui.flutter_ui"
+        applicationId "com.artchitecture.flutterui.artchitectureflutter.flutter_ui"
         minSdkVersion 18
         targetSdkVersion 30
         versionCode flutterVersionCode.toInteger()
