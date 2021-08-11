@@ -6,7 +6,9 @@ import 'package:jwt_decode/jwt_decode.dart';
 
 class TokenService extends Service {
   decodeToken(String token) {
-    return Jwt.parseJwt(token);
+    if (token != null) return Jwt.parseJwt(token);
+
+    return null;
   }
 
   Future<String> getToken() async {
@@ -34,19 +36,26 @@ class TokenService extends Service {
   }
 
   Future<bool> isTokenExpired() async {
-    var isExpired = Jwt.isExpired(await getToken());
+    var token = await getToken();
+    bool isExpired;
+    if (token != null) isExpired = Jwt.isExpired(token);
 
     return isExpired != null ? isExpired : true;
   }
 
   Future<DateTime> getTokenExpirationDate() async {
-    return Jwt.getExpiryDate(await getToken());
+    var token = await getToken();
+    if (token != null) {
+      return Jwt.getExpiryDate(token);
+    }
+
+    return null;
   }
 
   Future<List<String>> getUserRolesWithJWT() async {
     var token = decodeToken(await getToken());
-
     List<String> _roles = [];
+
     if (token != null) {
       Map t = token;
 

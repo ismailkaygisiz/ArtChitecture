@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Business.Extensions
 {
-    public class BusinessService<T> : BusinessService where T : Hub, new()
+    public class BusinessService<T> : BusinessService where T : Hub
     {
         protected IHubContext<T> HubContext { get; }
 
