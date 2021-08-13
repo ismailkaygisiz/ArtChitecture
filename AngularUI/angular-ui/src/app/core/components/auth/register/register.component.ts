@@ -46,11 +46,12 @@ export class RegisterComponent implements OnInit {
       let registerModel = Object.assign({}, this.registerForm.value);
 
       this.authService.register(registerModel).subscribe(
-        (response: any) => {
+        (response) => {
           this.tokenService.setToken(response.data.token);
           this.tokenService.setRefreshToken(
             response.data.refreshToken.refreshTokenValue
           );
+          this.tokenService.setClientId(response.data.refreshToken.clientId);
 
           this.toastrService.success(response.message, 'İşlem Başarılı');
           this.router.navigate(['']);

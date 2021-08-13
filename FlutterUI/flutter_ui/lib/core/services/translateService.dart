@@ -18,7 +18,7 @@ class TranslateService extends Service
   @override
   Future<ResponseModel> add(TranslateAddModel addModel) async {
     var response = await httpClient.post(
-      Uri.parse(API_URL + "translates/add"),
+      Uri.parse(Environments.API_URL + "translates/add"),
       body: addModel.toJson(),
     );
 
@@ -28,7 +28,7 @@ class TranslateService extends Service
   @override
   Future<ResponseModel> delete(DeleteModel deleteModel) async {
     var response = await httpClient.post(
-      Uri.parse(API_URL + "translates/delete"),
+      Uri.parse(Environments.API_URL + "translates/delete"),
       body: deleteModel.toJson(),
     );
 
@@ -38,7 +38,7 @@ class TranslateService extends Service
   @override
   Future<ListResponseModel<TranslateModel>> getAll() async {
     var response = await httpClient.get(
-      Uri.parse(API_URL + "translates/getall"),
+      Uri.parse(Environments.API_URL + "translates/getall"),
     );
 
     return ListResponseModel<TranslateModel>.fromJson(response);
@@ -48,7 +48,7 @@ class TranslateService extends Service
   Future<SingleResponseModel<TranslateModel>> getById(int id) async {
     var response = await httpClient.get(
       Uri.parse(
-        API_URL + "translates/getbyid?id=" + id.toString(),
+        Environments.API_URL + "translates/getbyid?id=" + id.toString(),
       ),
     );
 
@@ -58,7 +58,7 @@ class TranslateService extends Service
   @override
   Future<ResponseModel> update(TranslateModel updateModel) async {
     var response = await httpClient.post(
-      Uri.parse(API_URL + "translates/add"),
+      Uri.parse(Environments.API_URL + "translates/add"),
       body: updateModel.toJson(),
     );
 
@@ -67,7 +67,7 @@ class TranslateService extends Service
 
   Future<ListResponseModel<TranslateModel>> getByKey(String key) async {
     var response = await httpClient.get(
-      Uri.parse(API_URL + "translates/getbykey?key=" + key),
+      Uri.parse(Environments.API_URL + "translates/getbykey?key=" + key),
     );
 
     return ListResponseModel<TranslateModel>.fromJson(response);
@@ -76,7 +76,7 @@ class TranslateService extends Service
   Future<ListResponseModel<TranslateModel>> getByLanguageId(
       int languageId) async {
     var response = await httpClient.get(
-      Uri.parse(API_URL +
+      Uri.parse(Environments.API_URL +
           "translates/getbylanguageid?languageId=" +
           languageId.toString()),
     );
@@ -86,7 +86,7 @@ class TranslateService extends Service
 
   Future<Map> getTranslates(String languageCode) async {
     var response = await httpClient.get(
-      Uri.parse(API_URL +
+      Uri.parse(Environments.API_URL +
           "translates/gettranslates?languageCode=" +
           languageCode.toString()),
     );

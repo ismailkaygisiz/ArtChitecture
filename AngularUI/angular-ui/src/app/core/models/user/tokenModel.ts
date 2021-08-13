@@ -1,5 +1,7 @@
-﻿export interface TokenModel {
+﻿import { RefreshTokenModel } from './refreshTokenModel';
+
+export interface TokenModel {
   token: string;
   expiration: string;
-  refreshToken: string;
+  refreshToken: RefreshTokenModel;
 }

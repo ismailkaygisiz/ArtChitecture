@@ -9,13 +9,18 @@ import {
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { apiUrl, clientName } from 'src/api';
+import { AuthService } from '../services/auth.service';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
   token: string;
   refreshToken: string;
+  clientId: string;
 
-  constructor(private tokenService: TokenService) {}
+  constructor(
+    private tokenService: TokenService,
+    private authService: AuthService
+  ) {}
 
   intercept(
     request: HttpRequest<any>,
@@ -24,6 +29,7 @@ export class AuthInterceptor implements HttpInterceptor {
     let newRequest: HttpRequest<any>;
     this.token = this.tokenService.getToken();
     this.refreshToken = this.tokenService.getRefreshToken();
+    this.clientId = this.tokenService.getClientId();
 
     newRequest = request.clone({
       headers: request.headers
@@ -37,6 +43,7 @@ export class AuthInterceptor implements HttpInterceptor {
         url: apiUrl + 'auth/refreshtoken',
         body: {
           refreshToken: this.refreshToken,
+          clientId: this.clientId,
           clientName: clientName,
         },
         headers: request.headers
@@ -47,15 +54,21 @@ export class AuthInterceptor implements HttpInterceptor {
       next.handle(refreshTokenRequest).subscribe(
         (response) => {
           if (response instanceof HttpResponse) {
+            this.authService.onRefreshTokenSucceed(response.body.data);
             this.tokenService.setToken(response.body.data.token);
             this.tokenService.setRefreshToken(
               response.body.data.refreshToken.refreshTokenValue
             );
+            this.tokenService.setClientId(
+              response.body.data.refreshToken.clientId
+            );
           }
         },
         (responseError) => {
+          this.authService.onRefreshTokenFailed();
           this.tokenService.removeToken();
           this.tokenService.removeRefreshToken();
+          this.tokenService.removeClientId();
         }
       );
     }

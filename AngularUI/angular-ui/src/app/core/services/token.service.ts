@@ -35,8 +35,20 @@ export class TokenService {
     return this.localStorageService.getItem('refresh-token');
   }
 
-  removeRefreshToken() {
+  removeRefreshToken(): void {
     this.localStorageService.removeItem('refresh-token');
+  }
+
+  setClientId(clientId: string): void {
+    this.localStorageService.setItem('client-id', clientId);
+  }
+
+  getClientId(): string {
+    return this.localStorageService.getItem('client-id');
+  }
+
+  removeClientId(): void {
+    this.localStorageService.removeItem('client-id');
   }
 
   isTokenExpired(): boolean {

@@ -24,7 +24,7 @@ class RegisterModel {
       "lastName": lastName,
       "email": email,
       "password": password,
-      "clientName": CLIENT_NAME,
+      "clientName": Environments.CLIENT_NAME,
     });
   }
 }

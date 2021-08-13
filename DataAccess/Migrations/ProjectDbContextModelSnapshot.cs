@@ -59,6 +59,9 @@ namespace DataAccess.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("ClientId")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("ClientName")
                         .HasColumnType("nvarchar(max)");
 

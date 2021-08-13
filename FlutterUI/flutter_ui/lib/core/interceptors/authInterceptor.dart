@@ -32,11 +32,12 @@ class AuthInterceptor extends http.BaseClient {
     });
 
     if (tokenModel.refreshToken != "" && await tokenService.isTokenExpired()) {
-      var newRequest =
-          await _httpClient.post(Uri.parse(API_URL + "auth/refreshtoken"),
+      var newRequest = await _httpClient
+          .post(Uri.parse(Environments.API_URL + "auth/refreshtoken"),
               body: json.encode({
                 "refreshToken": tokenModel.refreshToken,
-                "clientName": CLIENT_NAME,
+                "clientId": tokenModel.clientId,
+                "clientName": Environments.CLIENT_NAME,
               }),
               headers: {
             "content-type": "application/json",
@@ -46,9 +47,12 @@ class AuthInterceptor extends http.BaseClient {
 
       var response = SingleResponseModel<TokenModel>.fromJson(newRequest);
       if (response.success) {
+        authService.onRefreshTokenSucceed(response.data);
         await tokenService.setToken(response.data.token);
         await tokenService.setRefreshToken(response.data.refreshToken);
+        await tokenService.setClientId(response.data.clientId);
       } else {
+        authService.onRefreshTokenFailed();
         await tokenService.removeRefreshToken();
         await tokenService.removeToken();
       }
@@ -58,42 +62,23 @@ class AuthInterceptor extends http.BaseClient {
   }
 
   Future<TokenModel> getToken() async {
-    var token = "";
-    var refreshToken = "";
     var prefs = await SharedPreferences.getInstance();
-    final encrypter = Encrypter(AES(Key.fromUtf8(KEY), mode: AESMode.cbc));
+    var token = await prefs.get("token") ?? "";
+    var refreshToken = await prefs.get("refresh-token") ?? "";
+    var clientId = await prefs.get("client-id") ?? "";
 
-    token = await prefs.get("token") ?? "";
-    refreshToken = await prefs.get("refresh-token") ?? "";
-    if (token != "") {
-      token = encrypter.decrypt(
-        Encrypted.fromBase64(token),
-        iv: IV.fromUtf8(TOKEN),
-      );
-    }
+    if (token != "") token = cryptoService.get(token);
+    if (refreshToken != "") refreshToken = cryptoService.get(refreshToken);
+    if (clientId != "") clientId = cryptoService.get(clientId);
 
-    if (refreshToken != "") {
-      refreshToken = encrypter.decrypt(
-        Encrypted.fromBase64(refreshToken),
-        iv: IV.fromUtf8(TOKEN),
-      );
-    }
-
-    return new TokenModel(token, null, refreshToken);
+    return new TokenModel(token, null, refreshToken, clientId);
   }
 
   Future<String> getLang() async {
-    String lang;
     var prefs = await SharedPreferences.getInstance();
-    final encrypter = Encrypter(AES(Key.fromUtf8(KEY), mode: AESMode.cbc));
 
-    lang = await prefs.get("lang");
-    if (lang != null) {
-      lang = encrypter.decrypt(
-        Encrypted.fromBase64(lang),
-        iv: IV.fromUtf8(TOKEN),
-      );
-    }
+    var lang = await prefs.get("lang");
+    if (lang != null) lang = cryptoService.get(lang);
 
     return lang;
   }

@@ -53,29 +53,25 @@ namespace WebAPI.Controllers
                 if (_authService.UseRefreshTokenEndDate)
                 {
                     if (newRefreshToken.RefreshTokenEndDate > DateTime.Now)
-                    {
-                        return RefreshTokenControl(user, newRefreshToken.RefreshTokenValue, refreshTokenRequest.ClientName);
-                    }
+                        return RefreshTokenControl(user, refreshTokenRequest);
 
                     _requestUserService.RequestUser = null;
                     return BadRequest(new ErrorResult());
                 }
 
-                return RefreshTokenControl(user, newRefreshToken.RefreshTokenValue, refreshTokenRequest.ClientName);
+                return RefreshTokenControl(user, refreshTokenRequest);
             }
 
             _requestUserService.RequestUser = null;
             return BadRequest(new ErrorResult());
         }
 
-        private IActionResult RefreshTokenControl(User user, string refreshToken, string clientName)
+        private IActionResult RefreshTokenControl(User user, RefreshTokenRequest refreshToken)
         {
-            var result = _authService.CreateAccessToken(user, refreshToken, clientName);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
+            var result = _authService.CreateAccessToken(user, refreshToken.RefreshToken, refreshToken.ClientName, refreshToken.ClientId);
+            if (result.Success) return Ok(result);
 
+            _requestUserService.RequestUser = null;
             return BadRequest(result);
         }
 
@@ -92,6 +88,7 @@ namespace WebAPI.Controllers
     public class RefreshTokenRequest
     {
         public string RefreshToken { get; set; }
+        public string ClientId { get; set; }
         public string ClientName { get; set; }
     }
 }

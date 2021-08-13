@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { TranslateService } from './core/services/translate.service';
 import { ValidationService } from './core/services/validation.service';
 import { translates } from 'src/api';
+import { AuthService } from './core/services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -16,7 +17,8 @@ export class AppComponent implements OnInit {
   constructor(
     private titleService: Title,
     private translateService: TranslateService,
-    private validationService: ValidationService
+    private validationService: ValidationService,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -29,6 +31,16 @@ export class AppComponent implements OnInit {
       (responseError) => {
         this.validationService.showErrors(responseError);
         this.translateKeys = null;
+      }
+    );
+
+    this.authService.setRefreshTokenEvents(
+      () => {
+        console.log('Failed');
+      },
+      (token) => {
+        console.log('Succeed');
+        console.log(token);
       }
     );
   }

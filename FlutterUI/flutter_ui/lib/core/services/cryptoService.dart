@@ -8,8 +8,8 @@ class CryptoService extends Service {
   var _iv;
 
   CryptoService() {
-    _key = Key.fromUtf8(KEY);
-    _iv = IV.fromUtf8(TOKEN);
+    _key = Key.fromUtf8(Environments.KEY);
+    _iv = IV.fromUtf8(Environments.TOKEN);
   }
 
   String set(String text) {

@@ -35,6 +35,18 @@ class TokenService extends Service {
     await sessionService.remove('refresh-token');
   }
 
+  Future<String> getClientId() async {
+    return await sessionService.get("client-id");
+  }
+
+  Future<void> setClientId(String clientId) async {
+    await sessionService.set('client-id', clientId);
+  }
+
+  Future<void> removeClientId() async {
+    await sessionService.remove('client-id');
+  }
+
   Future<bool> isTokenExpired() async {
     var token = await getToken();
     bool isExpired;

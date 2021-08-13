@@ -80,6 +80,7 @@ namespace DataAccess.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<int>(nullable: false),
+                    ClientId = table.Column<string>(nullable: true),
                     ClientName = table.Column<string>(nullable: true),
                     RefreshTokenValue = table.Column<string>(nullable: true),
                     RefreshTokenEndDate = table.Column<DateTime>(nullable: true)
@@ -140,6 +141,7 @@ namespace DataAccess.Migrations
                 name: "IX_UserOperationClaims_UserId",
                 table: "UserOperationClaims",
                 column: "UserId");
+
 
 
 

@@ -3,6 +3,11 @@
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
     </PropertyGroup>
+
+    <ItemGroup>
+      <Compile Remove="Migrations\20210813105316_Inıtal.cs" />
+      <Compile Remove="Migrations\20210813105316_Inıtal.Designer.cs" />
+    </ItemGroup>
 	
     <ItemGroup>
       <ProjectReference Include="..\Core\Core.csproj" />

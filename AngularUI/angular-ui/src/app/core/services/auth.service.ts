@@ -13,6 +13,9 @@ import { LocalStorageService } from './local-storage.service';
   providedIn: 'root',
 })
 export class AuthService {
+  private _refreshTokenFailedEvent: () => any;
+  private _refreshTokenSucceedEvent: (token: TokenModel) => any;
+
   constructor(
     private httpClient: HttpClient,
     private localStorageService: LocalStorageService,
@@ -26,6 +29,7 @@ export class AuthService {
       email: user.email,
       password: user.password,
       clientName: clientName,
+      clientId: this.tokenService.getClientId(),
     };
 
     return this.httpClient.post<SingleResponseModel<TokenModel>>(
@@ -63,5 +67,22 @@ export class AuthService {
     }
 
     return false;
+  }
+
+  onRefreshTokenFailed() {
+    if (this._refreshTokenFailedEvent != null) this._refreshTokenFailedEvent();
+  }
+
+  onRefreshTokenSucceed(token: TokenModel) {
+    if (this._refreshTokenSucceedEvent != null)
+      this._refreshTokenSucceedEvent(token);
+  }
+
+  setRefreshTokenEvents(
+    refreshTokenFailedEvent: () => any,
+    refreshTokenSucceedEvent: (token: TokenModel) => any
+  ): void {
+    this._refreshTokenFailedEvent = refreshTokenFailedEvent;
+    this._refreshTokenSucceedEvent = refreshTokenSucceedEvent;
   }
 }

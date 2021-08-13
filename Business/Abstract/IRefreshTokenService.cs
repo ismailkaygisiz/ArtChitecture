@@ -11,5 +11,6 @@ namespace Business.Abstract
     {
         IDataResult<RefreshToken> GetByRefreshToken(string refreshToken);
         IDataResult<RefreshToken> GetByClientNameAndUserId(string clientName, int userId);
+        IDataResult<RefreshToken> GetByClientId(string clientId);
     }
 }

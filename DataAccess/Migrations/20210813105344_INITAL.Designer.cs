@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(ProjectDbContext))]
-    [Migration("20210808115627_INITAL")]
+    [Migration("20210813105344_INITAL")]
     partial class INITAL
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -60,6 +60,9 @@ namespace DataAccess.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("ClientId")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ClientName")
                         .HasColumnType("nvarchar(max)");

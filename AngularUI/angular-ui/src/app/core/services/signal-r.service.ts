@@ -1,35 +1,35 @@
 import { Injectable } from '@angular/core';
 import { HubConnection, HubConnectionBuilder } from '@aspnet/signalr';
-import { imageUrl } from 'src/api';
+import { baseUrl } from 'src/api';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SignalRService {
-  private hubConnection: HubConnection;
+  private _hubConnection: HubConnection;
   constructor() {}
 
-  start(url: string): void {
-    this.hubConnection = new HubConnectionBuilder()
-      .withUrl(imageUrl + url)
+  async start(url: string): Promise<void> {
+    this._hubConnection = new HubConnectionBuilder()
+      .withUrl(baseUrl + url)
       .build();
-    this.hubConnection.start();
+    await this._hubConnection.start();
   }
 
-  startManually(hubConnection: HubConnection): void {
-    this.hubConnection = hubConnection;
-    this.hubConnection.start();
+  async startManually(hubConnection: HubConnection): Promise<void> {
+    this._hubConnection = hubConnection;
+    await this._hubConnection.start();
   }
 
   getHubConnection(): HubConnection {
-    return this.hubConnection;
+    return this._hubConnection;
   }
 
-  invoke(methodName: string, args: any[]): Promise<any> {
-    return this.hubConnection.invoke(methodName, args);
+  async invoke(methodName: string, args: any[]): Promise<any> {
+    return await this._hubConnection.invoke(methodName, args);
   }
 
   on(methodName: string, method: (...args: any[]) => void): void {
-    this.hubConnection.on(methodName, method);
+    this._hubConnection.on(methodName, method);
   }
 }

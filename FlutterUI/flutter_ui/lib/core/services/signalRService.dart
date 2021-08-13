@@ -7,7 +7,8 @@ class SignalRService extends Service {
   HubConnection _hubConnection;
 
   Future<void> start(String hubUrl) async {
-    _hubConnection = HubConnectionBuilder().withUrl(IMAGE_URL + hubUrl).build();
+    _hubConnection =
+        HubConnectionBuilder().withUrl(Environments.BASE_URL + hubUrl).build();
     await _hubConnection.start();
   }
 
@@ -21,8 +22,7 @@ class SignalRService extends Service {
   }
 
   Future<Object> invoke(String methodName, List<Object> args) async {
-    final result = await _hubConnection.invoke(methodName, args: args);
-    return result;
+    return await _hubConnection.invoke(methodName, args: args);
   }
 
   void on(String methodName, MethodInvocationFunc method) {

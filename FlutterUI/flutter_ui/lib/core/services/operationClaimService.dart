@@ -16,7 +16,7 @@ class OperationClaimService extends Service
   Future<ResponseModel> add(
       OperationClaimAddModel operationClaimAddModel) async {
     var response = await httpClient.post(
-      Uri.parse(API_URL + "operationclaims/add"),
+      Uri.parse(Environments.API_URL + "operationclaims/add"),
       body: operationClaimAddModel.toJson(),
     );
 
@@ -25,7 +25,7 @@ class OperationClaimService extends Service
 
   Future<ResponseModel> delete(DeleteModel deleteModel) async {
     var response = await httpClient.post(
-      Uri.parse(API_URL + "operationclaims/delete"),
+      Uri.parse(Environments.API_URL + "operationclaims/delete"),
       body: deleteModel.toJson(),
     );
 
@@ -34,7 +34,7 @@ class OperationClaimService extends Service
 
   Future<ResponseModel> update(OperationClaimModel operationClaimModel) async {
     var response = await httpClient.post(
-      Uri.parse(API_URL + "operationclaims/update"),
+      Uri.parse(Environments.API_URL + "operationclaims/update"),
       body: operationClaimModel.toJson(),
     );
 
@@ -43,7 +43,7 @@ class OperationClaimService extends Service
 
   Future<ListResponseModel<OperationClaimModel>> getAll() async {
     var response = await httpClient.get(
-      Uri.parse(API_URL + "operationclaims/getall"),
+      Uri.parse(Environments.API_URL + "operationclaims/getall"),
     );
 
     return ListResponseModel<OperationClaimModel>.fromJson(response);
@@ -51,7 +51,8 @@ class OperationClaimService extends Service
 
   Future<SingleResponseModel<OperationClaimModel>> getById(int id) async {
     var response = await httpClient.get(
-      Uri.parse(API_URL + "operationclaims/getbyid?id=" + id.toString()),
+      Uri.parse(
+          Environments.API_URL + "operationclaims/getbyid?id=" + id.toString()),
     );
 
     return SingleResponseModel<OperationClaimModel>.fromJson(response);
@@ -59,8 +60,8 @@ class OperationClaimService extends Service
 
   Future<SingleResponseModel<OperationClaimModel>> getByName(
       String name) async {
-    var response = await httpClient
-        .get(Uri.parse(API_URL + "operationclaims/getbyname?name=" + name));
+    var response = await httpClient.get(Uri.parse(
+        Environments.API_URL + "operationclaims/getbyname?name=" + name));
 
     return SingleResponseModel<OperationClaimModel>.fromJson(response);
   }

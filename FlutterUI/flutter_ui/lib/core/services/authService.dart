@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:flutter_ui/core/interceptors/authInterceptor.dart';
 import 'package:flutter_ui/core/models/response/singleResponseModel.dart';
 import 'package:flutter_ui/core/models/user/loginModel.dart';
@@ -10,10 +11,13 @@ import 'package:flutter_ui/core/services/sessionService.dart';
 import 'package:flutter_ui/environments/api.dart';
 
 class AuthService extends Service {
+  Function _refreshTokenFailedEvent;
+  Function _refreshTokenSucceedEvent;
+
   Future<SingleResponseModel<TokenModel>> login(LoginModel user) async {
     var response = await httpClient.post(
-      Uri.parse(API_URL + "auth/login"),
-      body: user.toJson(),
+      Uri.parse(Environments.API_URL + "auth/login"),
+      body: await user.toJson(),
     );
 
     return SingleResponseModel<TokenModel>.fromJson(response);
@@ -21,16 +25,16 @@ class AuthService extends Service {
 
   Future<SingleResponseModel<TokenModel>> register(RegisterModel user) async {
     var response = await httpClient.post(
-      Uri.parse(API_URL + "auth/register"),
+      Uri.parse(Environments.API_URL + "auth/register"),
       body: user.toJson(),
     );
 
     return SingleResponseModel<TokenModel>.fromJson(response);
   }
 
-  bool logout() {
-    if (isAuthenticated() == true) {
-      sessionService.remove("token");
+  Future<bool> logout() async {
+    if (await isAuthenticated()) {
+      await sessionService.remove("token");
 
       return true;
     }
@@ -38,17 +42,28 @@ class AuthService extends Service {
     return false;
   }
 
-  bool isAuthenticated() {
+  Future<bool> isAuthenticated() async {
     bool token;
 
-    sessionService
-        .get("token")
-        .then((value) => value != null ? token = true : token = false);
+    var data = await sessionService.get("token");
+    data != null ? token = true : token = false;
 
-    if (token) {
-      return true;
-    }
+    return token;
+  }
 
-    return false;
+  onRefreshTokenFailed() {
+    if (_refreshTokenFailedEvent != null) _refreshTokenFailedEvent();
+  }
+
+  onRefreshTokenSucceed(TokenModel token) {
+    if (_refreshTokenSucceedEvent != null) _refreshTokenSucceedEvent(token);
+  }
+
+  setRefreshTokenEvents(
+    refreshTokenFailedEvent(),
+    refreshTokenSucceedEvent(TokenModel token),
+  ) {
+    _refreshTokenFailedEvent = refreshTokenFailedEvent;
+    _refreshTokenSucceedEvent = refreshTokenSucceedEvent;
   }
 }

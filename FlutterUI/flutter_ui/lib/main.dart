@@ -10,6 +10,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   initializeReflectable();
   EnvironmentDev();
+
   runApp(App());
 }
 
@@ -36,29 +37,23 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     // TODO: implement initState
+    authService.setRefreshTokenEvents(() {
+      print("Failed");
+    }, (token) {
+      print("Succeed");
+    });
+
     super.initState();
     _getTranslates();
   }
 
-  void _getTranslates() {
-    sessionService.get("lang").then((value) {
-      _lang = value;
-      translateService.getTranslates(value).then((dynamic value) {
-        TRANSLATES = value["data"];
-        setState(() {});
-      });
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    sessionService.get("lang").then((value) {
-      if (_lang != value) {
-        _getTranslates();
-      }
+    sessionService.get("lang").then((String value) {
+      if (_lang != value) _getTranslates();
     });
 
-    return TRANSLATES.values.length > 0
+    return translates.values.length > 0
         ? HomePageUI()
         : Scaffold(
             appBar: AppBar(
@@ -67,5 +62,15 @@ class _HomeState extends State<Home> {
             ),
             body: Center(),
           );
+  }
+
+  void _getTranslates() {
+    sessionService.get("lang").then((value) {
+      _lang = value;
+      translateService.getTranslates(value).then((dynamic value) {
+        translates = value["data"];
+        setState(() {});
+      });
+    });
   }
 }

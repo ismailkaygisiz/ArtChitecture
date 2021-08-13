@@ -18,7 +18,7 @@ class UserOperationClaimService extends Service
   Future<ResponseModel> add(
       UserOperationClaimAddModel userOperationClaimAddModel) async {
     var response = await httpClient.post(
-      Uri.parse(API_URL + "useroperationclaims/add"),
+      Uri.parse(Environments.API_URL + "useroperationclaims/add"),
       body: userOperationClaimAddModel.toJson(),
     );
 
@@ -27,7 +27,7 @@ class UserOperationClaimService extends Service
 
   Future<ResponseModel> delete(DeleteModel deleteModel) async {
     var response = await httpClient.post(
-      Uri.parse(API_URL + "useroperationclaims/delete"),
+      Uri.parse(Environments.API_URL + "useroperationclaims/delete"),
       body: deleteModel.toJson(),
     );
 
@@ -37,7 +37,7 @@ class UserOperationClaimService extends Service
   Future<ResponseModel> update(
       UserOperationClaimModel userOperationClaimModel) async {
     var response = await httpClient.post(
-      Uri.parse(API_URL + "useroperationclaims/update"),
+      Uri.parse(Environments.API_URL + "useroperationclaims/update"),
       body: userOperationClaimModel.toJson(),
     );
 
@@ -46,7 +46,7 @@ class UserOperationClaimService extends Service
 
   Future<ListResponseModel<UserOperationClaimModel>> getAll() async {
     var response = await httpClient.get(
-      Uri.parse(API_URL + "useroperationclaims/getall"),
+      Uri.parse(Environments.API_URL + "useroperationclaims/getall"),
     );
 
     return ListResponseModel<UserOperationClaimModel>.fromJson(response);
@@ -54,7 +54,9 @@ class UserOperationClaimService extends Service
 
   Future<SingleResponseModel<UserOperationClaimModel>> getById(int id) async {
     var response = await httpClient.get(
-      Uri.parse(API_URL + "useroperationclaims/getbyid?id=" + id.toString()),
+      Uri.parse(Environments.API_URL +
+          "useroperationclaims/getbyid?id=" +
+          id.toString()),
     );
 
     return SingleResponseModel<UserOperationClaimModel>.fromJson(response);
@@ -63,7 +65,7 @@ class UserOperationClaimService extends Service
   Future<ListResponseModel<UserOperationClaimModel>> getByUserId(
       int userId) async {
     var response = await httpClient.get(
-      Uri.parse(API_URL +
+      Uri.parse(Environments.API_URL +
           "useroperationclaims/getbyuserid?userId=" +
           userId.toString()),
     );
@@ -74,7 +76,7 @@ class UserOperationClaimService extends Service
   Future<ListResponseModel<UserOperationClaimModel>> getByClaimId(
       int claimId) async {
     var response = await httpClient.get(
-      Uri.parse(API_URL +
+      Uri.parse(Environments.API_URL +
           "useroperationclaims/getbyclaimid?claimId=" +
           claimId.toString()),
     );

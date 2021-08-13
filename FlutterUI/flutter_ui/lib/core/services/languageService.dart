@@ -15,7 +15,7 @@ class LanguageService extends Service
   @override
   Future<ResponseModel> add(LanguageAddModel addModel) async {
     var response = await httpClient.post(
-      Uri.parse(API_URL + "languages/add"),
+      Uri.parse(Environments.API_URL + "languages/add"),
       body: addModel.toJson(),
     );
 
@@ -25,7 +25,7 @@ class LanguageService extends Service
   @override
   Future<ResponseModel> delete(DeleteModel deleteModel) async {
     var response = await httpClient.post(
-      Uri.parse(API_URL + "languages/delete"),
+      Uri.parse(Environments.API_URL + "languages/delete"),
       body: deleteModel.toJson(),
     );
 
@@ -35,7 +35,7 @@ class LanguageService extends Service
   @override
   Future<ListResponseModel<LanguageModel>> getAll() async {
     var response = await httpClient.get(
-      Uri.parse(API_URL + "languages/getall"),
+      Uri.parse(Environments.API_URL + "languages/getall"),
     );
 
     return ListResponseModel<LanguageModel>.fromJson(response);
@@ -45,7 +45,7 @@ class LanguageService extends Service
   Future<SingleResponseModel<LanguageModel>> getById(int id) async {
     var response = await httpClient.get(
       Uri.parse(
-        API_URL + "languages/getbyid?id=" + id.toString(),
+        Environments.API_URL + "languages/getbyid?id=" + id.toString(),
       ),
     );
 
@@ -55,7 +55,7 @@ class LanguageService extends Service
   Future<SingleResponseModel<LanguageModel>> getByName(String name) async {
     var response = await httpClient.get(
       Uri.parse(
-        API_URL + "languages/getbyname?name=" + name,
+        Environments.API_URL + "languages/getbyname?name=" + name,
       ),
     );
 
@@ -65,7 +65,7 @@ class LanguageService extends Service
   Future<SingleResponseModel<LanguageModel>> getByCode(String code) async {
     var response = await httpClient.get(
       Uri.parse(
-        API_URL + "languages/getbycode?code=" + code,
+        Environments.API_URL + "languages/getbycode?code=" + code,
       ),
     );
 
@@ -75,7 +75,7 @@ class LanguageService extends Service
   @override
   Future<ResponseModel> update(LanguageModel updateModel) async {
     var response = await httpClient.post(
-      Uri.parse(API_URL + "languages/update"),
+      Uri.parse(Environments.API_URL + "languages/update"),
       body: updateModel.toJson(),
     );
 

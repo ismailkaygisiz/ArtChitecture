@@ -30,17 +30,17 @@ namespace Business.Concrete
         }
 
         [TransactionScopeAspect]
-        public IDataResult<AccessToken> CreateAccessToken(User user, string refreshToken, string clientName)
+        public IDataResult<AccessToken> CreateAccessToken(User user, string refreshToken, string clientName, string clientId)
         {
             var roles = _userService.GetClaims(user).Data;
             var accessToken = _tokenHelper.CreateToken(user, roles);
 
             if (refreshToken != null)
-                accessToken.RefreshToken = UpdateOldRefreshToken(user, refreshToken, clientName);
+                accessToken.RefreshToken = UpdateOldRefreshToken(refreshToken, clientName, clientId);
             else
-                accessToken.RefreshToken = CreateNewRefreshToken(user, clientName);
+                accessToken.RefreshToken = CreateNewRefreshToken(user, clientName, clientId);
 
-            if(accessToken.RefreshToken == null)
+            if (accessToken.RefreshToken == null)
             {
                 return new ErrorDataResult<AccessToken>();
             }
@@ -74,7 +74,7 @@ namespace Business.Concrete
             };
 
             _userService.Update(user);
-            return new SuccessDataResult<AccessToken>(CreateAccessToken(user, null, userForLoginDto.ClientName).Data,
+            return new SuccessDataResult<AccessToken>(CreateAccessToken(user, null, userForLoginDto.ClientName, userForLoginDto.ClientId).Data,
                 BusinessMessages.PasswordChanged());
         }
 
@@ -89,7 +89,7 @@ namespace Business.Concrete
             if (result != null) return new ErrorDataResult<AccessToken>(result.Message);
 
             var user = _userService.GetByEmailForAuth(userForLoginDto.Email).Data;
-            return new SuccessDataResult<AccessToken>(CreateAccessToken(user, null, userForLoginDto.ClientName).Data,
+            return new SuccessDataResult<AccessToken>(CreateAccessToken(user, null, userForLoginDto.ClientName, userForLoginDto.ClientId).Data,
                 BusinessMessages.SuccessfulLogin());
         }
 
@@ -115,7 +115,7 @@ namespace Business.Concrete
             };
 
             _userService.Add(user);
-            return new SuccessDataResult<AccessToken>(CreateAccessToken(user, null, userForRegisterDto.ClientName).Data,
+            return new SuccessDataResult<AccessToken>(CreateAccessToken(user, null, userForRegisterDto.ClientName, null).Data,
                 BusinessMessages.SuccessfulRegister());
         }
 
@@ -147,17 +147,26 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
-        private RefreshToken CreateNewRefreshToken(User user, string clientName)
+        private RefreshToken CreateNewRefreshToken(User user, string clientName, string clientId)
         {
+            if (clientId == null)
+            {
+                clientId = Guid.NewGuid().ToString();
+                while (_refreshTokenService.GetByClientId(clientId).Data != null) clientId = Guid.NewGuid().ToString();
+
+            }
+
             var newRefreshToken = new RefreshToken()
             {
                 UserId = user.Id,
                 ClientName = clientName,
+                ClientId = clientId,
                 RefreshTokenValue = _tokenHelper.CreateRefreshToken()
             };
 
             CreateDifferentRefreshToken(newRefreshToken);
-            var oldRefreshToken = _refreshTokenService.GetByClientNameAndUserId(clientName, user.Id).Data;
+            var oldRefreshToken = _refreshTokenService.GetByClientId(clientId).Data;
+
             if (oldRefreshToken != null)
             {
                 newRefreshToken.Id = oldRefreshToken.Id;
@@ -169,10 +178,10 @@ namespace Business.Concrete
             return newRefreshToken;
         }
 
-        private RefreshToken UpdateOldRefreshToken(User user, string refreshToken, string clientName)
+        private RefreshToken UpdateOldRefreshToken(string refreshToken, string clientName, string clientId)
         {
             var newRefreshToken = _refreshTokenService.GetByRefreshToken(refreshToken).Data;
-            if (newRefreshToken != null && newRefreshToken?.ClientName == clientName)
+            if (newRefreshToken != null && newRefreshToken?.ClientName == clientName && newRefreshToken?.ClientId == clientId)
             {
                 CreateDifferentRefreshToken(newRefreshToken);
                 _refreshTokenService.Update(newRefreshToken);
@@ -186,9 +195,7 @@ namespace Business.Concrete
         {
 
             while (_refreshTokenService.GetByRefreshToken(refreshToken.RefreshTokenValue).Data != null)
-            {
                 refreshToken.RefreshTokenValue = _tokenHelper.CreateRefreshToken();
-            }
 
             if (UseRefreshTokenEndDate)
                 refreshToken.RefreshTokenEndDate = DateTime.Now.AddMinutes(Configuration.GetSection("TokenOptions").Get<TokenOptions>().RefreshTokenExpiration);

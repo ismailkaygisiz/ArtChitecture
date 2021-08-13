@@ -16,23 +16,25 @@ class _HomePageUIState extends State<HomePageUI> with HomePageComponent {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Center(
-          child: Text(
-            TRANSLATES["Hello_World_Key"],
-            style: TextStyle(
-              color: Colors.black54,
-              fontSize: 30,
-            ),
+        title: Text(
+          translates["Hello_World_Key"],
+          style: TextStyle(
+            color: Colors.black54,
+            fontSize: 30,
           ),
         ),
+        centerTitle: true,
       ),
+
+      //
+
       body: SafeArea(
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                TRANSLATES["Welcome_Key"],
+                translates["Welcome_Key"],
                 style: TextStyle(
                   color: Colors.teal,
                   fontSize: 25,
@@ -45,7 +47,7 @@ class _HomePageUIState extends State<HomePageUI> with HomePageComponent {
                       padding: const EdgeInsets.all(30.0),
                       child: ElevatedButton(
                         onPressed: _handleTextButton,
-                        child: Text(TRANSLATES["Increment_Key"]),
+                        child: Text(translates["Increment_Key"]),
                         style: ButtonStyle(
                           shape:
                               MaterialStateProperty.all<RoundedRectangleBorder>(
@@ -60,7 +62,7 @@ class _HomePageUIState extends State<HomePageUI> with HomePageComponent {
                 ],
               ),
               Text(
-                "${TRANSLATES["Value_Key"]} : $value",
+                "${translates["Value_Key"]} : $value",
                 style: TextStyle(color: Colors.black54, fontSize: 20),
               ),
             ],
@@ -70,7 +72,7 @@ class _HomePageUIState extends State<HomePageUI> with HomePageComponent {
       floatingActionButton: FloatingActionButton(
         onPressed: _handleFloatingActionButton,
         child: Text(
-          TRANSLATES["Reset_Key"],
+          translates["Reset_Key"],
         ),
       ),
     );

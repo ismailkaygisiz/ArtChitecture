@@ -45,11 +45,12 @@ export class LoginComponent implements OnInit {
       let loginModel = Object.assign({}, this.loginForm.value);
 
       this.authService.login(loginModel).subscribe(
-        (response: any) => {
+        (response) => {
           this.tokenService.setToken(response.data.token);
           this.tokenService.setRefreshToken(
             response.data.refreshToken.refreshTokenValue
           );
+          this.tokenService.setClientId(response.data.refreshToken.clientId);
 
           this.toastrService.success(response.message);
           this.router.navigate(['']);
