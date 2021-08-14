@@ -54,6 +54,7 @@ namespace Core.Utilities.Interceptors
                 if (isSuccess) OnSuccess(invocation);
             }
 
+            Invoke = true;
             OnAfter(invocation);
         }
     }

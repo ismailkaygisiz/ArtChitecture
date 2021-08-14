@@ -46,7 +46,6 @@ namespace Business.Concrete
             if (result != null) return result;
 
             var entityToDelete = GetById(entity.Id).Data;
-
             _userDal.Delete(entityToDelete);
             return new SuccessResult();
         }
@@ -134,10 +133,8 @@ namespace Business.Concrete
         {
             var result = GetByEmail(email).Data;
 
-            if (result != null)
-            {
-                return new ErrorResult();
-            }
+            if (result != null) return new ErrorResult();
+            
 
             return new SuccessResult();
         }

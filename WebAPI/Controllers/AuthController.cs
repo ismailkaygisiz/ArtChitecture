@@ -2,8 +2,10 @@
 using Core.Business;
 using Core.Entities.Concrete;
 using Core.Entities.DTOs;
+using Core.Utilities.IoC;
 using Core.Utilities.Results.Concrete;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 
 namespace WebAPI.Controllers
@@ -14,15 +16,15 @@ namespace WebAPI.Controllers
     {
         private readonly IAuthService _authService;
         private readonly IUserService _userService;
-        private readonly IRequestUserService _requestUserService;
         private readonly IRefreshTokenService _refreshTokenService;
+        private readonly IRequestUserService _requestUserService;
 
-        public AuthController(IAuthService authService, IUserService userService, IRequestUserService requestUserService, IRefreshTokenService refreshTokenService)
+        public AuthController(IAuthService authService, IUserService userService, IRefreshTokenService refreshTokenService)
         {
             _authService = authService;
             _userService = userService;
-            _requestUserService = requestUserService;
             _refreshTokenService = refreshTokenService;
+            _requestUserService = ServiceTool.ServiceProvider.GetService<IRequestUserService>();
         }
 
         [HttpPost("login")]
@@ -55,14 +57,14 @@ namespace WebAPI.Controllers
                     if (newRefreshToken.RefreshTokenEndDate > DateTime.Now)
                         return RefreshTokenControl(user, refreshTokenRequest);
 
-                    _requestUserService.RequestUser = null;
+                    _requestUserService.SetRequestUser(null);
                     return BadRequest(new ErrorResult());
                 }
 
                 return RefreshTokenControl(user, refreshTokenRequest);
             }
 
-            _requestUserService.RequestUser = null;
+            _requestUserService.SetRequestUser(null);
             return BadRequest(new ErrorResult());
         }
 
@@ -71,7 +73,7 @@ namespace WebAPI.Controllers
             var result = _authService.CreateAccessToken(user, refreshToken.RefreshToken, refreshToken.ClientName, refreshToken.ClientId);
             if (result.Success) return Ok(result);
 
-            _requestUserService.RequestUser = null;
+            _requestUserService.SetRequestUser(null);
             return BadRequest(result);
         }
 

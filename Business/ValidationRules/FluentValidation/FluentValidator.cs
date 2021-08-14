@@ -8,7 +8,6 @@ namespace Business.ValidationRules
 {
     public class FluentValidator<T> : AbstractValidator<T>
     {
-
         public FluentValidator()
         {
             TranslateContext = ServiceTool.ServiceProvider.GetService<ITranslateContext>();

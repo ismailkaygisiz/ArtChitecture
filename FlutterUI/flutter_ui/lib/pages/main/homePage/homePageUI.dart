@@ -41,19 +41,18 @@ class _HomePageUIState extends State<HomePageUI> with HomePageComponent {
                 ),
               ),
               Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(30.0),
-                      child: ElevatedButton(
-                        onPressed: _handleTextButton,
-                        child: Text(translates["Increment_Key"]),
-                        style: ButtonStyle(
-                          shape:
-                              MaterialStateProperty.all<RoundedRectangleBorder>(
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(18.0),
-                            ),
+                  Padding(
+                    padding: const EdgeInsets.all(30.0),
+                    child: ElevatedButton(
+                      onPressed: _handleTextButton,
+                      child: Text(translates["Increment_Key"]),
+                      style: ButtonStyle(
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(18.0),
                           ),
                         ),
                       ),

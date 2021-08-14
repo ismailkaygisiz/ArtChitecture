@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:encrypt/encrypt.dart';
 import 'package:flutter_ui/core/models/response/singleResponseModel.dart';
+import 'package:flutter_ui/core/models/user/refreshTokenModel.dart';
 import 'package:flutter_ui/core/models/user/tokenModel.dart';
 import 'package:flutter_ui/core/utilities/dependencyResolver.dart';
 import 'package:flutter_ui/environments/api.dart';
@@ -31,12 +31,13 @@ class AuthInterceptor extends http.BaseClient {
       'lang': lang,
     });
 
-    if (tokenModel.refreshToken != "" && await tokenService.isTokenExpired()) {
+    if (tokenModel.refreshToken.refreshTokenValue != "" &&
+        await tokenService.isTokenExpired()) {
       var newRequest = await _httpClient
           .post(Uri.parse(Environments.API_URL + "auth/refreshtoken"),
               body: json.encode({
-                "refreshToken": tokenModel.refreshToken,
-                "clientId": tokenModel.clientId,
+                "refreshToken": tokenModel.refreshToken.refreshTokenValue,
+                "clientId": tokenModel.refreshToken.clientId,
                 "clientName": Environments.CLIENT_NAME,
               }),
               headers: {
@@ -49,8 +50,9 @@ class AuthInterceptor extends http.BaseClient {
       if (response.success) {
         authService.onRefreshTokenSucceed(response.data);
         await tokenService.setToken(response.data.token);
-        await tokenService.setRefreshToken(response.data.refreshToken);
-        await tokenService.setClientId(response.data.clientId);
+        await tokenService
+            .setRefreshToken(response.data.refreshToken.refreshTokenValue);
+        await tokenService.setClientId(response.data.refreshToken.clientId);
       } else {
         authService.onRefreshTokenFailed();
         await tokenService.removeRefreshToken();
@@ -71,7 +73,16 @@ class AuthInterceptor extends http.BaseClient {
     if (refreshToken != "") refreshToken = cryptoService.get(refreshToken);
     if (clientId != "") clientId = cryptoService.get(clientId);
 
-    return new TokenModel(token, null, refreshToken, clientId);
+    return TokenModel(
+      token,
+      null,
+      RefreshTokenModel(
+        refreshToken,
+        null,
+        clientId,
+        Environments.CLIENT_NAME,
+      ),
+    );
   }
 
   Future<String> getLang() async {

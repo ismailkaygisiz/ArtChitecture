@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Business.Abstract
 {
-    public class BusinessService : ServiceBase
+    public abstract class BusinessService : ServiceBase
     {
         protected BusinessMessages BusinessMessages { get; }
 

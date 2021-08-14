@@ -10,5 +10,4 @@ namespace Business.Extensions
             return applicationBuilder.UseMiddleware<CreateSuperUserMiddleware>();
         }
     }
-
 }

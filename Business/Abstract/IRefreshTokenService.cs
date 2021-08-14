@@ -10,7 +10,6 @@ namespace Business.Abstract
     public interface IRefreshTokenService : IServiceRepository<RefreshToken>
     {
         IDataResult<RefreshToken> GetByRefreshToken(string refreshToken);
-        IDataResult<RefreshToken> GetByClientNameAndUserId(string clientName, int userId);
         IDataResult<RefreshToken> GetByClientId(string clientId);
     }
 }

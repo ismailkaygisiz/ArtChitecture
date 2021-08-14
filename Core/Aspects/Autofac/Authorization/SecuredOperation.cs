@@ -47,14 +47,12 @@ namespace Core.Aspects.Autofac.Authorization
                 Args.Remove(argToDel);
             }
             else
-            {
                 Args = new List<string>();
-            }
         }
 
         protected override void OnBefore(IInvocation invocation)
         {
-            List<string> roleClaims = RequestUserService.RequestUser?.Roles;
+            List<string> roleClaims = RequestUserService.GetRequestUser().Data?.Roles;
             if (roleClaims == null)
             {
                 Invoke = false;
@@ -106,7 +104,6 @@ namespace Core.Aspects.Autofac.Authorization
 
         protected override void OnAfter(IInvocation invocation)
         {
-            Invoke = true;
             if (Error)
             {
                 Error = false;

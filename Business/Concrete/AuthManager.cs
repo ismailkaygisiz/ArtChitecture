@@ -40,10 +40,7 @@ namespace Business.Concrete
             else
                 accessToken.RefreshToken = CreateNewRefreshToken(user, clientName, clientId);
 
-            if (accessToken.RefreshToken == null)
-            {
-                return new ErrorDataResult<AccessToken>();
-            }
+            if (accessToken.RefreshToken == null) return new ErrorDataResult<AccessToken>();
 
             return new SuccessDataResult<AccessToken>(accessToken);
         }
@@ -153,15 +150,15 @@ namespace Business.Concrete
             {
                 clientId = Guid.NewGuid().ToString();
                 while (_refreshTokenService.GetByClientId(clientId).Data != null) clientId = Guid.NewGuid().ToString();
-
             }
 
             var newRefreshToken = new RefreshToken()
             {
                 UserId = user.Id,
+                User = user,
                 ClientName = clientName,
                 ClientId = clientId,
-                RefreshTokenValue = _tokenHelper.CreateRefreshToken()
+                RefreshTokenValue = _tokenHelper.CreateRefreshToken(),
             };
 
             CreateDifferentRefreshToken(newRefreshToken);
@@ -193,7 +190,6 @@ namespace Business.Concrete
 
         private void CreateDifferentRefreshToken(RefreshToken refreshToken)
         {
-
             while (_refreshTokenService.GetByRefreshToken(refreshToken.RefreshTokenValue).Data != null)
                 refreshToken.RefreshTokenValue = _tokenHelper.CreateRefreshToken();
 

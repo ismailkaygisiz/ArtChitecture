@@ -36,7 +36,6 @@ namespace Business.Concrete
             if (result != null) return result;
 
             var entityToDelete = GetById(entity.Id).Data;
-
             _translateDal.Delete(entityToDelete);
             return new SuccessResult();
         }

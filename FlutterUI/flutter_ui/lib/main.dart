@@ -37,13 +37,11 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     // TODO: implement initState
-    authService.setRefreshTokenEvents(() {
-      print("Failed");
-    }, (token) {
-      print("Succeed");
-    });
-
     super.initState();
+    authService.setRefreshTokenEvents(
+      () => print("Failed"),
+      (token) => print("Succeed"),
+    );
     _getTranslates();
   }
 
@@ -68,8 +66,7 @@ class _HomeState extends State<Home> {
     sessionService.get("lang").then((value) {
       _lang = value;
       translateService.getTranslates(value).then((dynamic value) {
-        translates = value["data"];
-        setState(() {});
+        setState(() => translates = value["data"]);
       });
     });
   }
