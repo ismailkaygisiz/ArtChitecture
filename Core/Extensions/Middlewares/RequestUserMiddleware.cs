@@ -1,10 +1,10 @@
-﻿using Core.Business;
+﻿using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
+using Core.Business;
 using Core.Utilities.IoC;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
 
 namespace Core.Extensions.Middlewares
 {
@@ -15,15 +15,15 @@ namespace Core.Extensions.Middlewares
 
         public RequestUserMiddleware(RequestDelegate next)
         {
-            _requestUserService = ServiceTool.ServiceProvider.GetService<IRequestUserService>();
             _next = next;
+            _requestUserService = ServiceTool.ServiceProvider.GetService<IRequestUserService>();
         }
 
         public async Task InvokeAsync(HttpContext context)
         {
-            var claims = context.User.Identities.First().Claims.ToList();
+            var claims = context.User.Claims.ToList();
 
-            if (claims.Count > 0 && context.User.Identity.IsAuthenticated)
+            if (claims.Count > 0)
             {
                 var id = claims.Find(c => c.Type == ClaimTypes.NameIdentifier).Value;
                 var firstName = claims.Find(c => c.Type == ClaimTypes.Name).Value;
@@ -43,8 +43,9 @@ namespace Core.Extensions.Middlewares
                 });
             }
             else
+            {
                 _requestUserService.SetRequestUser(null);
-            
+            }
 
             await _next.Invoke(context);
         }

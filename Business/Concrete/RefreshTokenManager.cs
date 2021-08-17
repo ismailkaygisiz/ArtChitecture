@@ -1,9 +1,9 @@
-﻿using Business.Abstract;
+﻿using System.Collections.Generic;
+using Business.Abstract;
 using Core.Entities.Concrete;
 using Core.Utilities.Results.Abstract;
 using Core.Utilities.Results.Concrete;
 using DataAccess.Abstract;
-using System.Collections.Generic;
 
 namespace Business.Concrete
 {
@@ -39,11 +39,6 @@ namespace Business.Concrete
             return new SuccessDataResult<RefreshToken>(_refreshTokenDal.Get(r => r.ClientId == clientId));
         }
 
-        public IDataResult<RefreshToken> GetByClientNameAndUserId(string clientName, int userId)
-        {
-            return new SuccessDataResult<RefreshToken>(_refreshTokenDal.Get(r => r.ClientName == clientName && r.UserId == userId));
-        }
-
         public IDataResult<RefreshToken> GetById(int id)
         {
             return new SuccessDataResult<RefreshToken>(_refreshTokenDal.Get(r => r.Id == id));
@@ -58,6 +53,12 @@ namespace Business.Concrete
         {
             _refreshTokenDal.Update(entity);
             return new SuccessResult();
+        }
+
+        public IDataResult<RefreshToken> GetByClientNameAndUserId(string clientName, int userId)
+        {
+            return new SuccessDataResult<RefreshToken>(_refreshTokenDal.Get(r =>
+                r.ClientName == clientName && r.UserId == userId));
         }
     }
 }

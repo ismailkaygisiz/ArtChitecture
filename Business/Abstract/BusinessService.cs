@@ -7,11 +7,11 @@ namespace Business.Abstract
 {
     public abstract class BusinessService : ServiceBase
     {
-        protected BusinessMessages BusinessMessages { get; }
-
         public BusinessService()
         {
             BusinessMessages = ServiceTool.ServiceProvider.GetService<BusinessMessages>();
         }
+
+        protected BusinessMessages BusinessMessages { get; }
     }
 }

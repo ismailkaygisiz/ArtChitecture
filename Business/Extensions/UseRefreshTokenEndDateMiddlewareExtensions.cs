@@ -5,7 +5,8 @@ namespace Business.Extensions
 {
     public static class UseRefreshTokenEndDateMiddlewareExtensions
     {
-        public static IApplicationBuilder UseRefreshTokenEndDate(this IApplicationBuilder applicationBuilder, bool useEndDate)
+        public static IApplicationBuilder UseRefreshTokenEndDate(this IApplicationBuilder applicationBuilder,
+            bool useEndDate)
         {
             return applicationBuilder.UseMiddleware<UseRefreshTokenEndDateMiddleware>(useEndDate);
         }

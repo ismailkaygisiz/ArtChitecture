@@ -1,8 +1,8 @@
-﻿using Core.Business.Translate;
+﻿using System.Collections.Generic;
+using Core.Business.Translate;
 using Core.Utilities.IoC;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
-using System.Collections.Generic;
 
 namespace Business.ValidationRules
 {

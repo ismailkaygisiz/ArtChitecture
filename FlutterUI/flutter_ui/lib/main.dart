@@ -39,9 +39,11 @@ class _HomeState extends State<Home> {
     // TODO: implement initState
     super.initState();
     authService.setRefreshTokenEvents(
-      () => print("Failed"),
-      (token) => print("Succeed"),
-    );
+        () => print(
+            "Failed"), // It's Works When Token Refresh Operation On Failed
+        (token) => print(
+              "Succeed, Token Expiration : ${token.expiration}", // It's Works When Token Refresh Operation On Succeed
+            ));
     _getTranslates();
   }
 

@@ -1,8 +1,8 @@
-﻿using Core.Business;
+﻿using System.Collections.Generic;
+using Core.Business;
 using Core.Entities.Concrete;
 using Core.Entities.DTOs;
 using Core.Utilities.Results.Abstract;
-using System.Collections.Generic;
 
 namespace Business.Abstract
 {

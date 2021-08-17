@@ -1,5 +1,5 @@
-﻿using Core.Entities.Concrete;
-using System;
+﻿using System;
+using Core.Entities.Concrete;
 
 namespace Core.Utilities.Security.JWT
 {

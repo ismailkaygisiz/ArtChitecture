@@ -1,6 +1,6 @@
+using System.Collections.Generic;
 using Core.Entities.Abstract;
 using Core.Utilities.Results.Abstract;
-using System.Collections.Generic;
 
 namespace Core.Business
 {

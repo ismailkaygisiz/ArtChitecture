@@ -1,28 +1,28 @@
-﻿using Business.Abstract;
+﻿using System.Threading.Tasks;
+using Business.Abstract;
 using Core.Entities.Concrete;
 using Core.Utilities.Security.Hashing;
 using Microsoft.AspNetCore.Http;
-using System.Threading.Tasks;
 
 namespace Business.Extensions.Middlewares
 {
     public class CreateSuperUserMiddleware
     {
         private readonly RequestDelegate _next;
-        private readonly IUserService _userService;
         private readonly IUserOperationClaimService _userOperationClaimService;
+        private readonly IUserService _userService;
 
-        public CreateSuperUserMiddleware(RequestDelegate next, IUserService userService, IUserOperationClaimService userOperationClaimService)
+        public CreateSuperUserMiddleware(RequestDelegate next, IUserService userService,
+            IUserOperationClaimService userOperationClaimService)
         {
             _next = next;
             _userService = userService;
             _userOperationClaimService = userOperationClaimService;
         }
+
         public async Task InvokeAsync(HttpContext context)
         {
-            byte[] passwordHash;
-            byte[] passwordSalt;
-            HashingHelper.CreatePasswordHash("Admin@123", out passwordHash, out passwordSalt);
+            HashingHelper.CreatePasswordHash("Admin@123", out var passwordHash, out var passwordSalt);
 
             var user = new User
             {
@@ -36,13 +36,11 @@ namespace Business.Extensions.Middlewares
 
             var newUser = _userService.AddWithId(user);
             if (newUser.Success)
-            {
-                _userOperationClaimService.AddForSuperUser(new UserOperationClaim()
+                _userOperationClaimService.AddForSuperUser(new UserOperationClaim
                 {
                     OperationClaimId = 1,
                     UserId = newUser.Data.Id
                 });
-            }
 
             await _next.Invoke(context);
         }

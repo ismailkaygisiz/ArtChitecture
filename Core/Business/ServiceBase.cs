@@ -9,12 +9,6 @@ namespace Core.Business
 {
     public class ServiceBase
     {
-        protected IHttpContextAccessor HttpContextAccessor { get; }
-        protected IRequestUserService RequestUserService { get; }
-        protected ITranslateContext TranslateContext { get; }
-        protected IConfiguration Configuration { get; }
-        protected CoreMessages CoreMessages { get; }
-
         public ServiceBase()
         {
             HttpContextAccessor = ServiceTool.ServiceProvider.GetService<IHttpContextAccessor>();
@@ -23,5 +17,11 @@ namespace Core.Business
             Configuration = ServiceTool.ServiceProvider.GetService<IConfiguration>();
             CoreMessages = ServiceTool.ServiceProvider.GetService<CoreMessages>();
         }
+
+        protected IHttpContextAccessor HttpContextAccessor { get; }
+        protected IRequestUserService RequestUserService { get; }
+        protected ITranslateContext TranslateContext { get; }
+        protected IConfiguration Configuration { get; }
+        protected CoreMessages CoreMessages { get; }
     }
 }

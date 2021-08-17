@@ -7,11 +7,11 @@ namespace Business.Extensions
 {
     public abstract class BusinessService<T> : BusinessService where T : Hub
     {
-        protected IHubContext<T> HubContext { get; }
-
         public BusinessService()
         {
             HubContext = ServiceTool.ServiceProvider.GetService<IHubContext<T>>();
         }
+
+        protected IHubContext<T> HubContext { get; }
     }
 }

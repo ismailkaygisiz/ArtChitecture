@@ -1,4 +1,5 @@
-﻿using Business.Abstract;
+﻿using System.Collections.Generic;
+using Business.Abstract;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Authorization;
 using Core.Aspects.Autofac.Caching;
@@ -10,7 +11,6 @@ using Core.Entities.DTOs;
 using Core.Utilities.Results.Abstract;
 using Core.Utilities.Results.Concrete;
 using DataAccess.Abstract;
-using System.Collections.Generic;
 
 namespace Business.Concrete
 {
@@ -129,16 +129,6 @@ namespace Business.Concrete
             return new SuccessDataResult<User>(_userDal.AddWithId(entity));
         }
 
-        private IResult CheckIfUserAlreadyExists(string email)
-        {
-            var result = GetByEmail(email).Data;
-
-            if (result != null) return new ErrorResult();
-            
-
-            return new SuccessResult();
-        }
-
         [TransactionScopeAspect]
         public IResult UpdateForAuth(User entity)
         {
@@ -153,6 +143,16 @@ namespace Business.Concrete
         public IDataResult<User> GetByIdForAuth(int id)
         {
             return new SuccessDataResult<User>(_userDal.Get(u => u.Id == id));
+        }
+
+        private IResult CheckIfUserAlreadyExists(string email)
+        {
+            var result = GetByEmail(email).Data;
+
+            if (result != null) return new ErrorResult();
+
+
+            return new SuccessResult();
         }
     }
 }

@@ -1,6 +1,6 @@
-﻿using FluentValidation;
+﻿using System.Collections.Generic;
+using FluentValidation;
 using FluentValidation.Results;
-using System.Collections.Generic;
 
 namespace Core.CrossCuttingConcerns.Validation.FluentValidation
 {
@@ -11,7 +11,7 @@ namespace Core.CrossCuttingConcerns.Validation.FluentValidation
             var context = new ValidationContext<object>(entity);
             var result = validator.Validate(context);
 
-            if (!result.IsValid) return (List<ValidationFailure>)result.Errors;
+            if (!result.IsValid) return (List<ValidationFailure>) result.Errors;
 
             return null;
         }

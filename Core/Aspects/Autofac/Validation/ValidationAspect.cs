@@ -1,13 +1,13 @@
-﻿using Castle.DynamicProxy;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Castle.DynamicProxy;
 using Core.CrossCuttingConcerns.Validation.FluentValidation;
 using Core.Utilities.Helpers.InterceptorHelpers;
 using Core.Utilities.Interceptors;
 using Core.Utilities.Results.Concrete;
 using FluentValidation;
 using FluentValidation.Results;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Core.Aspects.Autofac.Validation
 {
@@ -27,7 +27,7 @@ namespace Core.Aspects.Autofac.Validation
 
         protected override void OnBefore(IInvocation invocation)
         {
-            var validator = (IValidator)Activator.CreateInstance(_validatorType);
+            var validator = (IValidator) Activator.CreateInstance(_validatorType);
             var entityType = _validatorType.BaseType.GetGenericArguments()[0];
 
             var notNullEntities = invocation.Arguments.Where(t => t != null);
@@ -45,7 +45,8 @@ namespace Core.Aspects.Autofac.Validation
                 var validationErrors = new List<string>();
 
                 foreach (var error in _errors) validationErrors.Add(error.ErrorMessage);
-                AutofacInterceptorHelper.ChangeReturnValue(invocation, typeof(ValidationErrorDataResult<>), validationErrors,
+                AutofacInterceptorHelper.ChangeReturnValue(invocation, typeof(ValidationErrorDataResult<>),
+                    validationErrors,
                     CoreMessages.ValidationError());
             }
         }

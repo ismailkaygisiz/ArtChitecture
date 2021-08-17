@@ -8,7 +8,7 @@ namespace Core.Business
 {
     public class RequestUserManager : IRequestUserService
     {
-        private CoreMessages _coreMessages;
+        private readonly CoreMessages _coreMessages;
         private RequestUser _requestUser;
 
         public RequestUserManager()
@@ -60,6 +60,5 @@ namespace Core.Business
 
             return null;
         }
-
     }
 }

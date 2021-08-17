@@ -1,14 +1,14 @@
-﻿using Core.Entities.Concrete;
-using Core.Extensions;
-using Core.Utilities.Security.Encryption;
-using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Security.Cryptography;
+using Core.Entities.Concrete;
+using Core.Extensions;
+using Core.Utilities.Security.Encryption;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Core.Utilities.Security.JWT
 {
@@ -41,6 +41,16 @@ namespace Core.Utilities.Security.JWT
             };
         }
 
+        public string CreateRefreshToken()
+        {
+            var number = new byte[32];
+            using (var random = RandomNumberGenerator.Create())
+            {
+                random.GetBytes(number);
+                return Convert.ToBase64String(number);
+            }
+        }
+
         public JwtSecurityToken CreateJwtSecurityToken(TokenOptions tokenOptions, User user,
             SigningCredentials signingCredentials, List<OperationClaim> operationClaims)
         {
@@ -68,16 +78,6 @@ namespace Core.Utilities.Security.JWT
             claims.AddStatus(user.Status);
 
             return claims;
-        }
-
-        public string CreateRefreshToken()
-        {
-            byte[] number = new byte[32];
-            using (RandomNumberGenerator random = RandomNumberGenerator.Create())
-            {
-                random.GetBytes(number);
-                return Convert.ToBase64String(number);
-            }
         }
     }
 }

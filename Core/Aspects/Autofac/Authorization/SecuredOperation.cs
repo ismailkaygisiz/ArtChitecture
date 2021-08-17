@@ -1,58 +1,57 @@
-﻿using Castle.Core.Internal;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Castle.Core.Internal;
 using Castle.DynamicProxy;
 using Core.Business;
-using Core.Extensions;
 using Core.Utilities.Helpers.InterceptorHelpers;
 using Core.Utilities.Interceptors;
 using Core.Utilities.IoC;
 using Core.Utilities.Results.Abstract;
 using Core.Utilities.Results.Concrete;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Core.Aspects.Autofac.Authorization
 {
     public class SecuredOperation : MethodInterception
     {
-        private IHttpContextAccessor HttpContextAccessor { get; }
-        private IRequestUserService RequestUserService { get; }
+        private readonly string _arg;
 
-        private List<string> Args { get; }
-        private string Arg { get; }
-        private string[] Roles { get; }
-        private bool Error { get; set; }
-        
+        private readonly List<string> _args;
+        private readonly string[] _roles;
+
         public SecuredOperation(string roles)
         {
             Priority = 2;
-            Roles = roles.Split(',');
+            _roles = roles.Split(',');
 
             RequestUserService = ServiceTool.ServiceProvider.GetService<IRequestUserService>();
-            HttpContextAccessor = ServiceTool.ServiceProvider.GetService<IHttpContextAccessor>();
         }
 
         public SecuredOperation(string roles, string arg) : this(roles)
         {
-            Arg = arg;
+            _arg = arg;
 
             if (arg.Contains("."))
             {
-                Args = arg.Split('.').ToList();
-                Arg = Args[0];
+                _args = arg.Split('.').ToList();
+                _arg = _args[0];
 
-                var argToDel = Args.SingleOrDefault(a => a == Arg);
-                Args.Remove(argToDel);
+                var argToDel = _args.SingleOrDefault(a => a == _arg);
+                _args.Remove(argToDel);
             }
             else
-                Args = new List<string>();
+            {
+                _args = new List<string>();
+            }
         }
+
+        private IRequestUserService RequestUserService { get; }
+        private bool Error { get; set; }
 
         protected override void OnBefore(IInvocation invocation)
         {
-            List<string> roleClaims = RequestUserService.GetRequestUser().Data?.Roles;
+            var roleClaims = RequestUserService.GetRequestUser().Data?.Roles;
             if (roleClaims == null)
             {
                 Invoke = false;
@@ -64,17 +63,16 @@ namespace Core.Aspects.Autofac.Authorization
                 return;
 
             var parameters = invocation.Method.GetParameters();
-            var parameter = parameters.Find(p => p.Name == Arg);
-
-            dynamic methodArg = new int();
+            var parameter = parameters.Find(p => p.Name == _arg);
+            dynamic methodArg = 0;
 
             if (invocation.Arguments != null && parameter != null)
             {
                 methodArg = invocation.Arguments.GetValue(parameter.Position);
                 Type entity = methodArg.GetType();
 
-                int index = 0;
-                foreach (var arg in Args)
+                var index = 0;
+                foreach (var arg in _args)
                 {
                     if (index == 0)
                         methodArg = entity.GetProperty(arg).GetValue(methodArg, null);
@@ -84,7 +82,7 @@ namespace Core.Aspects.Autofac.Authorization
                     index++;
                 }
 
-                foreach (var role in Roles)
+                foreach (var role in _roles)
                     if (roleClaims.Contains(role))
                         if (Control(methodArg).Success)
                             return;
@@ -94,7 +92,7 @@ namespace Core.Aspects.Autofac.Authorization
                 return;
             }
 
-            foreach (var role in Roles)
+            foreach (var role in _roles)
                 if (roleClaims.Contains(role))
                     return;
 

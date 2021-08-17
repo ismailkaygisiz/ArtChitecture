@@ -1,9 +1,9 @@
-﻿using Castle.DynamicProxy;
+﻿using System;
+using System.Transactions;
+using Castle.DynamicProxy;
 using Core.Utilities.Helpers.InterceptorHelpers;
 using Core.Utilities.Interceptors;
 using Core.Utilities.Results.Concrete;
-using System;
-using System.Transactions;
 
 namespace Core.Aspects.Autofac.Transaction
 {
@@ -16,7 +16,7 @@ namespace Core.Aspects.Autofac.Transaction
 
         public override void Intercept(IInvocation invocation)
         {
-            using (TransactionScope transactionScope = new TransactionScope())
+            using (var transactionScope = new TransactionScope())
             {
                 try
                 {
@@ -25,7 +25,7 @@ namespace Core.Aspects.Autofac.Transaction
                 }
                 catch (Exception e)
                 {
-                    _ = e.Message;
+                    _ = e;
                     transactionScope.Dispose();
 
                     var transactionError = TranslateContext.Translates["Transaction_Error_Key"];

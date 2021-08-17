@@ -58,9 +58,9 @@
         private static bool ForController(string arg, char[] chars)
         {
             foreach (var i in arg)
-                foreach (var j in chars)
-                    if (i == j)
-                        return true;
+            foreach (var j in chars)
+                if (i == j)
+                    return true;
 
             return false;
         }

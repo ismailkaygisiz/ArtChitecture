@@ -1,10 +1,10 @@
-﻿using Business.Abstract;
+﻿using System.Collections.Generic;
+using Business.Abstract;
 using Core.Business;
 using Core.Entities.Concrete;
 using Core.Utilities.Results.Abstract;
 using Core.Utilities.Results.Concrete;
 using DataAccess.Abstract;
-using System.Collections.Generic;
 
 namespace Business.Concrete
 {
@@ -77,7 +77,8 @@ namespace Business.Concrete
             if (language != null)
                 GetByLanguageId(language.Id).Data.ForEach(t => { dictionary.Add(t.Key, t.Value); });
             else
-                GetByLanguageId(_languageService.GetByCode("en-Us").Data.Id).Data.ForEach(t => { dictionary.Add(t.Key, t.Value); });
+                GetByLanguageId(_languageService.GetByCode("en-Us").Data.Id).Data
+                    .ForEach(t => { dictionary.Add(t.Key, t.Value); });
 
             return new SuccessDataResult<Dictionary<string, string>>(dictionary);
         }

@@ -1,9 +1,14 @@
-﻿namespace FlutterUI
+﻿using System.Diagnostics;
+
+namespace FlutterUI
 {
-    internal class Program
+    public class Program
     {
-        private static void Main(string[] args)
+        public static void Main(string[] args)
         {
+            var startInfo = new ProcessStartInfo("cmd.exe", "/K cd ..&cd ..&cd ..&cd flutter_ui&flutter pub get");
+            var cmd = Process.Start(startInfo);
+            cmd.WaitForExit();
         }
     }
 }

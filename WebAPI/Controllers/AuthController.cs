@@ -1,4 +1,5 @@
-﻿using Business.Abstract;
+﻿using System;
+using Business.Abstract;
 using Core.Business;
 using Core.Entities.Concrete;
 using Core.Entities.DTOs;
@@ -6,7 +7,6 @@ using Core.Utilities.IoC;
 using Core.Utilities.Results.Concrete;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
-using System;
 
 namespace WebAPI.Controllers
 {
@@ -15,11 +15,12 @@ namespace WebAPI.Controllers
     public class AuthController : Controller
     {
         private readonly IAuthService _authService;
-        private readonly IUserService _userService;
         private readonly IRefreshTokenService _refreshTokenService;
         private readonly IRequestUserService _requestUserService;
+        private readonly IUserService _userService;
 
-        public AuthController(IAuthService authService, IUserService userService, IRefreshTokenService refreshTokenService)
+        public AuthController(IAuthService authService, IUserService userService,
+            IRefreshTokenService refreshTokenService)
         {
             _authService = authService;
             _userService = userService;
@@ -70,7 +71,8 @@ namespace WebAPI.Controllers
 
         private IActionResult RefreshTokenControl(User user, RefreshTokenRequest refreshToken)
         {
-            var result = _authService.CreateAccessToken(user, refreshToken.RefreshToken, refreshToken.ClientName, refreshToken.ClientId);
+            var result = _authService.CreateAccessToken(user, refreshToken.RefreshToken, refreshToken.ClientName,
+                refreshToken.ClientId);
             if (result.Success) return Ok(result);
 
             _requestUserService.SetRequestUser(null);
