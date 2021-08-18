@@ -18,8 +18,6 @@ namespace Core.Utilities.Interceptors
                 .GetCustomAttributes<MethodInterceptionBaseAttribute>(true);
             classAttributes.AddRange(methodAttributes);
             classAttributes.Add(new ExceptionLogAspect(typeof(FileLogger)));
-            classAttributes.Add(new ExceptionLogAspect(typeof(MsSqlLogger)));
-            classAttributes.Add(new LogAspect(typeof(MsSqlLogger)));
             classAttributes.Add(new PerformanceAspect(10));
 
             return classAttributes.OrderBy(x => x.Priority).ToArray();

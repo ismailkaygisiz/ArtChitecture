@@ -1,5 +1,4 @@
-﻿using System;
-using Business.Abstract;
+﻿using Business.Abstract;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Authorization;
 using Core.Aspects.Autofac.Transaction;
@@ -12,6 +11,7 @@ using Core.Utilities.Results.Concrete;
 using Core.Utilities.Security.Hashing;
 using Core.Utilities.Security.JWT;
 using Microsoft.Extensions.Configuration;
+using System;
 
 namespace Business.Concrete
 {
@@ -50,9 +50,7 @@ namespace Business.Concrete
         [TransactionScopeAspect]
         [SecuredOperation("User", "userForLoginDto.Email")]
         [ValidationAspect(typeof(LoginValidator))] // Will be Upgrade
-        public IDataResult<AccessToken>
-            ChangePassword(UserForLoginDto userForLoginDto,
-                string newPassword) // New Model Will be Added for ChangePassword
+        public IDataResult<AccessToken> ChangePassword(UserForLoginDto userForLoginDto, string newPassword) // New Model Will be Added for ChangePassword
         {
             var result = BusinessRules.Run(
                 CheckIfUserIsNotExists(userForLoginDto),
@@ -134,11 +132,20 @@ namespace Business.Concrete
         private IResult CheckIfUserIsNotExists(UserForLoginDto userForLoginDto)
         {
             var user = _userService.GetByEmailForAuth(userForLoginDto.Email).Data;
-            if (user == null) return new ErrorResult(BusinessMessages.UserIsNotExists());
+            if (user == null)
+            {
+                MsSqlLogger.Warn("Hatalı Giriş Denemesi Yapıldı");
+                return new ErrorResult(BusinessMessages.UserIsNotExists());
+            }
 
             if (user != null)
+            {
                 if (!HashingHelper.VerifyPasswordHash(userForLoginDto.Password, user.PasswordHash, user.PasswordSalt))
+                {
+                    MsSqlLogger.Warn("Hatalı Giriş Denemesi Yapıldı");
                     return new ErrorResult(BusinessMessages.PasswordIsNotTrue());
+                }
+            }
 
             return new SuccessResult();
         }

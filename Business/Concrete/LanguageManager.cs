@@ -1,5 +1,7 @@
 ﻿using Business.Abstract;
+using Core.Aspects.Autofac.Logging;
 using Core.Business;
+using Core.CrossCuttingConcerns.Logging.SeriLog.Loggers;
 using Core.Entities.Concrete;
 using Core.Utilities.Results.Abstract;
 using Core.Utilities.Results.Concrete;
@@ -17,6 +19,7 @@ namespace Business.Concrete
             _languageDal = languageDal;
         }
 
+        [LogAspect(typeof(MsSqlLogger))]
         public IResult Add(Language entity)
         {
             var result = BusinessRules.Run();
@@ -27,6 +30,7 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
+        [LogAspect(typeof(MsSqlLogger))]
         public IResult Delete(Language entity)
         {
             var result = BusinessRules.Run();
@@ -39,6 +43,7 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
+        [LogAspect(typeof(MsSqlLogger))]
         public IResult Update(Language entity)
         {
             var result = BusinessRules.Run();

@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using Business.Abstract;
+using Core.Aspects.Autofac.Logging;
+using Core.CrossCuttingConcerns.Logging.SeriLog.Loggers;
 using Core.Entities.Concrete;
 using Core.Utilities.Results.Abstract;
 using Core.Utilities.Results.Concrete;
@@ -22,6 +24,7 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
+        [LogAspect(typeof(MsSqlLogger))]
         public IResult Delete(RefreshToken entity)
         {
             var entityToDelete = GetById(entity.Id).Data;

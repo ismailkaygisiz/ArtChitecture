@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text.Encodings.Web;
-using System.Text.Json;
-using System.Text.Unicode;
-using Castle.DynamicProxy;
+﻿using Castle.DynamicProxy;
 using Core.Business;
 using Core.CrossCuttingConcerns.Logging;
 using Core.CrossCuttingConcerns.Logging.Serilog;
 using Core.Utilities.Interceptors;
 using Core.Utilities.IoC;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
 
 namespace Core.Aspects.Autofac.Logging
 {
@@ -23,7 +21,7 @@ namespace Core.Aspects.Autofac.Logging
             if (loggerService.BaseType != typeof(LoggerServiceBase))
                 throw new ArgumentException("");
 
-            _loggerServiceBase = (LoggerServiceBase) ServiceTool.ServiceProvider.GetService(loggerService);
+            _loggerServiceBase = (LoggerServiceBase)ServiceTool.ServiceProvider.GetService(loggerService);
             _requestUserService = ServiceTool.ServiceProvider.GetService<IRequestUserService>();
         }
 
@@ -48,10 +46,7 @@ namespace Core.Aspects.Autofac.Logging
             {
                 MethodName = methodName,
                 Parameters = logParameters,
-                User = _requestUserService.GetRequestUser().Data == null ||
-                       _requestUserService.GetRequestUser().Data.FirstName == null
-                    ? "?"
-                    : _requestUserService.GetRequestUser().Data.FirstName,
+                User = JsonConvert.SerializeObject(_requestUserService.GetRequestUser().Data?.Email != null ? _requestUserService.GetRequestUser().Data : null),
                 FullName = (_requestUserService.GetRequestUser().Data == null ||
                             _requestUserService.GetRequestUser().Data.FirstName == null
                                ? "?"
@@ -62,11 +57,7 @@ namespace Core.Aspects.Autofac.Logging
                                : _requestUserService.GetRequestUser().Data.LastName)
             };
 
-            return JsonSerializer.Serialize(logDetail, new JsonSerializerOptions
-            {
-                Encoder = JavaScriptEncoder.Create(UnicodeRanges.All),
-                WriteIndented = true
-            });
+            return JsonConvert.SerializeObject(logDetail);
         }
     }
 }

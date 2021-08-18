@@ -12,14 +12,14 @@ namespace Core.CrossCuttingConcerns.Logging.SeriLog.Loggers
     {
         public MsSqlLogger()
         {
-            var configuration = ServiceTool.ServiceProvider.GetService<IConfiguration>();
+            IConfiguration configuration = ServiceTool.ServiceProvider.GetService<IConfiguration>();
 
-            var logConfig = configuration.GetSection("SeriLogConfigurations:MsSqlConfiguration")
+            MsSqlConfiguration logConfig = configuration.GetSection("SeriLogConfigurations:MsSqlConfiguration")
                                 .Get<MsSqlConfiguration>() ??
                             throw new Exception("");
-            var sinkOpts = new MSSqlServerSinkOptions { TableName = "Logs", AutoCreateSqlTable = true };
+            MSSqlServerSinkOptions sinkOpts = new MSSqlServerSinkOptions { TableName = "Logs", AutoCreateSqlTable = true };
 
-            var columnOpts = new ColumnOptions();
+            ColumnOptions columnOpts = new ColumnOptions();
             columnOpts.Store.Remove(StandardColumn.Message);
             columnOpts.Store.Remove(StandardColumn.Properties);
 

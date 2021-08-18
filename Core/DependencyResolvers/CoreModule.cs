@@ -1,13 +1,14 @@
-﻿using System.Diagnostics;
-using Core.Business;
+﻿using Core.Business;
 using Core.Business.Translate;
 using Core.CrossCuttingConcerns.Caching;
 using Core.CrossCuttingConcerns.Caching.Microsoft;
 using Core.CrossCuttingConcerns.Logging.SeriLog.Loggers;
 using Core.Utilities.Constants;
+using Core.Utilities.Helpers.MailHelpers;
 using Core.Utilities.IoC;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using System.Diagnostics;
 
 namespace Core.DependencyResolvers
 {
@@ -21,9 +22,10 @@ namespace Core.DependencyResolvers
             serviceCollection.AddSingleton<ICacheManager, MemoryCacheManager>();
             serviceCollection.AddSingleton<IRequestUserService, RequestUserManager>();
             serviceCollection.AddSingleton<ITranslateContext, TranslateContext>();
+            serviceCollection.AddSingleton<IMailHelper, SmtpMailHelper>();
             serviceCollection.AddSingleton<CoreMessages>();
-            serviceCollection.AddSingleton<FileLogger>();
-            serviceCollection.AddSingleton<MsSqlLogger>();
+            serviceCollection.AddTransient<FileLogger>();
+            serviceCollection.AddTransient<MsSqlLogger>();
         }
     }
 }

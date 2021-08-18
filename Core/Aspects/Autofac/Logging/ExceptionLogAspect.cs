@@ -10,6 +10,7 @@ using Core.CrossCuttingConcerns.Logging.Serilog;
 using Core.Utilities.Interceptors;
 using Core.Utilities.IoC;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
 
 namespace Core.Aspects.Autofac.Logging
 {
@@ -23,7 +24,7 @@ namespace Core.Aspects.Autofac.Logging
             if (loggerService.BaseType != typeof(LoggerServiceBase))
                 throw new ArgumentException("");
 
-            _loggerServiceBase = (LoggerServiceBase) Activator.CreateInstance(loggerService);
+            _loggerServiceBase = (LoggerServiceBase)Activator.CreateInstance(loggerService);
             _requestUserService = ServiceTool.ServiceProvider.GetService<IRequestUserService>();
         }
 
@@ -34,27 +35,20 @@ namespace Core.Aspects.Autofac.Logging
                 ? string.Join(Environment.NewLine, (e as AggregateException).InnerExceptions.Select(x => x.Message))
                 : e.Message;
 
-            _loggerServiceBase.Error(JsonSerializer.Serialize(logDetailWithException, new JsonSerializerOptions
-            {
-                Encoder = JavaScriptEncoder.Create(UnicodeRanges.All),
-                WriteIndented = true
-            }));
+            _loggerServiceBase.Error(JsonConvert.SerializeObject(logDetailWithException));
         }
 
         private LogDetailWithException GetLogDetail(IInvocation invocation, Exception e)
         {
             var logParameters = invocation.Arguments.Select((t, i) => new LogParameter
-                    {Name = invocation.GetConcreteMethod().GetParameters()[i].Name, Value = t, Type = t.GetType().Name})
+            { Name = invocation.GetConcreteMethod().GetParameters()[i].Name, Value = t, Type = t.GetType().Name })
                 .ToList();
             var methodName = invocation.MethodInvocationTarget.DeclaringType.FullName + "." + invocation.Method.Name;
             return new LogDetailWithException
             {
                 MethodName = methodName,
                 Parameters = logParameters,
-                User = _requestUserService.GetRequestUser().Data == null ||
-                       _requestUserService.GetRequestUser().Data.FirstName == null
-                    ? "?"
-                    : _requestUserService.GetRequestUser().Data.FirstName,
+                User = JsonConvert.SerializeObject(_requestUserService.GetRequestUser().Data?.Email != null ? _requestUserService.GetRequestUser().Data : null),
                 FullName = (_requestUserService.GetRequestUser().Data == null ||
                             _requestUserService.GetRequestUser().Data.FirstName == null
                                ? "?"

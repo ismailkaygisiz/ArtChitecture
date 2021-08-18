@@ -13,13 +13,13 @@ namespace Core.CrossCuttingConcerns.Logging.SeriLog.Loggers
     {
         public FileLogger()
         {
-            var configuration = ServiceTool.ServiceProvider.GetService<IConfiguration>();
+            IConfiguration configuration = ServiceTool.ServiceProvider.GetService<IConfiguration>();
 
-            var logConfig = configuration.GetSection("SeriLogConfigurations:FileLogConfiguration")
+            FileLogConfiguration logConfig = configuration.GetSection("SeriLogConfigurations:FileLogConfiguration")
                                 .Get<FileLogConfiguration>() ??
                             throw new Exception("");
 
-            var logFilePath = string.Format("{0}{1}", Directory.GetCurrentDirectory() + logConfig.FolderPath, ".txt");
+            string logFilePath = string.Format("{0}{1}", Directory.GetCurrentDirectory() + logConfig.FolderPath, ".txt");
 
             Logger = new LoggerConfiguration()
                 .WriteTo.File(

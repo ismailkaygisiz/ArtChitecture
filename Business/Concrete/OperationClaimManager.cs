@@ -3,9 +3,11 @@ using Business.Abstract;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Authorization;
 using Core.Aspects.Autofac.Caching;
+using Core.Aspects.Autofac.Logging;
 using Core.Aspects.Autofac.Transaction;
 using Core.Aspects.Autofac.Validation;
 using Core.Business;
+using Core.CrossCuttingConcerns.Logging.SeriLog.Loggers;
 using Core.Entities.Concrete;
 using Core.Utilities.Results.Abstract;
 using Core.Utilities.Results.Concrete;
@@ -13,6 +15,7 @@ using DataAccess.Abstract;
 
 namespace Business.Concrete
 {
+    [LogAspect(typeof(MsSqlLogger))]
     public class OperationClaimManager : BusinessService, IOperationClaimService
     {
         private readonly IOperationClaimDal _operationClaimDal;
