@@ -7,8 +7,21 @@ class SignalRService extends Service {
   HubConnection _hubConnection;
 
   Future<void> start(String hubUrl) async {
-    _hubConnection =
-        HubConnectionBuilder().withUrl(Environments.BASE_URL + hubUrl).build();
+    _hubConnection = HubConnectionBuilder()
+        .withUrl(Environments.BASE_URL + hubUrl)
+        .withAutomaticReconnect(
+      retryDelays: [
+        1000,
+        1000,
+        1000,
+        1000,
+        5000,
+        5000,
+        10000,
+        50000,
+      ],
+    ).build();
+
     await _hubConnection.start();
   }
 

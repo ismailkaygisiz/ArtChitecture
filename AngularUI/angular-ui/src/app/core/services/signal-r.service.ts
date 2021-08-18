@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HubConnection, HubConnectionBuilder } from '@aspnet/signalr';
+import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr';
 import { baseUrl } from 'src/api';
 
 @Injectable({
@@ -7,12 +7,15 @@ import { baseUrl } from 'src/api';
 })
 export class SignalRService {
   private _hubConnection: HubConnection;
-  constructor() {}
 
   async start(url: string): Promise<void> {
     this._hubConnection = new HubConnectionBuilder()
       .withUrl(baseUrl + url)
+      .withAutomaticReconnect([
+        1000, 2000, 2000, 2000, 5000, 5000, 10000, 50000,
+      ])
       .build();
+
     await this._hubConnection.start();
   }
 
