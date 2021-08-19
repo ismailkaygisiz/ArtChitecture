@@ -42,7 +42,6 @@ namespace Core.Extensions.Middlewares
                 StatusCode = httpContext.Response.StatusCode,
                 ErrorMessage = CoreMessages.InternalServerError()
             }.ToString());
-            ;
         }
     }
 }

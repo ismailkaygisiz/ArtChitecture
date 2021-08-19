@@ -10,8 +10,7 @@ namespace WebAPI.Extensions
 {
     public static class AddJwtAuthenticationExtensions
     {
-        public static AuthenticationBuilder AddJwtAuthentication(this IServiceCollection services,
-            IConfiguration configuration)
+        public static AuthenticationBuilder AddJwtAuthentication(this IServiceCollection services, IConfiguration configuration)
         {
             var tokenOptions = configuration.GetSection("TokenOptions").Get<TokenOptions>();
             return services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
