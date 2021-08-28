@@ -41,16 +41,6 @@ namespace Core.Utilities.Security.JWT
             };
         }
 
-        public string CreateRefreshToken()
-        {
-            var number = new byte[32];
-            using (var random = RandomNumberGenerator.Create())
-            {
-                random.GetBytes(number);
-                return Convert.ToBase64String(number);
-            }
-        }
-
         public JwtSecurityToken CreateJwtSecurityToken(TokenOptions tokenOptions, User user,
             SigningCredentials signingCredentials, List<OperationClaim> operationClaims)
         {

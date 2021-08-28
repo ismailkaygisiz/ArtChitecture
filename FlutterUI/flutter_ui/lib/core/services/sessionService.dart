@@ -1,4 +1,3 @@
-import 'package:flutter_ui/core/services/cryptoService.dart';
 import 'package:flutter_ui/core/utilities/dependencyResolver.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../utilities/service.dart';

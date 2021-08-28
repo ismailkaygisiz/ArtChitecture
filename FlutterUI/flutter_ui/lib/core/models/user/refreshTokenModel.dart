@@ -8,11 +8,20 @@ class RefreshTokenModel {
   String clientName;
   Map<String, dynamic> jsonData;
 
-  RefreshTokenModel(this.refreshTokenValue, this.refreshTokenEndDate,
-      this.clientId, this.clientName);
+  RefreshTokenModel(
+    this.refreshTokenValue,
+    this.refreshTokenEndDate,
+    this.clientId,
+    this.clientName,
+  );
 
-  RefreshTokenModel.withJson(this.refreshTokenValue, this.refreshTokenEndDate,
-      this.clientId, this.clientName, this.jsonData);
+  RefreshTokenModel.withJson(
+    this.refreshTokenValue,
+    this.refreshTokenEndDate,
+    this.clientId,
+    this.clientName,
+    this.jsonData,
+  );
 
   factory RefreshTokenModel.fromJson(Map<String, dynamic> json) {
     return RefreshTokenModel.withJson(

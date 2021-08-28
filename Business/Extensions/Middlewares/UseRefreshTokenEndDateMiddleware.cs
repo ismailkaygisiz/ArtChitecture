@@ -1,19 +1,19 @@
-﻿using System.Threading.Tasks;
-using Business.Abstract;
+﻿using Business.Helpers;
 using Microsoft.AspNetCore.Http;
+using System.Threading.Tasks;
 
 namespace Business.Extensions.Middlewares
 {
     public class UseRefreshTokenEndDateMiddleware
     {
-        private readonly IAuthService _authService;
         private readonly RequestDelegate _next;
+        private readonly IRefreshTokenHelper _refreshTokenHelper;
 
-        public UseRefreshTokenEndDateMiddleware(RequestDelegate next, IAuthService authService, bool useEndDate)
+        public UseRefreshTokenEndDateMiddleware(RequestDelegate next, IRefreshTokenHelper refreshTokenHelper, bool useEndDate)
         {
             _next = next;
-            _authService = authService;
-            _authService.UseRefreshTokenEndDate = useEndDate;
+            _refreshTokenHelper = refreshTokenHelper;
+            _refreshTokenHelper.UseRefreshTokenEndDate = useEndDate;
         }
 
         public async Task InvokeAsync(HttpContext context)

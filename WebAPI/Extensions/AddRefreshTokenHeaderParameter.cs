@@ -1,11 +1,10 @@
-﻿using Microsoft.OpenApi.Any;
-using Microsoft.OpenApi.Models;
+﻿using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Collections.Generic;
 
 namespace WebAPI.Extensions
 {
-    public class AddLanguageHeaderParameter : IOperationFilter
+    public class AddRefreshTokenHeaderParameter : IOperationFilter
     {
         public void Apply(OpenApiOperation operation, OperationFilterContext context)
         {
@@ -14,13 +13,12 @@ namespace WebAPI.Extensions
 
             operation.Parameters.Add(new OpenApiParameter
             {
-                Name = "lang",
+                Name = "RefreshToken",
                 In = ParameterLocation.Header,
                 Required = false,
                 Schema = new OpenApiSchema
                 {
-                    Type = "string",
-                    Default = new OpenApiString("en-US")
+                    Type = "string"
                 }
             });
         }

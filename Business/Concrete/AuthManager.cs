@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Business.Helpers;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Authorization;
 using Core.Aspects.Autofac.Transaction;
@@ -10,39 +11,42 @@ using Core.Utilities.Results.Abstract;
 using Core.Utilities.Results.Concrete;
 using Core.Utilities.Security.Hashing;
 using Core.Utilities.Security.JWT;
-using Microsoft.Extensions.Configuration;
-using System;
 
 namespace Business.Concrete
 {
     public class AuthManager : BusinessService, IAuthService
     {
         private readonly IRefreshTokenService _refreshTokenService;
+        private readonly IRefreshTokenHelper _refreshTokenHelper;
         private readonly ITokenHelper _tokenHelper;
         private readonly IUserService _userService;
 
-        public AuthManager(IUserService userService, ITokenHelper tokenHelper, IRefreshTokenService refreshTokenService)
+        public AuthManager(IUserService userService, ITokenHelper tokenHelper, IRefreshTokenService refreshTokenService, IRefreshTokenHelper refreshTokenHelper)
         {
             _userService = userService;
             _tokenHelper = tokenHelper;
             _refreshTokenService = refreshTokenService;
+            _refreshTokenHelper = refreshTokenHelper;
         }
 
         public bool UseRefreshTokenEndDate { get; set; }
 
         [TransactionScopeAspect]
-        public IDataResult<AccessToken> CreateAccessToken(User user, string refreshToken, string clientName,
-            string clientId)
+        public IDataResult<AccessToken> CreateAccessToken(User user)
         {
             var roles = _userService.GetClaims(user).Data;
             var accessToken = _tokenHelper.CreateToken(user, roles);
 
-            if (refreshToken != null)
-                accessToken.RefreshToken = UpdateOldRefreshToken(refreshToken, clientName, clientId);
-            else
-                accessToken.RefreshToken = CreateNewRefreshToken(user, clientName, clientId);
+            UseRefreshTokenEndDate = _refreshTokenHelper.UseRefreshTokenEndDate;
 
-            if (accessToken.RefreshToken == null) return new ErrorDataResult<AccessToken>();
+            string refreshToken = HttpContextAccessor.HttpContext.Request.Headers["RefreshToken"];
+            if (_refreshTokenHelper.Control(refreshToken))
+                accessToken.RefreshToken = _refreshTokenHelper.UpdateOldRefreshToken();
+            else
+                accessToken.RefreshToken = _refreshTokenHelper.CreateNewRefreshToken(user);
+
+            if (accessToken.RefreshToken == null)
+                return new ErrorDataResult<AccessToken>();
 
             return new SuccessDataResult<AccessToken>(accessToken);
         }
@@ -56,7 +60,8 @@ namespace Business.Concrete
                 CheckIfUserIsNotExists(userForLoginDto),
                 CheckIfNewPasswordIsEqualsOldPassword(userForLoginDto, newPassword));
 
-            if (result != null) return new ErrorDataResult<AccessToken>(result.Message);
+            if (result != null)
+                return new ErrorDataResult<AccessToken>(result.Message);
 
             HashingHelper.CreatePasswordHash(newPassword, out var passwordHash, out var passwordSalt);
             var oldUser = _userService.GetByEmailForAuth(userForLoginDto.Email).Data;
@@ -73,9 +78,7 @@ namespace Business.Concrete
             };
 
             _userService.Update(user);
-            return new SuccessDataResult<AccessToken>(
-                CreateAccessToken(user, null, userForLoginDto.ClientName, userForLoginDto.ClientId).Data,
-                BusinessMessages.PasswordChanged());
+            return new SuccessDataResult<AccessToken>(CreateAccessToken(user).Data, BusinessMessages.PasswordChanged());
         }
 
         [TransactionScopeAspect]
@@ -86,12 +89,11 @@ namespace Business.Concrete
                 CheckIfUserIsNotExists(userForLoginDto)
             );
 
-            if (result != null) return new ErrorDataResult<AccessToken>(result.Message);
+            if (result != null)
+                return new ErrorDataResult<AccessToken>(result.Message);
 
             var user = _userService.GetByEmailForAuth(userForLoginDto.Email).Data;
-            return new SuccessDataResult<AccessToken>(
-                CreateAccessToken(user, null, userForLoginDto.ClientName, userForLoginDto.ClientId).Data,
-                BusinessMessages.SuccessfulLogin());
+            return new SuccessDataResult<AccessToken>(CreateAccessToken(user).Data, BusinessMessages.SuccessfulLogin());
         }
 
         [TransactionScopeAspect]
@@ -102,7 +104,8 @@ namespace Business.Concrete
                 CheckIfUserIsAlreadyExists(userForRegisterDto.Email)
             );
 
-            if (result != null) return new ErrorDataResult<AccessToken>(result.Message);
+            if (result != null)
+                return new ErrorDataResult<AccessToken>(result.Message);
 
             HashingHelper.CreatePasswordHash(password, out var passwordHash, out var passwordSalt);
             var user = new User
@@ -116,9 +119,7 @@ namespace Business.Concrete
             };
 
             _userService.Add(user);
-            return new SuccessDataResult<AccessToken>(
-                CreateAccessToken(user, null, userForRegisterDto.ClientName, null).Data,
-                BusinessMessages.SuccessfulRegister());
+            return new SuccessDataResult<AccessToken>(CreateAccessToken(user).Data, BusinessMessages.SuccessfulRegister());
         }
 
         private IResult CheckIfUserIsAlreadyExists(string email)
@@ -156,65 +157,6 @@ namespace Business.Concrete
                 return new ErrorResult(BusinessMessages.NewPasswordCannotBeTheSameAsTheOldPassword());
 
             return new SuccessResult();
-        }
-
-        private RefreshToken CreateNewRefreshToken(User user, string clientName, string clientId)
-        {
-            if (clientId == null)
-            {
-                clientId = Guid.NewGuid().ToString();
-                while (_refreshTokenService.GetByClientId(clientId).Data != null) clientId = Guid.NewGuid().ToString();
-            }
-
-            var newRefreshToken = new RefreshToken
-            {
-                UserId = user.Id,
-                User = user,
-                ClientName = clientName,
-                ClientId = clientId,
-                RefreshTokenValue = _tokenHelper.CreateRefreshToken()
-            };
-
-            CreateDifferentRefreshToken(newRefreshToken);
-            var oldRefreshToken = _refreshTokenService.GetByClientId(clientId).Data;
-
-            if (oldRefreshToken != null)
-            {
-                newRefreshToken.Id = oldRefreshToken.Id;
-                _refreshTokenService.Update(newRefreshToken);
-            }
-            else
-            {
-                _refreshTokenService.Add(newRefreshToken);
-            }
-
-            return newRefreshToken;
-        }
-
-        private RefreshToken UpdateOldRefreshToken(string refreshToken, string clientName, string clientId)
-        {
-            var newRefreshToken = _refreshTokenService.GetByRefreshToken(refreshToken).Data;
-            if (newRefreshToken != null && newRefreshToken?.ClientName == clientName &&
-                newRefreshToken?.ClientId == clientId)
-            {
-                CreateDifferentRefreshToken(newRefreshToken);
-                _refreshTokenService.Update(newRefreshToken);
-                return newRefreshToken;
-            }
-
-            return null;
-        }
-
-        private void CreateDifferentRefreshToken(RefreshToken refreshToken)
-        {
-            while (_refreshTokenService.GetByRefreshToken(refreshToken.RefreshTokenValue).Data != null)
-                refreshToken.RefreshTokenValue = _tokenHelper.CreateRefreshToken();
-
-            if (UseRefreshTokenEndDate)
-                refreshToken.RefreshTokenEndDate = DateTime.Now.AddMinutes(Configuration.GetSection("TokenOptions")
-                    .Get<TokenOptions>().RefreshTokenExpiration);
-            else
-                refreshToken.RefreshTokenEndDate = null;
         }
     }
 }

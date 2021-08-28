@@ -39,8 +39,7 @@ export class AppComponent implements OnInit {
         console.log('Failed');
       },
       (token) => {
-        console.log('Succeed');
-        console.log(token);
+        console.log('Succeed' + token.expiration);
       }
     );
   }

@@ -1,6 +1,3 @@
-import 'dart:convert';
-
-import 'package:flutter_ui/core/interceptors/authInterceptor.dart';
 import 'package:flutter_ui/core/models/deleteModel.dart';
 import 'package:flutter_ui/core/models/response/listResponseModel.dart';
 import 'package:flutter_ui/core/models/response/responseModel.dart';

@@ -3,6 +3,7 @@ using Autofac;
 using Autofac.Extras.DynamicProxy;
 using Business.Abstract;
 using Business.Concrete;
+using Business.Helpers;
 using Castle.DynamicProxy;
 using Core.Utilities.Helpers.FileHelpers;
 using Core.Utilities.Interceptors;
@@ -33,6 +34,8 @@ namespace Business.DependencyResolvers.Autofac
             builder.RegisterType<LanguageManager>().As<ILanguageService>().SingleInstance();
             builder.RegisterType<TranslateManager>().As<ITranslateService>().SingleInstance();
             builder.RegisterType<RefreshTokenManager>().As<IRefreshTokenService>().SingleInstance();
+
+            builder.RegisterType<RefreshTokenHelper>().As<IRefreshTokenHelper>().SingleInstance();
 
             // CoreLayer
             builder.RegisterType<JwtHelper>().As<ITokenHelper>().SingleInstance();

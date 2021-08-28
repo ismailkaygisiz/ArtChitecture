@@ -1,5 +1,4 @@
 import 'package:flutter_ui/core/models/user/userModel.dart';
-import 'package:flutter_ui/core/services/sessionService.dart';
 import 'package:flutter_ui/core/utilities/dependencyResolver.dart';
 import 'package:flutter_ui/core/utilities/service.dart';
 import 'package:jwt_decode/jwt_decode.dart';

@@ -35,6 +35,9 @@ namespace WebAPI.Extensions
                 c.AddSecurityRequirement(securityRequirement);
 
                 c.OperationFilter<AddLanguageHeaderParameter>();
+                c.OperationFilter<AddRefreshTokenHeaderParameter>();
+                c.OperationFilter<AddClientIdHeaderParameter>();
+                c.OperationFilter<AddClientNameHeaderParameter>();
             });
         }
     }

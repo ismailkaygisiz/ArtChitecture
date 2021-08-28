@@ -1,5 +1,5 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter_ui/core/models/user/loginModel.dart';
 import 'package:flutter_ui/environments/api.dart';
 import 'package:flutter_ui/pages/main/homePage/homePageUI.dart';
 import 'core/utilities/dependencyResolver.dart';
@@ -18,6 +18,7 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      title: "ArtChitectureFlutterUI",
       debugShowCheckedModeBanner: false,
       home: Home(),
     );
@@ -36,14 +37,24 @@ class _HomeState extends State<Home> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
+
+    //
+
     authService.setRefreshTokenEvents(
-        () => print(
-            "Failed"), // It's Works When Token Refresh Operation On Failed
-        (token) => print(
-              "Succeed, Token Expiration : ${token.expiration}", // It's Works When Token Refresh Operation On Succeed
-            ));
+      refreshTokenFailedEvent:
+          () => // It's Works When Token Refresh Operation On Failed
+              print("Failed"),
+      refreshTokenSucceedEvent:
+          (token) => // It's Works When Token Refresh Operation On Succeed
+              print(
+        "Succeed, Token Expiration : ${token.expiration}",
+      ),
+    );
+
+    //
+
+    _setLang();
     _getTranslates();
   }
 
@@ -71,5 +82,13 @@ class _HomeState extends State<Home> {
         setState(() => translates = value["data"]);
       });
     });
+  }
+
+  void _setLang() {
+    try {
+      sessionService.set("lang", Platform.localeName.replaceAll("_", "-"));
+    } catch (err) {
+      sessionService.set("lang", "en-US");
+    }
   }
 }

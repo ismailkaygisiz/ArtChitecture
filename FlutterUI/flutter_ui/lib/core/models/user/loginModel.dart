@@ -1,8 +1,4 @@
 import 'dart:convert';
-
-import 'package:flutter_ui/core/utilities/dependencyResolver.dart';
-import 'package:flutter_ui/environments/api.dart';
-
 import '../entity.dart';
 
 @entity
@@ -15,14 +11,10 @@ class LoginModel {
     this.password,
   );
 
-  Future<String> toJson() async {
-    var clientId = await sessionService.get("client-id");
-
+  String toJson() {
     return json.encode({
       "email": email,
       "password": password,
-      "clientName": Environments.CLIENT_NAME,
-      "clientId": clientId,
     });
   }
 }

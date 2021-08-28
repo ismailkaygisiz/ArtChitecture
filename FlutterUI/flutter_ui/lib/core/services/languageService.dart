@@ -1,4 +1,3 @@
-import 'package:flutter_ui/core/interceptors/authInterceptor.dart';
 import 'package:flutter_ui/core/models/deleteModel.dart';
 import 'package:flutter_ui/core/models/language/languageAddModel.dart';
 import 'package:flutter_ui/core/models/language/languageModel.dart';

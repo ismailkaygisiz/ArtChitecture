@@ -5,6 +5,7 @@ using Core.Entities.Concrete;
 using Core.Entities.DTOs;
 using Core.Utilities.IoC;
 using Core.Utilities.Results.Concrete;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -47,32 +48,33 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("refreshtoken")]
-        public IActionResult RefreshToken(RefreshTokenRequest refreshTokenRequest)
+        public IActionResult RefreshToken()
         {
-            var newRefreshToken = _refreshTokenService.GetByRefreshToken(refreshTokenRequest.RefreshToken).Data;
+            string refreshToken = HttpContext.Request.Headers["RefreshToken"];
+
+            var newRefreshToken = _refreshTokenService.GetByRefreshToken(refreshToken).Data;
             if (newRefreshToken != null)
             {
                 var user = _userService.GetByIdForAuth(newRefreshToken.UserId).Data;
                 if (_authService.UseRefreshTokenEndDate)
                 {
                     if (newRefreshToken.RefreshTokenEndDate > DateTime.Now)
-                        return RefreshTokenControl(user, refreshTokenRequest);
+                        return RefreshTokenControl(user);
 
                     _requestUserService.SetRequestUser(null);
                     return BadRequest(new ErrorResult());
                 }
 
-                return RefreshTokenControl(user, refreshTokenRequest);
+                return RefreshTokenControl(user);
             }
 
             _requestUserService.SetRequestUser(null);
             return BadRequest(new ErrorResult());
         }
 
-        private IActionResult RefreshTokenControl(User user, RefreshTokenRequest refreshToken)
+        private IActionResult RefreshTokenControl(User user)
         {
-            var result = _authService.CreateAccessToken(user, refreshToken.RefreshToken, refreshToken.ClientName,
-                refreshToken.ClientId);
+            var result = _authService.CreateAccessToken(user);
             if (result.Success) return Ok(result);
 
             _requestUserService.SetRequestUser(null);
@@ -87,12 +89,5 @@ namespace WebAPI.Controllers
 
             return BadRequest(result);
         }
-    }
-
-    public class RefreshTokenRequest
-    {
-        public string RefreshToken { get; set; }
-        public string ClientId { get; set; }
-        public string ClientName { get; set; }
     }
 }

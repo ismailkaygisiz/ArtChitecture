@@ -34,21 +34,22 @@ export class AuthInterceptor implements HttpInterceptor {
     newRequest = request.clone({
       headers: request.headers
         .set('Authorization', 'Bearer ' + this.token ?? '')
-        .append('lang', localStorage.getItem('lang') ?? ''),
+        .append('lang', localStorage.getItem('lang') ?? '')
+        .append('ClientId', this.clientId ?? '')
+        .append('RefreshToken', this.refreshToken ?? '')
+        .append('ClientName', clientName),
     });
 
     if (this.refreshToken != null && this.tokenService.isTokenExpired()) {
       let refreshTokenRequest = request.clone({
         method: 'POST',
         url: apiUrl + 'auth/refreshtoken',
-        body: {
-          refreshToken: this.refreshToken,
-          clientId: this.clientId,
-          clientName: clientName,
-        },
         headers: request.headers
           .set('Authorization', 'Bearer ' + this.token ?? '')
-          .append('lang', localStorage.getItem('lang') ?? ''),
+          .append('lang', localStorage.getItem('lang') ?? '')
+          .append('ClientId', this.clientId ?? '')
+          .append('RefreshToken', this.refreshToken ?? '')
+          .append('ClientName', clientName),
       });
 
       next.handle(refreshTokenRequest).subscribe(

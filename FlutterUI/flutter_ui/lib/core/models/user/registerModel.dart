@@ -1,7 +1,4 @@
 import 'dart:convert';
-
-import 'package:flutter_ui/environments/api.dart';
-
 import '../entity.dart';
 
 @entity
@@ -24,7 +21,6 @@ class RegisterModel {
       "lastName": lastName,
       "email": email,
       "password": password,
-      "clientName": Environments.CLIENT_NAME,
     });
   }
 }
