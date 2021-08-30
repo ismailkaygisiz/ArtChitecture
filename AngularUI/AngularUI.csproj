@@ -7,13 +7,7 @@
 
   <ItemGroup>
     <Folder Include="angular-ui\src\app\components\" />
-    <Folder Include="angular-ui\src\app\core\components\main\" />
-    <Folder Include="angular-ui\src\app\core\pipes\" />
-    <Folder Include="angular-ui\src\app\guards\" />
-    <Folder Include="angular-ui\src\app\interceptors\" />
-    <Folder Include="angular-ui\src\app\layouts\" />
     <Folder Include="angular-ui\src\app\models\" />
-    <Folder Include="angular-ui\src\app\pipes\" />
     <Folder Include="angular-ui\src\app\services\" />
   </ItemGroup>
 

@@ -60,7 +60,7 @@ namespace Business.Concrete
                 CheckIfUserIsNotExists(userForLoginDto),
                 CheckIfNewPasswordIsEqualsOldPassword(userForLoginDto, newPassword));
 
-            if (result != null)
+            if (!result.Success)
                 return new ErrorDataResult<AccessToken>(result.Message);
 
             HashingHelper.CreatePasswordHash(newPassword, out var passwordHash, out var passwordSalt);
@@ -89,7 +89,7 @@ namespace Business.Concrete
                 CheckIfUserIsNotExists(userForLoginDto)
             );
 
-            if (result != null)
+            if (!result.Success)
                 return new ErrorDataResult<AccessToken>(result.Message);
 
             var user = _userService.GetByEmailForAuth(userForLoginDto.Email).Data;
@@ -104,7 +104,7 @@ namespace Business.Concrete
                 CheckIfUserIsAlreadyExists(userForRegisterDto.Email)
             );
 
-            if (result != null)
+            if (!result.Success)
                 return new ErrorDataResult<AccessToken>(result.Message);
 
             HashingHelper.CreatePasswordHash(password, out var passwordHash, out var passwordSalt);

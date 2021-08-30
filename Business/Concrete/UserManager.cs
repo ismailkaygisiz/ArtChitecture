@@ -30,7 +30,7 @@ namespace Business.Concrete
         {
             var result = BusinessRules.Run();
 
-            if (result != null) return result;
+            if (!result.Success) return result;
 
             _userDal.Add(entity);
             return new SuccessResult();
@@ -43,7 +43,7 @@ namespace Business.Concrete
         {
             var result = BusinessRules.Run();
 
-            if (result != null) return result;
+            if (!result.Success) return result;
 
             var entityToDelete = GetById(entity.Id).Data;
             _userDal.Delete(entityToDelete);
@@ -58,7 +58,7 @@ namespace Business.Concrete
         {
             var result = BusinessRules.Run();
 
-            if (result != null) return result;
+            if (!result.Success) return result;
 
             _userDal.Update(entity);
             return new SuccessResult();
@@ -120,13 +120,14 @@ namespace Business.Concrete
             return new SuccessDataResult<List<OperationClaim>>(_userDal.GetClaims(user));
         }
 
+        [TransactionScopeAspect]
         public IDataResult<User> AddWithId(User entity)
         {
             var result = BusinessRules.Run(CheckIfUserAlreadyExists(entity.Email));
 
-            if (result != null) return new ErrorDataResult<User>(result.Message);
-
-            return new SuccessDataResult<User>(_userDal.AddWithId(entity));
+            if (!result.Success) return new ErrorDataResult<User>(result.Message);
+            _userDal.Add(entity);
+            return new SuccessDataResult<User>(entity);
         }
 
         [TransactionScopeAspect]
@@ -134,7 +135,7 @@ namespace Business.Concrete
         {
             var result = BusinessRules.Run();
 
-            if (result != null) return result;
+            if (!result.Success) return result;
 
             _userDal.Update(entity);
             return new SuccessResult();

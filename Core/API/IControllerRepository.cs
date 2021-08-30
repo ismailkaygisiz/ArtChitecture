@@ -1,6 +1,8 @@
-﻿namespace Core.API
+﻿using Core.Entities.Abstract;
+
+namespace Core.API
 {
-    public interface IControllerRepository<TEntity, TResult>
+    public interface IControllerRepository<TEntity, TResult> where TEntity : class, IEntity, new()
     {
         TResult Add(TEntity entity);
         TResult Delete(TEntity entity);

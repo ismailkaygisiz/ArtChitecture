@@ -1,9 +1,9 @@
-﻿using System;
+﻿using Core.Entities.Abstract;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using Core.Entities.Abstract;
-using Microsoft.EntityFrameworkCore;
 
 namespace Core.DataAccess.EntityFramework
 {
@@ -28,18 +28,6 @@ namespace Core.DataAccess.EntityFramework
                 var deletedEntity = context.Entry(entity);
                 deletedEntity.State = EntityState.Deleted;
                 context.SaveChanges();
-            }
-        }
-
-        public TEntity AddWithId(TEntity entity)
-        {
-            using (var context = new TContext())
-            {
-                var addedEntity = context.Entry(entity);
-                addedEntity.State = EntityState.Added;
-                context.SaveChanges();
-
-                return entity;
             }
         }
 

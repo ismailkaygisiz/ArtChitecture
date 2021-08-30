@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Business.Abstract
 {
-    public abstract class BusinessService : ServiceBase
+    public class BusinessService : ServiceBase
     {
         public BusinessService()
         {

@@ -1,2 +1,2 @@
 /// Define your custom constants
-/// For example "const primaryColor = Colors.blue;"
+/// Example "const primaryColor = Colors.blue;"

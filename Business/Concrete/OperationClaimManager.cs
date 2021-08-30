@@ -33,7 +33,7 @@ namespace Business.Concrete
         {
             var result = BusinessRules.Run();
 
-            if (result != null) return result;
+            if (!result.Success) return result;
 
             _operationClaimDal.Add(entity);
             return new SuccessResult();
@@ -46,7 +46,7 @@ namespace Business.Concrete
         {
             var result = BusinessRules.Run();
 
-            if (result != null) return result;
+            if (!result.Success) return result;
 
             var entityToDelete = GetById(entity.Id).Data;
 
@@ -62,7 +62,7 @@ namespace Business.Concrete
         {
             var result = BusinessRules.Run();
 
-            if (result != null) return result;
+            if (!result.Success) return result;
 
             _operationClaimDal.Update(entity);
             return new SuccessResult();

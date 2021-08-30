@@ -11,7 +11,7 @@ namespace Business.DependencyResolvers
         {
             serviceCollection.AddSignalR();
             serviceCollection.AddTransient<SystemHub>();
-            serviceCollection.AddSingleton<BusinessMessages>();
+            serviceCollection.AddTransient<BusinessMessages>();
         }
     }
 }

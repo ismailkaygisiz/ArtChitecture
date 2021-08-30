@@ -1,3 +1,3 @@
-flutter packages pub run build_runner build // Reflection mimarisini oluşturur.
+flutter packages pub run build_runner build // It Creates Reflection Architecture
 
-flutter pub run change_app_package_name:main com.new.packagename // Paket ismini değiştirir
+flutter pub run change_app_package_name:main com.new.packagename // It Changes Package Name

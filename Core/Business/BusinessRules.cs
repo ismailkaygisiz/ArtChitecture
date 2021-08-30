@@ -1,4 +1,5 @@
 ﻿using Core.Utilities.Results.Abstract;
+using Core.Utilities.Results.Concrete;
 
 namespace Core.Business
 {
@@ -10,7 +11,7 @@ namespace Core.Business
                 if (!logic.Success)
                     return logic;
 
-            return null;
+            return new SuccessResult();
         }
     }
 }

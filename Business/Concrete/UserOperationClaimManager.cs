@@ -33,7 +33,7 @@ namespace Business.Concrete
         {
             var result = BusinessRules.Run();
 
-            if (result != null) return result;
+            if (!result.Success) return result;
 
             _userOperationClaimDal.Add(entity);
             return new SuccessResult();
@@ -46,7 +46,7 @@ namespace Business.Concrete
         {
             var result = BusinessRules.Run();
 
-            if (result != null) return result;
+            if (!result.Success) return result;
 
             var entityToDelete = GetById(entity.Id).Data;
             _userOperationClaimDal.Delete(entityToDelete);
@@ -61,7 +61,7 @@ namespace Business.Concrete
         {
             var result = BusinessRules.Run();
 
-            if (result != null) return result;
+            if (!result.Success) return result;
 
             _userOperationClaimDal.Update(entity);
             return new SuccessResult();
@@ -100,7 +100,7 @@ namespace Business.Concrete
         public IResult AddForSuperUser(UserOperationClaim entity)
         {
             var result = BusinessRules.Run();
-            if (result != null) return result;
+            if (!result.Success) return result;
 
             _userOperationClaimDal.Add(entity);
             return new SuccessResult();

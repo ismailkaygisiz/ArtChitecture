@@ -1,5 +1,4 @@
-﻿using System;
-using Business.Abstract;
+﻿using Business.Abstract;
 using Core.Business;
 using Core.Entities.Concrete;
 using Core.Entities.DTOs;
@@ -8,6 +7,7 @@ using Core.Utilities.Results.Concrete;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace WebAPI.Controllers
 {
@@ -29,7 +29,7 @@ namespace WebAPI.Controllers
             _requestUserService = ServiceTool.ServiceProvider.GetService<IRequestUserService>();
         }
 
-        [HttpPost("login")]
+        [HttpPost("[action]")]
         public IActionResult Login(UserForLoginDto userForLoginDto)
         {
             var result = _authService.Login(userForLoginDto);
@@ -38,7 +38,7 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-        [HttpPost("register")]
+        [HttpPost("[action]")]
         public IActionResult Register(UserForRegisterDto userForRegisterDto)
         {
             var result = _authService.Register(userForRegisterDto, userForRegisterDto.Password);
@@ -47,7 +47,7 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-        [HttpPost("refreshtoken")]
+        [HttpPost("[action]")]
         public IActionResult RefreshToken()
         {
             string refreshToken = HttpContext.Request.Headers["RefreshToken"];
@@ -81,7 +81,7 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-        [HttpPost("changepassword")]
+        [HttpPost("[action]")]
         public IActionResult ChangePassword(UserForLoginDto userForLoginDto, string newPassword)
         {
             var result = _authService.ChangePassword(userForLoginDto, newPassword);

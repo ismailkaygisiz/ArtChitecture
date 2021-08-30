@@ -27,6 +27,7 @@ import { DashboardComponent } from './core/components/admin/dashboard/dashboard.
 import { AuthComponent } from './core/components/auth/auth/auth.component';
 import { LoginComponent } from './core/components/auth/login/login.component';
 import { RegisterComponent } from './core/components/auth/register/register.component';
+import { ArtchitectureComponent } from './components/artchitecture/artchitecture.component';
 
 // main
 
@@ -41,6 +42,7 @@ import { RegisterComponent } from './core/components/auth/register/register.comp
     LoginComponent,
     RegisterComponent,
     DashboardComponent,
+    ArtchitectureComponent,
   ],
   imports: [
     BrowserModule,
