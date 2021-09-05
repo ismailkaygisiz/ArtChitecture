@@ -1,0 +1,2 @@
+windows/runner/Runner.rc
+web/manifest.json

@@ -1,94 +1,35 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter_ui/environments/api.dart';
-import 'package:flutter_ui/pages/main/homePage/homePageUI.dart';
-import 'core/utilities/dependencyResolver.dart';
-import 'environments/environment.development.dart';
+import 'package:flutter_ui/home.dart';
+import 'package:flutter_ui/utilities/theme.dart';
+
+import 'core/utilities/configure_nonweb.dart'
+    if (dart.library.html) 'core/utilities/configure_web.dart';
+import 'environments/api.dart';
 import 'main.reflectable.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  initializeReflectable();
-  EnvironmentDev();
+  WidgetsFlutterBinding.ensureInitialized(); // For SharedPreferences
+  initializeReflectable(); // For Reflection (ResponseModels)
+  configureApp(); // For Web Url Path (Discards #)
+  DevelopmentMode(); // For SSL Configuration. Don't Use Production Mode
 
   runApp(App());
 }
 
 class App extends StatelessWidget {
+  const App({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: "ArtChitectureFlutterUI",
       debugShowCheckedModeBanner: false,
+      title: "ArtChitecture FlutterUI",
+      theme: lightTheme(context),
+      darkTheme: darkTheme(context),
+      // highContrastTheme: ,
+      // highContrastDarkTheme: ,
+      themeMode: ThemeMode.system,
       home: Home(),
     );
-  }
-}
-
-class Home extends StatefulWidget {
-  const Home({Key key}) : super(key: key);
-
-  @override
-  _HomeState createState() => _HomeState();
-}
-
-class _HomeState extends State<Home> {
-  String _lang;
-
-  @override
-  void initState() {
-    super.initState();
-
-    //
-
-    authService.setRefreshTokenEvents(
-      refreshTokenFailedEvent:
-          () => // It's Works When Token Refresh Operation On Failed
-              print("Failed"),
-      refreshTokenSucceedEvent:
-          (token) => // It's Works When Token Refresh Operation On Succeed
-              print(
-        "Succeed, Token Expiration : ${token.expiration}",
-      ),
-    );
-
-    //
-
-    _setLang();
-    _getTranslates();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    sessionService.get("lang").then((String value) {
-      if (_lang != value) _getTranslates();
-    });
-
-    return translates.values.length > 0
-        ? HomePageUI()
-        : Scaffold(
-            appBar: AppBar(
-              title: Text("Loading"),
-              centerTitle: true,
-            ),
-            body: Center(),
-          );
-  }
-
-  void _getTranslates() {
-    sessionService.get("lang").then((value) {
-      _lang = value;
-      translateService.getTranslates(value).then((dynamic value) {
-        setState(() => translates = value["data"]);
-      });
-    });
-  }
-
-  void _setLang() {
-    try {
-      sessionService.set("lang", Platform.localeName.replaceAll("_", "-"));
-    } catch (err) {
-      sessionService.set("lang", "en-US");
-    }
   }
 }
