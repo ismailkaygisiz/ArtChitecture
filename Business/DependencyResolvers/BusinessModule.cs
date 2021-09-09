@@ -1,4 +1,5 @@
-﻿using Business.Constants;
+﻿using Business.Abstract;
+using Business.Constants;
 using Business.Hubs;
 using Core.Utilities.IoC;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,6 +13,7 @@ namespace Business.DependencyResolvers
             serviceCollection.AddSignalR();
             serviceCollection.AddTransient<SystemHub>();
             serviceCollection.AddTransient<BusinessMessages>();
+            serviceCollection.AddTransient<BusinessService>();
         }
     }
 }

@@ -16,16 +16,14 @@ namespace Business.Concrete
 {
     public class AuthManager : BusinessService, IAuthService
     {
-        private readonly IRefreshTokenService _refreshTokenService;
         private readonly IRefreshTokenHelper _refreshTokenHelper;
         private readonly ITokenHelper _tokenHelper;
         private readonly IUserService _userService;
 
-        public AuthManager(IUserService userService, ITokenHelper tokenHelper, IRefreshTokenService refreshTokenService, IRefreshTokenHelper refreshTokenHelper)
+        public AuthManager(IUserService userService, ITokenHelper tokenHelper, IRefreshTokenHelper refreshTokenHelper)
         {
             _userService = userService;
             _tokenHelper = tokenHelper;
-            _refreshTokenService = refreshTokenService;
             _refreshTokenHelper = refreshTokenHelper;
         }
 
@@ -53,7 +51,7 @@ namespace Business.Concrete
 
         [TransactionScopeAspect]
         [SecuredOperation("User", "userForLoginDto.Email")]
-        [ValidationAspect(typeof(LoginValidator))] // Will be Upgrade
+        [FluentValidationAspect(typeof(LoginValidator))] // Will be Upgrade
         public IDataResult<AccessToken> ChangePassword(UserForLoginDto userForLoginDto, string newPassword) // New Model Will be Added for ChangePassword
         {
             var result = BusinessRules.Run(
@@ -82,7 +80,7 @@ namespace Business.Concrete
         }
 
         [TransactionScopeAspect]
-        [ValidationAspect(typeof(LoginValidator))]
+        [FluentValidationAspect(typeof(LoginValidator))]
         public IDataResult<AccessToken> Login(UserForLoginDto userForLoginDto)
         {
             var result = BusinessRules.Run(
@@ -97,7 +95,7 @@ namespace Business.Concrete
         }
 
         [TransactionScopeAspect]
-        [ValidationAspect(typeof(RegisterValidator))]
+        [FluentValidationAspect(typeof(RegisterValidator))]
         public IDataResult<AccessToken> Register(UserForRegisterDto userForRegisterDto, string password)
         {
             var result = BusinessRules.Run(

@@ -30,6 +30,8 @@ namespace Core.DependencyResolvers
             serviceCollection.AddTransient<CoreMessages>();
             serviceCollection.AddTransient<FileLogger>();
             serviceCollection.AddTransient<MsSqlLogger>();
+
+            serviceCollection.AddTransient<ServiceBase>();
         }
     }
 }

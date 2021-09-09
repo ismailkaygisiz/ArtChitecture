@@ -24,7 +24,7 @@ namespace Business.Concrete
         }
 
         [TransactionScopeAspect]
-        [ValidationAspect(typeof(UserValidator))]
+        [FluentValidationAspect(typeof(UserValidator))]
         [CacheRemoveAspect("IUserService.Get")]
         public IResult Add(User entity)
         {
@@ -52,7 +52,7 @@ namespace Business.Concrete
 
         [SecuredOperation("User", "entity.Id")]
         [TransactionScopeAspect]
-        [ValidationAspect(typeof(UserValidator))]
+        [FluentValidationAspect(typeof(UserValidator))]
         [CacheRemoveAspect("IUserService.Get")]
         public IResult Update(User entity)
         {

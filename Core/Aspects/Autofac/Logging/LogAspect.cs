@@ -14,15 +14,13 @@ namespace Core.Aspects.Autofac.Logging
     public class LogAspect : MethodInterception
     {
         private readonly LoggerServiceBase _loggerServiceBase;
-        private readonly IRequestUserService _requestUserService;
 
         public LogAspect(Type loggerService)
         {
             if (loggerService.BaseType != typeof(LoggerServiceBase))
-                throw new ArgumentException("");
+                throw new ArgumentException("Logger can't be null");
 
             _loggerServiceBase = (LoggerServiceBase)ServiceTool.ServiceProvider.GetService(loggerService);
-            _requestUserService = ServiceTool.ServiceProvider.GetService<IRequestUserService>();
         }
 
         protected override void OnBefore(IInvocation invocation)
@@ -46,15 +44,15 @@ namespace Core.Aspects.Autofac.Logging
             {
                 MethodName = methodName,
                 Parameters = logParameters,
-                User = JsonConvert.SerializeObject(_requestUserService.GetRequestUser().Data?.Email != null ? _requestUserService.GetRequestUser().Data : null),
-                FullName = (_requestUserService.GetRequestUser().Data == null ||
-                            _requestUserService.GetRequestUser().Data.FirstName == null
+                User = JsonConvert.SerializeObject(RequestUserService.GetRequestUser().Data?.Email != null ? RequestUserService.GetRequestUser().Data : null),
+                FullName = (RequestUserService.GetRequestUser().Data == null ||
+                            RequestUserService.GetRequestUser().Data.FirstName == null
                                ? "?"
-                               : _requestUserService.GetRequestUser().Data.FirstName)
-                           + " " + (_requestUserService.GetRequestUser().Data == null ||
-                                    _requestUserService.GetRequestUser().Data.LastName == null
+                               : RequestUserService.GetRequestUser().Data.FirstName)
+                           + " " + (RequestUserService.GetRequestUser().Data == null ||
+                                    RequestUserService.GetRequestUser().Data.LastName == null
                                ? "?"
-                               : _requestUserService.GetRequestUser().Data.LastName)
+                               : RequestUserService.GetRequestUser().Data.LastName)
             };
 
             return JsonConvert.SerializeObject(logDetail);

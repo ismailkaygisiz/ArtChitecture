@@ -1,4 +1,5 @@
 ﻿using Castle.DynamicProxy;
+using Core.Business;
 using Core.Business.Translate;
 using Core.Utilities.Constants;
 using Core.Utilities.IoC;
@@ -12,12 +13,15 @@ namespace Core.Utilities.Interceptors
         public MethodInterception()
         {
             TranslateContext = ServiceTool.ServiceProvider.GetService<ITranslateContext>();
+            RequestUserService = ServiceTool.ServiceProvider.GetService<IRequestUserService>();
             CoreMessages = ServiceTool.ServiceProvider.GetService<CoreMessages>();
         }
 
-        protected CoreMessages CoreMessages { get; }
         protected ITranslateContext TranslateContext { get; }
+        protected IRequestUserService RequestUserService { get; }
+        protected CoreMessages CoreMessages { get; }
         protected bool Invoke { get; set; } = true;
+
 
         protected virtual void OnBefore(IInvocation invocation)
         {

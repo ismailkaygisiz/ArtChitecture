@@ -1,31 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Castle.Core.Internal;
+﻿using Castle.Core.Internal;
 using Castle.DynamicProxy;
-using Core.Business;
 using Core.Utilities.Helpers.InterceptorHelpers;
 using Core.Utilities.Interceptors;
-using Core.Utilities.IoC;
 using Core.Utilities.Results.Abstract;
 using Core.Utilities.Results.Concrete;
-using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Core.Aspects.Autofac.Authorization
 {
     public class SecuredOperation : MethodInterception
     {
-        private readonly string _arg;
-
-        private readonly List<string> _args;
         private readonly string[] _roles;
+        private readonly List<string> _args;
+        private readonly string _arg;
+        
+        private bool _error;
 
         public SecuredOperation(string roles)
         {
             Priority = 2;
             _roles = roles.Split(',');
-
-            RequestUserService = ServiceTool.ServiceProvider.GetService<IRequestUserService>();
         }
 
         public SecuredOperation(string roles, string arg) : this(roles)
@@ -46,16 +42,12 @@ namespace Core.Aspects.Autofac.Authorization
             }
         }
 
-        private IRequestUserService RequestUserService { get; }
-        private bool Error { get; set; }
-
         protected override void OnBefore(IInvocation invocation)
         {
             var roleClaims = RequestUserService.GetRequestUser().Data?.Roles;
             if (roleClaims == null)
             {
-                Invoke = false;
-                Error = true;
+                ReturnError();
                 return;
             }
 
@@ -87,8 +79,7 @@ namespace Core.Aspects.Autofac.Authorization
                         if (Control(methodArg).Success)
                             return;
 
-                Invoke = false;
-                Error = true;
+                ReturnError();
                 return;
             }
 
@@ -96,15 +87,14 @@ namespace Core.Aspects.Autofac.Authorization
                 if (roleClaims.Contains(role))
                     return;
 
-            Invoke = false;
-            Error = true;
+            ReturnError();
         }
 
         protected override void OnAfter(IInvocation invocation)
         {
-            if (Error)
+            if (_error)
             {
-                Error = false;
+                _error = false;
                 var securityError = TranslateContext.Translates["Cannot_Cal_Property_Error_Key"] + " : " +
                                     invocation.Method.Name;
                 AutofacInterceptorHelper.ChangeReturnValue(invocation, typeof(SecurityErrorDataResult<>), securityError,
@@ -119,6 +109,12 @@ namespace Core.Aspects.Autofac.Authorization
                     return new SuccessResult();
 
             return new ErrorResult();
+        }
+
+        private void ReturnError()
+        {
+            Invoke = false;
+            _error = true;
         }
     }
 }

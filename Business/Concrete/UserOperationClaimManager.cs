@@ -27,7 +27,7 @@ namespace Business.Concrete
 
         [TransactionScopeAspect]
         [SecuredOperation("Admin")]
-        [ValidationAspect(typeof(UserOperationClaimValidator))]
+        [FluentValidationAspect(typeof(UserOperationClaimValidator))]
         [CacheRemoveAspect("IUserOperationClaimService.Get")]
         public IResult Add(UserOperationClaim entity)
         {
@@ -55,7 +55,7 @@ namespace Business.Concrete
 
         [TransactionScopeAspect]
         [SecuredOperation("Admin")]
-        [ValidationAspect(typeof(UserOperationClaimValidator))]
+        [FluentValidationAspect(typeof(UserOperationClaimValidator))]
         [CacheRemoveAspect("IUserOperationClaimService.Get")]
         public IResult Update(UserOperationClaim entity)
         {
