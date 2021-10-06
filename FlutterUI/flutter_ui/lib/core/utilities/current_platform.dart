@@ -46,31 +46,31 @@ class CurrentPlatform extends StatelessWidget {
   }
 
   static bool isAndroid() {
-    return getPlatform() == "android";
+    return getPlatform() == PlatformName.ANDROID;
   }
 
   static bool isIOS() {
-    return getPlatform() == "ios";
+    return getPlatform() == PlatformName.IOS;
   }
 
   static bool isWindows() {
-    return getPlatform() == "windows";
+    return getPlatform() == PlatformName.WINDOWS;
   }
 
   static bool isMacOS() {
-    return getPlatform() == "macOs";
+    return getPlatform() == PlatformName.MACOS;
   }
 
   static bool isLinux() {
-    return getPlatform() == "linux";
+    return getPlatform() == PlatformName.LINUX;
   }
 
   static bool isFuchsia() {
-    return getPlatform() == "fuchsia";
+    return getPlatform() == PlatformName.FUCHSIA;
   }
 
   static bool isWeb() {
-    return getPlatform() == "web";
+    return getPlatform() == PlatformName.WEB;
   }
 
   @override

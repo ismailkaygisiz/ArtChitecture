@@ -23,6 +23,19 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.titleService.setTitle('ArtChitecture AngularUI');
+    this.getTranslates();
+
+    this.authService.setRefreshTokenEvents(
+      () => {
+        console.log('Failed');
+      },
+      (token) => {
+        console.log('Succeed' + token.expiration);
+      }
+    );
+  }
+
+  getTranslates() {
     this.translateService.getTranslates(localStorage.getItem('lang')).subscribe(
       (response) => {
         translates.keys = response.data;
@@ -31,15 +44,6 @@ export class AppComponent implements OnInit {
       (responseError) => {
         this.validationService.showErrors(responseError);
         this.translateKeys = null;
-      }
-    );
-
-    this.authService.setRefreshTokenEvents(
-      () => {
-        console.log('Failed');
-      },
-      (token) => {
-        console.log('Succeed' + token.expiration);
       }
     );
   }

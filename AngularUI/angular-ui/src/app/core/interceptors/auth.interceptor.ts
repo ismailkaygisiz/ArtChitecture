@@ -51,7 +51,7 @@ export class AuthInterceptor implements HttpInterceptor {
           .append('RefreshToken', this.refreshToken ?? '')
           .append('ClientName', clientName),
       });
-
+      
       next.handle(refreshTokenRequest).subscribe(
         (response) => {
           if (response instanceof HttpResponse) {
