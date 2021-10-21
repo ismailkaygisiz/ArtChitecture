@@ -1,25 +1,25 @@
-﻿using System;
-using System.IO;
-using Core.Utilities.Results.Abstract;
+﻿using Core.Utilities.Results.Abstract;
 using Core.Utilities.Results.Concrete;
 using Microsoft.AspNetCore.Http;
+using System;
+using System.IO;
 
 namespace Core.Utilities.Helpers.FileHelpers
 {
     public class RootFileHelper : IFileHelper
     {
-        private readonly string defaultImage;
+        private readonly string defaultFile;
         private readonly string folder = "\\images\\";
         private readonly string path = Directory.GetCurrentDirectory() + "\\wwwroot";
 
         public RootFileHelper()
         {
-            defaultImage = (folder + "default_img.png").Replace("\\", "/");
+            defaultFile = (folder + "default_img.png").Replace("\\", "/");
         }
 
         public IDataResult<string> CreateFile(IFormFile file)
         {
-            if (file == null) return new SuccessDataResult<string>(defaultImage, "");
+            if (file == null) return new SuccessDataResult<string>(defaultFile, "");
 
             var extension = Path.GetExtension(file.FileName);
             var guid = Guid.NewGuid().ToString() + DateTime.Now.Millisecond + "_" + DateTime.Now.Hour + "_" +
@@ -45,7 +45,7 @@ namespace Core.Utilities.Helpers.FileHelpers
 
         public IResult DeleteFile(string filePath)
         {
-            if (filePath.Replace("\\", "/") != defaultImage && File.Exists(path + filePath))
+            if (filePath.Replace("\\", "/") != defaultFile && File.Exists(path + filePath))
                 File.Delete(path + filePath);
 
             return new SuccessResult();

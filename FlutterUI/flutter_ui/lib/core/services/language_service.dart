@@ -8,8 +8,8 @@ import 'package:flutter_ui/core/utilities/dependency_resolver.dart';
 import 'package:flutter_ui/core/utilities/service_repository.dart';
 import 'package:flutter_ui/environments/api.dart';
 
-class LanguageService
-    extends ServiceRepositoryWithAddModel<LanguageAddModel, LanguageModel> {
+class LanguageService extends ServiceRepositoryWithAddModel<LanguageAddModel,
+    LanguageModel, int> {
   @override
   Future<ResponseModel> add(LanguageAddModel addModel) async {
     var response = await httpClient.post(

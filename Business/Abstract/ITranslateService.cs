@@ -5,7 +5,7 @@ using Core.Utilities.Results.Abstract;
 
 namespace Business.Abstract
 {
-    public interface ITranslateService : IServiceRepository<Translate>
+    public interface ITranslateService : IServiceRepository<Translate, int>
     {
         IDataResult<List<Translate>> GetByKey(string key);
         IDataResult<List<Translate>> GetByLanguageId(int languageId);

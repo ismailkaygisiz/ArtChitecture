@@ -4,19 +4,19 @@ import 'package:flutter_ui/core/models/response/response_model.dart';
 import 'package:flutter_ui/core/models/response/single_response_model.dart';
 import 'package:flutter_ui/core/utilities/service.dart';
 
-abstract class ServiceRepository<T> extends Service {
-  Future<ResponseModel> add(T addModel);
+abstract class ServiceRepository<TModel, TId> extends Service {
+  Future<ResponseModel> add(TModel addModel);
 
   Future<ResponseModel> delete(DeleteModel deleteModel);
 
-  Future<ResponseModel> update(T updateModel);
+  Future<ResponseModel> update(TModel updateModel);
 
-  Future<ListResponseModel<T>> getAll();
+  Future<ListResponseModel<TModel>> getAll();
 
-  Future<SingleResponseModel<T>> getById(int id);
+  Future<SingleResponseModel<TModel>> getById(TId id);
 }
 
-abstract class ServiceRepositoryWithAddModel<TAddModel, TModel>
+abstract class ServiceRepositoryWithAddModel<TAddModel, TModel, TId>
     extends Service {
   Future<ResponseModel> add(TAddModel addModel);
 
@@ -26,5 +26,5 @@ abstract class ServiceRepositoryWithAddModel<TAddModel, TModel>
 
   Future<ListResponseModel<TModel>> getAll();
 
-  Future<SingleResponseModel<TModel>> getById(int id);
+  Future<SingleResponseModel<TModel>> getById(TId id);
 }

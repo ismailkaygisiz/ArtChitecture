@@ -8,11 +8,19 @@ import { ResponseModel } from '../models/response/responseModel';
 import { SingleResponseModel } from '../models/response/singleResponseModel';
 import { UserOperationClaimAddModel } from '../models/user-operation-claim/userOperationClaimAddModel';
 import { UserOperationClaimModel } from '../models/user-operation-claim/userOperationClaimModel';
+import { ServiceRepositoryWithAddModel } from './service-repository';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-export class UserOperationClaimService {
+export class UserOperationClaimService
+  implements
+    ServiceRepositoryWithAddModel<
+      UserOperationClaimAddModel,
+      UserOperationClaimModel,
+      number
+    >
+{
   constructor(private httpClient: HttpClient) {}
 
   add(

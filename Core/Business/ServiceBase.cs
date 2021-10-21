@@ -5,6 +5,7 @@ using Core.Utilities.Constants;
 using Core.Utilities.Helpers.FileHelpers;
 using Core.Utilities.Helpers.MailHelpers;
 using Core.Utilities.IoC;
+using Core.Utilities.Security.JWT;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -19,29 +20,31 @@ namespace Core.Business
             RequestUserService = ServiceTool.ServiceProvider.GetService<IRequestUserService>();
             TranslateContext = ServiceTool.ServiceProvider.GetService<ITranslateContext>();
 
+            TokenHelper = ServiceTool.ServiceProvider.GetService<ITokenHelper>();
             MailHelper = ServiceTool.ServiceProvider.GetService<IMailHelper>();
             FileHelper = ServiceTool.ServiceProvider.GetService<IFileHelper>();
-            
+
             Configuration = ServiceTool.ServiceProvider.GetService<IConfiguration>();
-            
+
             FileLogger = ServiceTool.ServiceProvider.GetService<FileLogger>();
             MsSqlLogger = ServiceTool.ServiceProvider.GetService<MsSqlLogger>();
 
             CoreMessages = ServiceTool.ServiceProvider.GetService<CoreMessages>();
         }
 
-        protected IHttpContextAccessor HttpContextAccessor { get; }
-        protected IRequestUserService RequestUserService { get; }
-        protected ITranslateContext TranslateContext { get; }
+        public IHttpContextAccessor HttpContextAccessor { get; }
+        public IRequestUserService RequestUserService { get; }
+        public ITranslateContext TranslateContext { get; }
 
-        protected IMailHelper MailHelper { get; }
-        protected IFileHelper FileHelper { get; }
-        
-        protected IConfiguration Configuration { get; }
-        
-        protected LoggerServiceBase FileLogger { get; }
-        protected LoggerServiceBase MsSqlLogger { get; }
-        
-        protected CoreMessages CoreMessages { get; }
+        public ITokenHelper TokenHelper { get; }
+        public IMailHelper MailHelper { get; }
+        public IFileHelper FileHelper { get; }
+
+        public IConfiguration Configuration { get; }
+
+        public LoggerServiceBase FileLogger { get; }
+        public LoggerServiceBase MsSqlLogger { get; }
+
+        public CoreMessages CoreMessages { get; }
     }
 }

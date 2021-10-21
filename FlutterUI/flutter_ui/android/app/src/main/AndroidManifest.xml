@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.artchitecture.flutterui.artchitectureflutter.flutter_ui">
+    package="com.artchitecture.flutterapp.flutter_ui">
    <application
         android:label="flutter_ui"
         android:icon="@mipmap/ic_launcher">

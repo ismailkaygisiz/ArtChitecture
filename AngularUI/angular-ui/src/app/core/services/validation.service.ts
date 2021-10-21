@@ -7,51 +7,32 @@ import { Injectable } from '@angular/core';
 export class ValidationService {
   constructor(private toastrService: ToastrService) {}
 
-  bootstrapValidate() {
-    var forms = document.querySelectorAll('.needs-validation');
-
-    Array.prototype.slice.call(forms).forEach(function (form) {
-      form.addEventListener(
-        'submit',
-        function (event: any) {
-          if (!form.checkValidity()) {
-            event.preventDefault();
-            event.stopPropagation();
-          }
-
-          form.classList.add('was-validated');
-        },
-        false
-      );
-    });
-  }
-
   showErrors(responseError: any) {
     if (responseError.error != null) {
       // Validation Control
-      if (responseError.error.validationErrors != null) {
-        responseError.error.validationErrors.forEach((error: any) => {
-          this.toastrService.error(error, responseError.error.message);
+      if (responseError.error.ValidationErrors != null) {
+        responseError.error.ValidationErrors.forEach((error: any) => {
+          this.toastrService.error(error, responseError.error.ErrorMessage);
         });
 
         return true;
       }
 
       // Security Control
-      else if (responseError.error.securityError != null) {
+      else if (responseError.error.SecurityError != null) {
         this.toastrService.error(
-          responseError.error.securityError,
-          responseError.error.message
+          responseError.error.SecurityError,
+          responseError.error.ErrorMessage
         );
 
         return true;
       }
 
       // Transaction Control
-      else if (responseError.error.transactionScopeError != null) {
+      else if (responseError.error.TransactionError != null) {
         this.toastrService.error(
-          responseError.error.transactionScopeError,
-          responseError.error.message
+          responseError.error.TransactionError,
+          responseError.error.ErrorMessage
         );
 
         return true;
@@ -63,7 +44,7 @@ export class ValidationService {
 
         return true;
       } else if (responseError.error.message != null) {
-        this.toastrService.error(responseError.error.message, 'Hata');
+        this.toastrService.error('', responseError.error.message);
       }
 
       // Error

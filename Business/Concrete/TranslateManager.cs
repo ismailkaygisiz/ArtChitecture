@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using Business.Abstract;
+﻿using Business.Abstract;
+using Core.Aspects.Autofac.Authorization;
 using Core.Aspects.Autofac.Logging;
 using Core.Business;
 using Core.CrossCuttingConcerns.Logging.SeriLog.Loggers;
@@ -7,6 +7,7 @@ using Core.Entities.Concrete;
 using Core.Utilities.Results.Abstract;
 using Core.Utilities.Results.Concrete;
 using DataAccess.Abstract;
+using System.Collections.Generic;
 
 namespace Business.Concrete
 {
@@ -21,6 +22,7 @@ namespace Business.Concrete
             _languageService = languageService;
         }
 
+        [SecuredOperation("Admin")]
         [LogAspect(typeof(MsSqlLogger))]
         public IResult Add(Translate entity)
         {
@@ -32,6 +34,7 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
+        [SecuredOperation("Admin")]
         [LogAspect(typeof(MsSqlLogger))]
         public IResult Delete(Translate entity)
         {
@@ -44,6 +47,7 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
+        [SecuredOperation("Admin")]
         [LogAspect(typeof(MsSqlLogger))]
         public IResult Update(Translate entity)
         {

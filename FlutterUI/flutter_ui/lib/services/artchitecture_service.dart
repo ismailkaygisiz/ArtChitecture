@@ -5,7 +5,7 @@ import 'package:flutter_ui/core/models/response/single_response_model.dart';
 import 'package:flutter_ui/core/utilities/service_repository.dart';
 import 'package:flutter_ui/models/artchitecture_entity_model.dart';
 
-class ArtChitectureService extends ServiceRepository<ArtChitectureModel> {
+class ArtChitectureService extends ServiceRepository<ArtChitectureModel, int> {
   /// This is a custom service for ArtChitecture
   ArtChitectureService();
 

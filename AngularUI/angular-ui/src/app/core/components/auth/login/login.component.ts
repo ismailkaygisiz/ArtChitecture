@@ -55,6 +55,8 @@ export class LoginComponent implements OnInit {
           this.router.navigate(['']);
         },
         (responseError) => {
+          console.log(responseError);
+
           this.validationService.showErrors(responseError);
         }
       );

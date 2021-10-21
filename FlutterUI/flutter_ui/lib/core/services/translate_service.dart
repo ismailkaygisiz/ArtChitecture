@@ -7,8 +7,8 @@ import 'package:flutter_ui/core/models/translate/translate_model.dart';
 import 'package:flutter_ui/core/utilities/dependency_resolver.dart';
 import 'package:flutter_ui/core/utilities/service_repository.dart';
 
-class TranslateService
-    extends ServiceRepositoryWithAddModel<TranslateAddModel, TranslateModel> {
+class TranslateService extends ServiceRepositoryWithAddModel<TranslateAddModel,
+    TranslateModel, int> {
   @override
   Future<ResponseModel> add(TranslateAddModel addModel) async {
     var response = await httpClient.post(

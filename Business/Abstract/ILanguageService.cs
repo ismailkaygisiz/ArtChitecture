@@ -4,7 +4,7 @@ using Core.Utilities.Results.Abstract;
 
 namespace Business.Abstract
 {
-    public interface ILanguageService : IServiceRepository<Language>
+    public interface ILanguageService : IServiceRepository<Language, int>
     {
         IDataResult<Language> GetByName(string name);
         IDataResult<Language> GetByCode(string code);

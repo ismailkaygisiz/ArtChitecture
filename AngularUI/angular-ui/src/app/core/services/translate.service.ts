@@ -1,5 +1,5 @@
 import { TranslateModel } from './../models/translate/translateModel';
-import { Service } from './service';
+import { ServiceRepositoryWithAddModel } from './service-repository';
 import { LocalStorageService } from './local-storage.service';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
@@ -16,7 +16,8 @@ import { ValidationService } from './validation.service';
   providedIn: 'root',
 })
 export class TranslateService
-  implements Service<TranslateAddModel, TranslateModel>
+  implements
+    ServiceRepositoryWithAddModel<TranslateAddModel, TranslateModel, number>
 {
   constructor(
     private httpClient: HttpClient,

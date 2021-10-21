@@ -4,15 +4,12 @@ using Core.Entities.Concrete;
 using Core.Entities.DTOs;
 using Core.Utilities.IoC;
 using Core.Utilities.Results.Concrete;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
 namespace WebAPI.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
     public class AuthController : Controller
     {
         private readonly IAuthService _authService;

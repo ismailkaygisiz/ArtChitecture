@@ -12,6 +12,6 @@ namespace Business.Extensions
             HubContext = ServiceTool.ServiceProvider.GetService<IHubContext<T>>();
         }
 
-        protected IHubContext<T> HubContext { get; }
+        public IHubContext<T> HubContext { get; }
     }
 }

@@ -17,13 +17,11 @@ namespace Business.Concrete
     public class AuthManager : BusinessService, IAuthService
     {
         private readonly IRefreshTokenHelper _refreshTokenHelper;
-        private readonly ITokenHelper _tokenHelper;
         private readonly IUserService _userService;
 
-        public AuthManager(IUserService userService, ITokenHelper tokenHelper, IRefreshTokenHelper refreshTokenHelper)
+        public AuthManager(IUserService userService, IRefreshTokenHelper refreshTokenHelper)
         {
             _userService = userService;
-            _tokenHelper = tokenHelper;
             _refreshTokenHelper = refreshTokenHelper;
         }
 
@@ -33,7 +31,7 @@ namespace Business.Concrete
         public IDataResult<AccessToken> CreateAccessToken(User user)
         {
             var roles = _userService.GetClaims(user).Data;
-            var accessToken = _tokenHelper.CreateToken(user, roles);
+            var accessToken = TokenHelper.CreateToken(user, roles);
 
             UseRefreshTokenEndDate = _refreshTokenHelper.UseRefreshTokenEndDate;
 

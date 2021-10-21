@@ -9,7 +9,7 @@ import 'package:flutter_ui/core/utilities/dependency_resolver.dart';
 import 'package:flutter_ui/core/utilities/service_repository.dart';
 
 class UserService
-    extends ServiceRepositoryWithAddModel<UserAddModel, UserModel> {
+    extends ServiceRepositoryWithAddModel<UserAddModel, UserModel, int> {
   Future<ResponseModel> add(UserAddModel userAddModel) async {
     var response = await httpClient.post(
       "users/add",

@@ -8,7 +8,7 @@ import 'package:flutter_ui/core/utilities/dependency_resolver.dart';
 import 'package:flutter_ui/core/utilities/service_repository.dart';
 
 class UserOperationClaimService extends ServiceRepositoryWithAddModel<
-    UserOperationClaimAddModel, UserOperationClaimModel> {
+    UserOperationClaimAddModel, UserOperationClaimModel, int> {
   Future<ResponseModel> add(
       UserOperationClaimAddModel userOperationClaimAddModel) async {
     var response = await httpClient.post(

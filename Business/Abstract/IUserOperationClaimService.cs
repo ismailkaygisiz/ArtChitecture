@@ -5,7 +5,7 @@ using Core.Utilities.Results.Abstract;
 
 namespace Business.Abstract
 {
-    public interface IUserOperationClaimService : IServiceRepository<UserOperationClaim>
+    public interface IUserOperationClaimService : IServiceRepository<UserOperationClaim, int>
     {
         IResult AddForSuperUser(UserOperationClaim entity);
         IDataResult<List<UserOperationClaim>> GetByClaimId(int claimId);

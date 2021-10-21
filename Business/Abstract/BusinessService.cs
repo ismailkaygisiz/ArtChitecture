@@ -12,6 +12,6 @@ namespace Business.Abstract
             BusinessMessages = ServiceTool.ServiceProvider.GetService<BusinessMessages>();
         }
 
-        protected BusinessMessages BusinessMessages { get; }
+        public BusinessMessages BusinessMessages { get; }
     }
 }

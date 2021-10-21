@@ -51,10 +51,8 @@ namespace WebAPI
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebAPI v1"));
             }
-            else
-            {
-                app.UseCustomExceptionMiddleware();
-            }
+
+            app.UseCustomExceptionMiddleware();
 
             app.UseCors(builder => builder
                 .AllowAnyMethod()

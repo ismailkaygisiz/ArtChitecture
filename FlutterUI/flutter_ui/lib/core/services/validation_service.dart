@@ -9,29 +9,29 @@ class ValidationService extends Service {
     }
 
     // Validation Control
-    if (jsonData.containsKey("validationErrors")) {
-      var validationErrors = jsonData["validationErrors"] as List;
+    if (jsonData.containsKey("ValidationErrors")) {
+      var validationErrors = jsonData["ValidationErrors"] as List;
 
       validationErrors.forEach((error) {
         print(error);
       });
 
-      print(jsonData["message"]);
+      print(jsonData["ErrorMessage"]);
       return true;
     }
 
     // Security Control
-    else if (jsonData.containsKey("securityError")) {
-      print(jsonData["securityError"]);
+    else if (jsonData.containsKey("SecurityError")) {
+      print(jsonData["SecurityError"]);
 
-      print(jsonData["message"]);
+      print(jsonData["ErrorMessage"]);
       return true;
     }
 
     // Transaction Control
-    else if (jsonData.containsKey("transactionScopeError")) {
-      print(jsonData["transactionScopeError"]);
-      print(jsonData["message"]);
+    else if (jsonData.containsKey("TransactionError")) {
+      print(jsonData["TransactionError"]);
+      print(jsonData["ErrorMessage"]);
 
       return true;
     }

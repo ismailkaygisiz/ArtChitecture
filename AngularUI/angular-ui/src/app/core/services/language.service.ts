@@ -2,7 +2,7 @@ import { SingleResponseModel } from './../models/response/singleResponseModel';
 import { apiUrl } from './../../../api';
 import { ResponseModel } from './../models/response/responseModel';
 import { LanguageAddModel } from './../models/language/languageAddModel';
-import { Service } from './service';
+import { ServiceRepositoryWithAddModel } from './service-repository';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { LanguageModel } from '../models/language/languageModel';
@@ -14,7 +14,8 @@ import { ListResponseModel } from '../models/response/listResponseModel';
   providedIn: 'root',
 })
 export class LanguageService
-  implements Service<LanguageAddModel, LanguageModel>
+  implements
+    ServiceRepositoryWithAddModel<LanguageAddModel, LanguageModel, number>
 {
   constructor(private httpClient: HttpClient) {}
 

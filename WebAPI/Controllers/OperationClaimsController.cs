@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
 {
-    public class OperationClaimsController : ControllerRepository<OperationClaim>
+    public class OperationClaimsController : ControllerRepository<OperationClaim, int>
     {
         private readonly IOperationClaimService _operationClaimService;
 

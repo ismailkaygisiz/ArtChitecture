@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
 {
-    public class UsersController : ControllerRepository<User>
+    public class UsersController : ControllerRepository<User, int>
     {
         private readonly IUserService _userService;
 

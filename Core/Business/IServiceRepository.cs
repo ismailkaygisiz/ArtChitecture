@@ -4,12 +4,12 @@ using Core.Utilities.Results.Abstract;
 
 namespace Core.Business
 {
-    public interface IServiceRepository<T> where T : class, IEntity, new()
+    public interface IServiceRepository<TEntity, TId> where TEntity : class, IEntity, new()
     {
-        IResult Add(T entity);
-        IResult Delete(T entity);
-        IResult Update(T entity);
-        IDataResult<T> GetById(int id);
-        IDataResult<List<T>> GetAll();
+        IResult Add(TEntity entity);
+        IResult Delete(TEntity entity);
+        IResult Update(TEntity entity);
+        IDataResult<TEntity> GetById(TId id);
+        IDataResult<List<TEntity>> GetAll();
     }
 }

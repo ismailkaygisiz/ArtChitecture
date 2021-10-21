@@ -1,6 +1,6 @@
 ﻿using Castle.Core.Internal;
 using Castle.DynamicProxy;
-using Core.Utilities.Helpers.InterceptorHelpers;
+using Core.Utilities.Exceptions;
 using Core.Utilities.Interceptors;
 using Core.Utilities.Results.Abstract;
 using Core.Utilities.Results.Concrete;
@@ -15,8 +15,6 @@ namespace Core.Aspects.Autofac.Authorization
         private readonly string[] _roles;
         private readonly List<string> _args;
         private readonly string _arg;
-        
-        private bool _error;
 
         public SecuredOperation(string roles)
         {
@@ -46,10 +44,7 @@ namespace Core.Aspects.Autofac.Authorization
         {
             var roleClaims = RequestUserService.GetRequestUser().Data?.Roles;
             if (roleClaims == null)
-            {
-                ReturnError();
-                return;
-            }
+                ThrowError(invocation);
 
             if (roleClaims.Contains("Admin"))
                 return;
@@ -79,27 +74,14 @@ namespace Core.Aspects.Autofac.Authorization
                         if (Control(methodArg).Success)
                             return;
 
-                ReturnError();
-                return;
+                ThrowError(invocation);
             }
 
             foreach (var role in _roles)
                 if (roleClaims.Contains(role))
                     return;
 
-            ReturnError();
-        }
-
-        protected override void OnAfter(IInvocation invocation)
-        {
-            if (_error)
-            {
-                _error = false;
-                var securityError = TranslateContext.Translates["Cannot_Cal_Property_Error_Key"] + " : " +
-                                    invocation.Method.Name;
-                AutofacInterceptorHelper.ChangeReturnValue(invocation, typeof(SecurityErrorDataResult<>), securityError,
-                    CoreMessages.AuthorizationDenied());
-            }
+            ThrowError(invocation);
         }
 
         private IResult Control(dynamic methodArg)
@@ -111,10 +93,12 @@ namespace Core.Aspects.Autofac.Authorization
             return new ErrorResult();
         }
 
-        private void ReturnError()
+        private void ThrowError(IInvocation invocation)
         {
-            Invoke = false;
-            _error = true;
+            var securityError = TranslateContext.Translates["Cannot_Cal_Property_Error_Key"] + " : " +
+                                invocation.Method.Name;
+
+            throw new UnAuthorizedException(CoreMessages.AuthorizationDenied(), securityError);
         }
     }
 }

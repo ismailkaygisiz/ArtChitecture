@@ -1,5 +1,4 @@
-﻿using Core.API;
-using Core.Business;
+﻿using Core.Business;
 using Core.Entities.Abstract;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,12 +6,12 @@ namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ControllerRepository<TEntity> : ControllerBase, IControllerRepository<TEntity, IActionResult>
+    public class ControllerRepository<TEntity, TId> : Controller, IControllerRepository<TEntity, TId>
         where TEntity : class, IEntity, new()
     {
-        private readonly IServiceRepository<TEntity> _serviceRepository;
+        private readonly IServiceRepository<TEntity, TId> _serviceRepository;
 
-        public ControllerRepository(IServiceRepository<TEntity> serviceRepository)
+        public ControllerRepository(IServiceRepository<TEntity, TId> serviceRepository)
         {
             _serviceRepository = serviceRepository;
         }
@@ -45,7 +44,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet("[action]")]
-        public virtual IActionResult GetById(int id)
+        public virtual IActionResult GetById(TId id)
         {
             var result = _serviceRepository.GetById(id);
             if (result.Success)

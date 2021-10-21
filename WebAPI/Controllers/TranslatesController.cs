@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
 {
-    public class TranslatesController : ControllerRepository<Translate>
+    public class TranslatesController : ControllerRepository<Translate, int>
     {
         private readonly ITranslateService _translateService;
 

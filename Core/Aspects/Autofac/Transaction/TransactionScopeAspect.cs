@@ -1,9 +1,8 @@
-﻿using System;
-using System.Transactions;
-using Castle.DynamicProxy;
-using Core.Utilities.Helpers.InterceptorHelpers;
+﻿using Castle.DynamicProxy;
+using Core.Utilities.Exceptions;
 using Core.Utilities.Interceptors;
-using Core.Utilities.Results.Concrete;
+using System;
+using System.Transactions;
 
 namespace Core.Aspects.Autofac.Transaction
 {
@@ -25,12 +24,19 @@ namespace Core.Aspects.Autofac.Transaction
                 }
                 catch (Exception e)
                 {
-                    _ = e;
                     transactionScope.Dispose();
 
-                    var transactionError = TranslateContext.Translates["Transaction_Error_Key"];
-                    AutofacInterceptorHelper.ChangeReturnValue(invocation, typeof(TransactionScopeErrorDataResult<>),
-                        transactionError, CoreMessages.TransactionScopeError());
+                    if (e.GetType() == typeof(ValidationException))
+                        throw e;
+
+                    else if (e.GetType() == typeof(UnAuthorizedException))
+                        throw e;
+
+                    else
+                    {
+                        var transactionError = TranslateContext.Translates["Transaction_Error_Key"];
+                        throw new Utilities.Exceptions.TransactionException(CoreMessages.TransactionScopeError(), transactionError);
+                    }
                 }
             }
         }

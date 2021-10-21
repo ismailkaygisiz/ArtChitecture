@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
 {
-    public class LanguagesController : ControllerRepository<Language>
+    public class LanguagesController : ControllerRepository<Language, int>
     {
         private readonly ILanguageService _languageService;
 

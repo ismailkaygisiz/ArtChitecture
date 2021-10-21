@@ -4,7 +4,7 @@ using Core.Utilities.Results.Abstract;
 
 namespace Business.Abstract
 {
-    public interface IRefreshTokenService : IServiceRepository<RefreshToken>
+    public interface IRefreshTokenService : IServiceRepository<RefreshToken, int>
     {
         IDataResult<RefreshToken> GetByRefreshToken(string refreshToken);
         IDataResult<RefreshToken> GetByClientId(string clientId);
