@@ -1,4 +1,5 @@
 ﻿using Core.Utilities.Constants;
+using Core.Utilities.Errors;
 using Core.Utilities.Exceptions;
 using Core.Utilities.IoC;
 using Microsoft.AspNetCore.Http;
@@ -42,48 +43,25 @@ namespace Core.Extensions.Middlewares
                 ValidationException error = (ValidationException)e;
                 httpContext.Response.StatusCode = error.StatusCode;
 
-                return httpContext.Response.WriteAsync(new ValidationErrorDetails()
-                {
-                    StatusCode = httpContext.Response.StatusCode,
-                    ErrorMessage = error.ExceptionMessage,
-                    ExceptionType = error.ExceptionType,
-                    ValidationErrors = error.ValidationErrors,
-                }.ToString());
+                return httpContext.Response.WriteAsync(new ValidationErrorDetails(httpContext.Response.StatusCode, error.ExceptionMessage, error.ValidationErrors).ToJson());
             }
             else if (e.GetType() == typeof(UnAuthorizedException))
             {
                 UnAuthorizedException error = (UnAuthorizedException)e;
                 httpContext.Response.StatusCode = error.StatusCode;
 
-                return httpContext.Response.WriteAsync(new UnAuthorizedErrorDetails()
-                {
-                    StatusCode = httpContext.Response.StatusCode,
-                    ErrorMessage = error.ExceptionMessage,
-                    ExceptionType = error.ExceptionType,
-                    SecurityError = error.SecurityError,
-                }.ToString());
+                return httpContext.Response.WriteAsync(new UnAuthorizedErrorDetails(httpContext.Response.StatusCode, error.ExceptionMessage, error.SecurityError).ToJson());
             }
             else if (e.GetType() == typeof(TransactionException))
             {
                 TransactionException error = (TransactionException)e;
                 httpContext.Response.StatusCode = error.StatusCode;
 
-                return httpContext.Response.WriteAsync(new TransactionErrorDetails()
-                {
-                    StatusCode = httpContext.Response.StatusCode,
-                    ErrorMessage = error.ExceptionMessage,
-                    ExceptionType = error.ExceptionType,
-                    TransactionError = error.TransactionError,
-                }.ToString());
+                return httpContext.Response.WriteAsync(new TransactionErrorDetails(httpContext.Response.StatusCode, error.ExceptionMessage, error.TransactionError).ToJson());
             }
 
             httpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-            return httpContext.Response.WriteAsync(new ErrorDetails
-            {
-                StatusCode = httpContext.Response.StatusCode,
-                ErrorMessage = CoreMessages.InternalServerError(),
-                ExceptionType = ExceptionType.SystemException,
-            }.ToString());
+            return httpContext.Response.WriteAsync(new ErrorDetails(httpContext.Response.StatusCode, CoreMessages.InternalServerError(), ExceptionType.SystemException).ToJson());
         }
     }
 }

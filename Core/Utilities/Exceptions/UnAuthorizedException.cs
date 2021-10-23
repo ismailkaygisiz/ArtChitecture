@@ -1,22 +1,16 @@
 ﻿namespace Core.Utilities.Exceptions
 {
-    public class UnAuthorizedException : BaseExceptionResult
+    public class UnAuthorizedException : BaseException
     {
         public string SecurityError { get; set; }
 
-        public UnAuthorizedException(string exceptionMessage, string unAuthorizedExceptionMessage)
+        public UnAuthorizedException(string exceptionMessage, string unAuthorizedExceptionMessage) : base(401, ExceptionType.UnAuthorizedException, exceptionMessage)
         {
-            ExceptionType = ExceptionType.UnAuthorizedException;
-            ExceptionMessage = exceptionMessage;
-            StatusCode = 401;
             SecurityError = unAuthorizedExceptionMessage;
         }
 
-        public UnAuthorizedException(string exceptionMessage, int statusCode, string unAuthorizedExceptionMessage)
+        public UnAuthorizedException(int statusCode, string exceptionMessage, string unAuthorizedExceptionMessage) : base(statusCode, ExceptionType.UnAuthorizedException, exceptionMessage)
         {
-            ExceptionType = ExceptionType.UnAuthorizedException;
-            ExceptionMessage = exceptionMessage;
-            StatusCode = statusCode;
             SecurityError = unAuthorizedExceptionMessage;
         }
     }

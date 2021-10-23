@@ -1,22 +1,16 @@
 ﻿namespace Core.Utilities.Exceptions
 {
-    public class TransactionException : BaseExceptionResult
+    public class TransactionException : BaseException
     {
         public string TransactionError { get; set; }
 
-        public TransactionException(string exceptionMessage, string transactionError)
+        public TransactionException(string exceptionMessage, string transactionError) : base(400, ExceptionType.TransactionException, exceptionMessage)
         {
-            ExceptionType = ExceptionType.TransactionException;
-            ExceptionMessage = exceptionMessage;
-            StatusCode = 400;
             TransactionError = transactionError;
         }
 
-        public TransactionException(string exceptionMessage, int statusCode, string transactionError)
+        public TransactionException(int statusCode, string exceptionMessage, string transactionError) : base(statusCode, ExceptionType.TransactionException, exceptionMessage)
         {
-            ExceptionType = ExceptionType.TransactionException;
-            ExceptionMessage = exceptionMessage;
-            StatusCode = statusCode;
             TransactionError = transactionError;
         }
     }

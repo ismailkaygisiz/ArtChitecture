@@ -2,24 +2,17 @@
 
 namespace Core.Utilities.Exceptions
 {
-    public class ValidationException : BaseExceptionResult
+    public class ValidationException : BaseException
     {
         public List<string> ValidationErrors { get; set; }
 
-        public ValidationException(string exceptionMessage, List<string> validationErrors)
+        public ValidationException(string exceptionMessage, List<string> validationErrors) : base(400, ExceptionType.ValidationException, exceptionMessage)
         {
-            ExceptionType = ExceptionType.ValidationException;
-            ExceptionMessage = exceptionMessage;
-            StatusCode = 400;
             ValidationErrors = validationErrors;
         }
 
-        public ValidationException(string exceptionMessage, int statusCode, List<string> validationErrors)
+        public ValidationException(int statusCode, string exceptionMessage, List<string> validationErrors) : base(statusCode, ExceptionType.ValidationException, exceptionMessage)
         {
-
-            ExceptionType = ExceptionType.ValidationException;
-            ExceptionMessage = exceptionMessage;
-            StatusCode = statusCode;
             ValidationErrors = validationErrors;
         }
     }
