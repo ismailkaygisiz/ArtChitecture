@@ -5,7 +5,7 @@ Map? translates;
 
 class Environments {
   /// API url.
-  /// Example "https://api.example.com/api"
+  /// Example "https://api.example.com/api/"
   static const String API_URL =
       "https://localhost:5001/api/"; // Your IP Address for Development  // For Mobile 192.168.1.33 // For Web and Desktop localhost
 
@@ -15,7 +15,7 @@ class Environments {
       "https://localhost:5001/"; // Your IP Address for Development  // For Mobile 192.168.1.33 // For Web and Desktop localhost
 
   /// Base url for images.
-  /// Example "https://api.example.com"
+  /// Example "https://api.example.com/"
   static const String BASE_URL_FOR_IMAGE =
       "https://localhost:5001/"; // Your IP Address for Development  // For Mobile 192.168.1.33 // For Web and Desktop localhost
 

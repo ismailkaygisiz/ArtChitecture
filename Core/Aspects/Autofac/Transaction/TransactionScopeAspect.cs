@@ -29,7 +29,7 @@ namespace Core.Aspects.Autofac.Transaction
                     if (e.GetType() == typeof(ValidationException))
                         throw e;
 
-                    else if (e.GetType() == typeof(UnAuthorizedException))
+                    else if (e.GetType() == typeof(AuthorizationDeniedException))
                         throw e;
 
                     else

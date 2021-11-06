@@ -17,6 +17,11 @@ namespace Core.Utilities.Constants
             return GetTranslates()["Authorization_Denied_Message_Key"];
         }
 
+        public string LoginRequired()
+        {
+            return GetTranslates()["Login_Required_Message_Key"];
+        }
+
         public string ValidationError()
         {
             return GetTranslates()["Validation_Error_Message_Key"];

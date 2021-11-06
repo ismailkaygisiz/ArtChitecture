@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_ui/core/utilities/responsive.dart';
+import 'package:flutter_ui/core/utilities/responsive_design.dart';
 import 'package:flutter_ui/pages/main/homePage/home_page_screen.dart';
 import 'package:flutter_ui/pages/main/loadingPage/loading_page_screen.dart';
 
@@ -45,8 +45,8 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     _translateControl();
 
-    print("Screen Width : ${Responsive.getDeviceSize(context).width}");
-    print("Screen Height : ${Responsive.getDeviceSize(context).height}");
+    print("Screen Width : ${ResponsiveDesign.getDeviceSize(context).width}");
+    print("Screen Height : ${ResponsiveDesign.getDeviceSize(context).height}");
 
     // print("Desktop : ${Responsive.isDesktop(context)}");
     // print("Tablet : ${Responsive.isTablet(context)}");

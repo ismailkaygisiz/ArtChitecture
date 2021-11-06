@@ -18,11 +18,13 @@ namespace Business.Concrete
     {
         private readonly IRefreshTokenHelper _refreshTokenHelper;
         private readonly IUserService _userService;
+        private readonly IUserOperationClaimService _userOperationClaimService;
 
-        public AuthManager(IUserService userService, IRefreshTokenHelper refreshTokenHelper)
+        public AuthManager(IUserService userService, IRefreshTokenHelper refreshTokenHelper, IUserOperationClaimService userOperationClaimService)
         {
             _userService = userService;
             _refreshTokenHelper = refreshTokenHelper;
+            _userOperationClaimService = userOperationClaimService;
         }
 
         public bool UseRefreshTokenEndDate { get; set; }
@@ -31,7 +33,7 @@ namespace Business.Concrete
         public IDataResult<AccessToken> CreateAccessToken(User user)
         {
             var roles = _userService.GetClaims(user).Data;
-            var accessToken = TokenHelper.CreateToken(user, roles);
+            var accessToken = UserTokenHelper.CreateToken(user, roles);
 
             UseRefreshTokenEndDate = _refreshTokenHelper.UseRefreshTokenEndDate;
 
@@ -115,6 +117,13 @@ namespace Business.Concrete
             };
 
             _userService.Add(user);
+
+            _userOperationClaimService.AddForSuperUser(new UserOperationClaim()
+            {
+                UserId = user.Id,
+                OperationClaimId = 2
+            });
+
             return new SuccessDataResult<AccessToken>(CreateAccessToken(user).Data, BusinessMessages.SuccessfulRegister());
         }
 

@@ -98,7 +98,7 @@ namespace Core.Aspects.Autofac.Authorization
             var securityError = TranslateContext.Translates["Cannot_Cal_Property_Error_Key"] + " : " +
                                 invocation.Method.Name;
 
-            throw new UnAuthorizedException(CoreMessages.AuthorizationDenied(), securityError);
+            throw new AuthorizationDeniedException(CoreMessages.AuthorizationDenied(), securityError);
         }
     }
 }

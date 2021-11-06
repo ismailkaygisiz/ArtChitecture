@@ -4,6 +4,7 @@ using Business.Abstract;
 using Business.Concrete;
 using Business.Helpers;
 using Castle.DynamicProxy;
+using Core.Entities.Concrete;
 using Core.Utilities.Interceptors;
 using Core.Utilities.Security.JWT;
 using DataAccess.Abstract;
@@ -37,7 +38,7 @@ namespace Business.DependencyResolvers.Autofac
             builder.RegisterType<RefreshTokenHelper>().As<IRefreshTokenHelper>().SingleInstance();
 
             // CoreLayer
-            builder.RegisterType<JwtHelper>().As<ITokenHelper>().SingleInstance();
+            builder.RegisterType<JwtHelper>().As<ITokenHelper<User>>().SingleInstance();
 
             // Interceptors
             var assembly = Assembly.GetExecutingAssembly();

@@ -25,7 +25,6 @@ namespace WebAPI
                 .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); })
                 .ConfigureLogging(config =>
                 {
-                    config.ClearProviders();
                     config.SetMinimumLevel(LogLevel.Trace);
                 });
         }

@@ -45,6 +45,15 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("[action]")]
+        public IActionResult ChangePassword(UserForLoginDto userForLoginDto, string newPassword)
+        {
+            var result = _authService.ChangePassword(userForLoginDto, newPassword);
+            if (result.Success) return Ok(result);
+
+            return BadRequest(result);
+        }
+        
+        [HttpPost("[action]")]
         public IActionResult RefreshToken()
         {
             string refreshToken = HttpContext.Request.Headers["RefreshToken"];
@@ -75,15 +84,6 @@ namespace WebAPI.Controllers
             if (result.Success) return Ok(result);
 
             _requestUserService.SetRequestUser(null);
-            return BadRequest(result);
-        }
-
-        [HttpPost("[action]")]
-        public IActionResult ChangePassword(UserForLoginDto userForLoginDto, string newPassword)
-        {
-            var result = _authService.ChangePassword(userForLoginDto, newPassword);
-            if (result.Success) return Ok(result);
-
             return BadRequest(result);
         }
     }

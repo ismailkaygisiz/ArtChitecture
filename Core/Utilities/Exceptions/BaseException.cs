@@ -19,7 +19,8 @@ namespace Core.Utilities.Exceptions
     public enum ExceptionType
     {
         TransactionException,
-        UnAuthorizedException,
+        AuthorizationDeniedException,
+        LoginRequiredException,
         ValidationException,
         SystemException,
     }

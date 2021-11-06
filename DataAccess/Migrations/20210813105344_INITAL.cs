@@ -155,6 +155,11 @@ namespace DataAccess.Migrations
                 new object[] { 2, "Authorization_Denied_Message_Key", "You are not Authorized" });
 
             migrationBuilder.InsertData("Translates", new[] { "LanguageId", "Key", "Value" },
+                new object[] { 1, "Login_Required_Message_Key", "Giriş Yapmanız Gerekiyor" });
+            migrationBuilder.InsertData("Translates", new[] { "LanguageId", "Key", "Value" },
+                new object[] { 2, "Login_Required_Message_Key", "Login Required" });
+
+            migrationBuilder.InsertData("Translates", new[] { "LanguageId", "Key", "Value" },
                 new object[] { 1, "Validation_Error_Message_Key", "Doğrulama Hatası" });
             migrationBuilder.InsertData("Translates", new[] { "LanguageId", "Key", "Value" },
                 new object[] { 2, "Validation_Error_Message_Key", "Validation Error" });
@@ -168,6 +173,11 @@ namespace DataAccess.Migrations
                 new object[] { 1, "Transaction_Scope_Error_Message_Key", "İstek İşlenemedi" });
             migrationBuilder.InsertData("Translates", new[] { "LanguageId", "Key", "Value" },
                 new object[] { 2, "Transaction_Scope_Error_Message_Key", "Request Failed to Process" });
+
+            migrationBuilder.InsertData("Translates", new[] { "LanguageId", "Key", "Value" },
+                new object[] { 1, "You_Are_Redirecting_To_The_Login_Screen_Key", "Giriş Yapma Sayfasına Yönlendiriliyorsunuz" });
+            migrationBuilder.InsertData("Translates", new[] { "LanguageId", "Key", "Value" },
+                new object[] { 2, "You_Are_Redirecting_To_The_Login_Screen_Key", "You are Redirecting to the Login Screen" });
 
             migrationBuilder.InsertData("Translates", new[] { "LanguageId", "Key", "Value" },
                 new object[] { 1, "Cannot_Cal_Property_Error_Key", "Özelliği Çağıramazsınız" });

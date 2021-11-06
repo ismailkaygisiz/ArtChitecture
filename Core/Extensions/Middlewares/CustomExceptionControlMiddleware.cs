@@ -2,6 +2,7 @@
 using Core.Utilities.Errors;
 using Core.Utilities.Exceptions;
 using Core.Utilities.IoC;
+using Core.Utilities.Results.Concrete;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -40,24 +41,31 @@ namespace Core.Extensions.Middlewares
 
             if (e.GetType() == typeof(ValidationException))
             {
-                ValidationException error = (ValidationException)e;
-                httpContext.Response.StatusCode = error.StatusCode;
+                ValidationException exception = (ValidationException)e;
+                httpContext.Response.StatusCode = exception.StatusCode;
 
-                return httpContext.Response.WriteAsync(new ValidationErrorDetails(httpContext.Response.StatusCode, error.ExceptionMessage, error.ValidationErrors).ToJson());
+                return httpContext.Response.WriteAsync(new ErrorDataResult<ValidationErrorDetails>(new ValidationErrorDetails(httpContext.Response.StatusCode, exception.ExceptionMessage, exception.ValidationErrors), exception.ExceptionMessage).ToJson());
             }
-            else if (e.GetType() == typeof(UnAuthorizedException))
+            else if (e.GetType() == typeof(LoginRequiredException))
             {
-                UnAuthorizedException error = (UnAuthorizedException)e;
-                httpContext.Response.StatusCode = error.StatusCode;
+                LoginRequiredException exception = (LoginRequiredException)e;
+                httpContext.Response.StatusCode = exception.StatusCode;
 
-                return httpContext.Response.WriteAsync(new UnAuthorizedErrorDetails(httpContext.Response.StatusCode, error.ExceptionMessage, error.SecurityError).ToJson());
+                return httpContext.Response.WriteAsync(new ErrorDataResult<LoginRequiredErrorDetails>(new LoginRequiredErrorDetails(httpContext.Response.StatusCode, exception.ExceptionMessage, exception.SecurityError), exception.ExceptionMessage).ToJson());
+            }
+            else if (e.GetType() == typeof(AuthorizationDeniedException))
+            {
+                AuthorizationDeniedException exception = (AuthorizationDeniedException)e;
+                httpContext.Response.StatusCode = exception.StatusCode;
+
+                return httpContext.Response.WriteAsync(new ErrorDataResult<AuthorizationDeniedErrorDetails>(new AuthorizationDeniedErrorDetails(httpContext.Response.StatusCode, exception.ExceptionMessage, exception.SecurityError), exception.ExceptionMessage).ToJson());
             }
             else if (e.GetType() == typeof(TransactionException))
             {
-                TransactionException error = (TransactionException)e;
-                httpContext.Response.StatusCode = error.StatusCode;
+                TransactionException exception = (TransactionException)e;
+                httpContext.Response.StatusCode = exception.StatusCode;
 
-                return httpContext.Response.WriteAsync(new TransactionErrorDetails(httpContext.Response.StatusCode, error.ExceptionMessage, error.TransactionError).ToJson());
+                return httpContext.Response.WriteAsync(new ErrorDataResult<TransactionErrorDetails>(new TransactionErrorDetails(httpContext.Response.StatusCode, exception.ExceptionMessage, exception.TransactionError), exception.ExceptionMessage).ToJson());
             }
 
             httpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;

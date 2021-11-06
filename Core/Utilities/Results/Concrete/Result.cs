@@ -1,4 +1,6 @@
 ﻿using Core.Utilities.Results.Abstract;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace Core.Utilities.Results.Concrete
 {
@@ -17,5 +19,13 @@ namespace Core.Utilities.Results.Concrete
         public bool Success { get; }
 
         public string Message { get; }
+
+        public virtual string ToJson()
+        {
+            return JsonConvert.SerializeObject(this, new JsonSerializerSettings
+            {
+                ContractResolver = new CamelCasePropertyNamesContractResolver()
+            });
+        }
     }
 }

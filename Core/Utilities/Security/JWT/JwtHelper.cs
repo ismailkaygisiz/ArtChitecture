@@ -1,18 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Security.Claims;
-using System.Security.Cryptography;
-using Core.Entities.Concrete;
+﻿using Core.Entities.Concrete;
 using Core.Extensions;
 using Core.Utilities.Security.Encryption;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using System;
+using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
+using System.Security.Claims;
 
 namespace Core.Utilities.Security.JWT
 {
-    public class JwtHelper : ITokenHelper
+    public class JwtHelper : ITokenHelper<User>
     {
         private readonly TokenOptions _tokenOptions;
         private DateTime _accessTokenExpiration;
@@ -56,7 +55,7 @@ namespace Core.Utilities.Security.JWT
             return jwt;
         }
 
-        private IEnumerable<Claim> SetClaims(User user, List<OperationClaim> operationClaims)
+        public IEnumerable<Claim> SetClaims(User user, List<OperationClaim> operationClaims)
         {
             var claims = new List<Claim>();
 

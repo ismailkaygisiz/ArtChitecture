@@ -1,6 +1,7 @@
 ﻿using Core.Business.Translate;
 using Core.CrossCuttingConcerns.Logging.Serilog;
 using Core.CrossCuttingConcerns.Logging.SeriLog.Loggers;
+using Core.Entities.Concrete;
 using Core.Utilities.Constants;
 using Core.Utilities.Helpers.FileHelpers;
 using Core.Utilities.Helpers.MailHelpers;
@@ -20,7 +21,7 @@ namespace Core.Business
             RequestUserService = ServiceTool.ServiceProvider.GetService<IRequestUserService>();
             TranslateContext = ServiceTool.ServiceProvider.GetService<ITranslateContext>();
 
-            TokenHelper = ServiceTool.ServiceProvider.GetService<ITokenHelper>();
+            UserTokenHelper = ServiceTool.ServiceProvider.GetService<ITokenHelper<User>>();
             MailHelper = ServiceTool.ServiceProvider.GetService<IMailHelper>();
             FileHelper = ServiceTool.ServiceProvider.GetService<IFileHelper>();
 
@@ -36,7 +37,7 @@ namespace Core.Business
         public IRequestUserService RequestUserService { get; }
         public ITranslateContext TranslateContext { get; }
 
-        public ITokenHelper TokenHelper { get; }
+        public ITokenHelper<User> UserTokenHelper { get; }
         public IMailHelper MailHelper { get; }
         public IFileHelper FileHelper { get; }
 

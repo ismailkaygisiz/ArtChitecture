@@ -1,5 +1,6 @@
 ﻿using Core.Utilities.Exceptions;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace Core.Utilities.Errors
 {
@@ -18,7 +19,10 @@ namespace Core.Utilities.Errors
 
         public virtual string ToJson()
         {
-            return JsonConvert.SerializeObject(this);
+            return JsonConvert.SerializeObject(this, new JsonSerializerSettings
+            {
+                ContractResolver = new CamelCasePropertyNamesContractResolver()
+            });
         }
     }
 }

@@ -47,7 +47,6 @@ namespace Core.Aspects.Autofac.Logging
             return new LogDetailWithException
             {
                 MethodName = methodName,
-                Parameters = logParameters,
                 User = JsonConvert.SerializeObject(_requestUserService.GetRequestUser().Data?.Email != null ? _requestUserService.GetRequestUser().Data : null),
                 FullName = (_requestUserService.GetRequestUser().Data == null ||
                             _requestUserService.GetRequestUser().Data.FirstName == null
