@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+    <CodeSnippet Format="1.0.0">
+        <Header>
+            <Title>Entity</Title>
+            <Author></Author>
+            <Description>Creates an entity</Description>
+            <Shortcut>entity</Shortcut>
+        </Header>
+        <Snippet>
+            <Code Language="CSharp">
+                <![CDATA[
+public class $EntityName$ : IEntity
+{
+    public $IDType$ $IDName$ { get; set; }
+    $selected$ $end$    
+}
+]]>
+            </Code>
+            <Declarations>
+                <Literal>
+                    <ID>EntityName</ID>
+                    <Default>Entity</Default>
+                    <ToolTip>Entity name</ToolTip>
+                </Literal>
+
+                
+                <Literal>
+                    <ID>IDType</ID>
+                    <Default>int</Default>
+                    <ToolTip>Id type</ToolTip>
+                </Literal>
+                
+                <Literal>
+                    <ID>IDName</ID>
+                    <Default>Id</Default>
+                    <ToolTip>Id name</ToolTip>
+                </Literal>
+            </Declarations>
+            <Imports>
+                <Import>
+                    <Namespace>Core.Entities.Abstract</Namespace>
+                </Import>
+            </Imports>
+        </Snippet>
+    </CodeSnippet>
+</CodeSnippets>

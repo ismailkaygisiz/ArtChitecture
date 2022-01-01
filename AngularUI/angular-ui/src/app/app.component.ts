@@ -4,7 +4,6 @@ import { TranslateService } from './core/services/translate.service';
 import { ValidationService } from './core/services/validation.service';
 import { translates } from 'src/api';
 import { AuthService } from './core/services/auth.service';
-import { OperationClaimService } from './core/services/operation-claim.service';
 
 @Component({
   selector: 'app-root',
@@ -19,14 +18,12 @@ export class AppComponent implements OnInit {
     private titleService: Title,
     private translateService: TranslateService,
     private validationService: ValidationService,
-    private authService: AuthService,
-    private operationClaimService: OperationClaimService
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
-    this.titleService.setTitle('ArtChitecture AngularUI');
+    this.titleService.setTitle(this.title);
     this.getTranslates();
-
 
     this.authService.setRefreshTokenEvents(
       () => {

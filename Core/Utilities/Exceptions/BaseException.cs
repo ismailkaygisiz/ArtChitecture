@@ -2,6 +2,7 @@
 
 namespace Core.Utilities.Exceptions
 {
+    [Serializable]
     public abstract class BaseException : Exception
     {
         protected BaseException(int statusCode, ExceptionType exceptionType, string exceptionMessage) : base(exceptionMessage)

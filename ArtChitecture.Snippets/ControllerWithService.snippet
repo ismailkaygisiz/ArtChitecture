@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+    <CodeSnippet Format="1.0.0">
+        <Header>
+            <Title>Controller With Service</Title>
+            <Author></Author>
+            <Description>Creates a controller with service</Description>
+            <Shortcut>controllerws</Shortcut>
+        </Header>
+        <Snippet>
+            <Code Language="CSharp">
+                <![CDATA[
+public class $EntityName$sController : ControllerRepository<$EntityName$, $IDType$>
+{
+    private readonly I$EntityName$Service _$VariableName$Service;
+
+    public $EntityName$sController(I$EntityName$Service $VariableName$Service) : base($VariableName$Service)
+    {
+        _$VariableName$Service = $VariableName$Service;
+    }
+    $selected$ $end$
+}
+]]>
+            </Code>
+            <Declarations>
+                <Literal>
+                    <ID>EntityName</ID>
+                    <Default>Entity</Default>
+                    <ToolTip>Entity name</ToolTip>
+                </Literal>
+                <Literal>
+                    <ID>IDType</ID>
+                    <Default>int</Default>
+                    <ToolTip>Id type</ToolTip>
+                </Literal>
+                <Literal>
+                    <ID>VariableName</ID>
+                    <Default></Default>
+                    <ToolTip>Variable name</ToolTip>
+                </Literal>
+            </Declarations>
+            <Imports>
+                <Import>
+                    <Namespace>Business.Abstract</Namespace>
+                </Import>
+                <Import>
+                    <Namespace>Microsoft.AspNetCore.Mvc</Namespace>
+                </Import>
+            </Imports>
+        </Snippet>
+    </CodeSnippet>
+</CodeSnippets>

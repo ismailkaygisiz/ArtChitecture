@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+    <CodeSnippet Format="1.0.0">
+        <Header>
+            <Title>Manager With Dal</Title>
+            <Author></Author>
+            <Description>Creates a manager with dal</Description>
+            <Shortcut>managerwd</Shortcut>
+        </Header>
+        <Snippet>
+            <Code Language="CSharp">
+                <![CDATA[
+public class $EntityName$Manager : BusinessService, I$EntityName$Service
+{
+    private readonly I$EntityName$Dal _$VariableName$Dal;
+
+    public $EntityName$Manager(I$EntityName$Dal $VariableName$Dal)
+    {
+        _$VariableName$Dal = $VariableName$Dal;
+    }
+    
+    public IResult Add($EntityName$ entity)
+    {
+        IResult result = BusinessRules.Run();
+
+        if(!result.Success)
+            return result;
+
+        _$VariableName$Dal.Add(entity);
+        return new SuccessResult();
+    }
+    
+    public IResult Delete($EntityName$ entity)
+    {
+        IResult result = BusinessRules.Run();
+
+        if(!result.Success)
+            return result;
+
+        $EntityName$ entityToDelete = GetById(entity.$IDName$).Data;
+        _$VariableName$Dal.Delete(entityToDelete);
+        return new SuccessResult();
+    }
+    
+    public IResult Update($EntityName$ entity)
+    {
+        IResult result = BusinessRules.Run();
+
+        if(!result.Success)
+            return result;
+
+        _$VariableName$Dal.Update(entity);
+        return new SuccessResult();
+    }
+
+    public IDataResult<List<$EntityName$>> GetAll()
+    {
+        return new SuccessDataResult<List<$EntityName$>>(_$VariableName$Dal.GetAll());
+    }
+
+    public IDataResult<$EntityName$> GetById($IDType$ id)
+    {
+        return new SuccessDataResult<$EntityName$>(_$VariableName$Dal.Get(e=>e.$IDName$ == id));
+    }
+    $selected$ $end$  
+}
+]]>
+            </Code>
+            <Declarations>
+                <Literal>
+                    <ID>EntityName</ID>
+                    <Default>Entity</Default>
+                    <ToolTip>Entity name</ToolTip>
+                </Literal>
+                <Literal>
+                    <ID>VariableName</ID>
+                    <Default></Default>
+                    <ToolTip>Variable name</ToolTip>
+                </Literal>
+                <Literal>
+                    <ID>IDType</ID>
+                    <Default>int</Default>
+                    <ToolTip>Id type</ToolTip>
+                </Literal>
+                <Literal>
+                    <ID>IDName</ID>
+                    <Default>Id</Default>
+                    <ToolTip>Id name</ToolTip>
+                </Literal>
+            </Declarations>
+            <Imports>
+                <Import>
+                    <Namespace>Business.Abstract</Namespace>
+                </Import>
+                <Import>
+                    <Namespace>Core.Business</Namespace>
+                </Import>
+                <Import>
+                    <Namespace>Core.Utilities.Results.Abstract</Namespace>
+                </Import>
+                <Import>
+                    <Namespace>Core.Utilities.Results.Concrete</Namespace>
+                </Import>
+                <Import>
+                    <Namespace>DataAccess.Abstract</Namespace>
+                </Import>
+            </Imports>
+        </Snippet>
+    </CodeSnippet>
+</CodeSnippets>

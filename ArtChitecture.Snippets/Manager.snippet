@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+    <CodeSnippet Format="1.0.0">
+        <Header>
+            <Title>Manager</Title>
+            <Author></Author>
+            <Description>Creates a manager</Description>
+            <Shortcut>manager</Shortcut>
+        </Header>
+        <Snippet>
+            <Code Language="CSharp">
+                <![CDATA[
+public class $ClassName$Manager : BusinessService, I$ClassName$Service
+{
+    public $ClassName$Manager()
+    {
+        $selected$ $end$
+    }
+}
+]]>
+            </Code>
+            <Declarations>
+                <Literal>
+                    <ID>ClassName</ID>
+                    <Default>Entity</Default>
+                    <ToolTip>Class name</ToolTip>
+                </Literal>
+            </Declarations>
+            <Imports>
+                <Import>
+                    <Namespace>Business.Abstract</Namespace>
+                </Import>
+                <Import>
+                    <Namespace>Core.Business</Namespace>
+                </Import>
+                <Import>
+                    <Namespace>Core.Utilities.Results.Abstract</Namespace>
+                </Import>
+                <Import>
+                    <Namespace>Core.Utilities.Results.Concrete</Namespace>
+                </Import>
+            </Imports>
+        </Snippet>
+    </CodeSnippet>
+</CodeSnippets>

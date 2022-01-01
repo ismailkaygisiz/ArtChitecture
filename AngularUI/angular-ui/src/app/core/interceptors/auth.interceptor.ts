@@ -42,9 +42,13 @@ export class AuthInterceptor implements HttpInterceptor {
       catchError((error) => {
         if (error instanceof HttpErrorResponse && error.status === 401) {
           this.router.navigate(['/auth/login']);
-          return null;
+          return throwError(error);
         } else if (error instanceof HttpErrorResponse && error.status === 403) {
-          return this.handle403Error(req, next);
+          if (this.refreshToken != null) {
+            return this.handle403Error(req, next);
+          }
+
+          return throwError(error);
         } else {
           return throwError(error);
         }
@@ -97,7 +101,9 @@ export class AuthInterceptor implements HttpInterceptor {
               this.tokenService.setRefreshToken(
                 response.data.refreshToken.refreshTokenValue
               );
-              this.tokenService.setClientId(response.data.refreshToken.clientId);
+              this.tokenService.setClientId(
+                response.data.refreshToken.clientId
+              );
             }
           }),
           catchError((error) => {

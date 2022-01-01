@@ -24,7 +24,7 @@ namespace Business.Concrete
         }
 
         [TransactionScopeAspect]
-        [FluentValidationAspect(typeof(UserValidator))]
+        [ValidationAspect(typeof(UserValidator))]
         [CacheRemoveAspect("IUserService.Get")]
         public IResult Add(User entity)
         {
@@ -36,7 +36,8 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
-        [SecuredOperation("User", "entity.Id")]
+        [LoginRequired]
+        [SecuredOperation("", "entity.Id")]
         [TransactionScopeAspect]
         [CacheRemoveAspect("IUserService.Get")]
         public IResult Delete(User entity)
@@ -50,9 +51,10 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
-        [SecuredOperation("User", "entity.Id")]
+        [LoginRequired]
+        [SecuredOperation("", "entity.Id")]
         [TransactionScopeAspect]
-        [FluentValidationAspect(typeof(UserValidator))]
+        [ValidationAspect(typeof(UserValidator))]
         [CacheRemoveAspect("IUserService.Get")]
         public IResult Update(User entity)
         {
@@ -64,7 +66,8 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
-        [SecuredOperation("User", "id")]
+        [LoginRequired]
+        [SecuredOperation("", "id")]
         public IDataResult<User> GetById(int id)
         {
             return new SuccessDataResult<User>(_userDal.Get(u => u.Id == id));
@@ -97,7 +100,8 @@ namespace Business.Concrete
             return new SuccessDataResult<List<User>>(_userDal.GetAll(u => u.Status == status));
         }
 
-        [SecuredOperation("User", "email")]
+        [LoginRequired]
+        [SecuredOperation("", "email")]
         public IDataResult<User> GetByEmail(string email)
         {
             return new SuccessDataResult<User>(_userDal.Get(u => u.Email == email));
@@ -107,7 +111,7 @@ namespace Business.Concrete
         {
             return new SuccessDataResult<User>(_userDal.Get(u => u.Email == email));
         }
-
+        
         [SecuredOperation("Admin")]
         [CacheAspect(10)]
         public IDataResult<UserOperationClaimDetailDto> GetUserOperationClaims(int userId)

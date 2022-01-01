@@ -70,10 +70,15 @@ namespace Core.Aspects.Autofac.Authorization
                 }
 
                 foreach (var role in _roles)
-                    if (roleClaims.Contains(role))
+                {
+                    if (role == "")
                         if (Control(methodArg).Success)
                             return;
 
+                    if (roleClaims.Contains(role))
+                        if (Control(methodArg).Success)
+                            return;
+                }
                 ThrowError(invocation);
             }
 

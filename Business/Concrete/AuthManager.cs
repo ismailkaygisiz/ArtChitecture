@@ -50,8 +50,9 @@ namespace Business.Concrete
         }
 
         [TransactionScopeAspect]
-        [SecuredOperation("User", "userForLoginDto.Email")]
-        [FluentValidationAspect(typeof(LoginValidator))] // Will be Upgrade
+        [LoginRequired]
+        [SecuredOperation("", "userForLoginDto.Email")]
+        [ValidationAspect(typeof(LoginValidator))] // Will be Upgrade
         public IDataResult<AccessToken> ChangePassword(UserForLoginDto userForLoginDto, string newPassword) // New Model Will be Added for ChangePassword
         {
             var result = BusinessRules.Run(
@@ -80,7 +81,7 @@ namespace Business.Concrete
         }
 
         [TransactionScopeAspect]
-        [FluentValidationAspect(typeof(LoginValidator))]
+        [ValidationAspect(typeof(LoginValidator))]
         public IDataResult<AccessToken> Login(UserForLoginDto userForLoginDto)
         {
             var result = BusinessRules.Run(
@@ -95,7 +96,7 @@ namespace Business.Concrete
         }
 
         [TransactionScopeAspect]
-        [FluentValidationAspect(typeof(RegisterValidator))]
+        [ValidationAspect(typeof(RegisterValidator))]
         public IDataResult<AccessToken> Register(UserForRegisterDto userForRegisterDto, string password)
         {
             var result = BusinessRules.Run(

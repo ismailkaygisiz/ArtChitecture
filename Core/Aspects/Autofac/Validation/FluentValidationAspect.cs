@@ -9,12 +9,12 @@ using System.Linq;
 
 namespace Core.Aspects.Autofac.Validation
 {
-    public class FluentValidationAspect : MethodInterception
+    public class ValidationAspect : MethodInterception
     {
         private readonly Type _validatorType;
         private List<ValidationFailure> _errors;
 
-        public FluentValidationAspect(Type validatorType)
+        public ValidationAspect(Type validatorType)
         {
             Priority = 3;
             if (!typeof(IValidator).IsAssignableFrom(validatorType))

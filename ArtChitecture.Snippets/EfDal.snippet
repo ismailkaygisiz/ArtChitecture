@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+    <CodeSnippet Format="1.0.0">
+        <Header>
+            <Title>Entity Framework Dal Object</Title>
+            <Author></Author>
+            <Description>Creates an Entity Framework data access layer object</Description>
+            <Shortcut>efdal</Shortcut>
+        </Header>
+        <Snippet>
+            <Code Language="CSharp">
+                <![CDATA[
+public class Ef$EntityName$Dal : EfEntityRepositoryBase<$EntityName$, ProjectDbContext>, I$EntityName$Dal
+{
+    $selected$ $end$
+}
+]]>
+            </Code>
+            <Declarations>
+                <Literal>
+                    <ID>EntityName</ID>
+                    <Default>Entity</Default>
+                    <ToolTip>Entity name</ToolTip>
+                </Literal>
+            </Declarations>
+            <Imports>
+                <Import>
+                    <Namespace>DataAccess.Abstract</Namespace>
+                </Import>
+                <Import>
+                    <Namespace>DataAccess.Concrete.EntityFramework</Namespace>
+                </Import>
+                <Import>
+                    <Namespace>Core.DataAccess.EntityFramework</Namespace>
+                </Import>
+            </Imports>
+        </Snippet>
+    </CodeSnippet>
+</CodeSnippets>

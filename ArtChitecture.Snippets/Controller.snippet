@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+    <CodeSnippet Format="1.0.0">
+        <Header>
+            <Title>Controller</Title>
+            <Author></Author>
+            <Description>Creates a controller</Description>
+            <Shortcut>controller</Shortcut>
+        </Header>
+        <Snippet>
+            <Code Language="CSharp">
+                <![CDATA[
+public class $ControllerName$Controller : Controller
+{
+    public $ControllerName$Controller()
+    {
+        $selected$ $end$
+    }
+}
+]]>
+            </Code>
+            <Declarations>
+                <Literal>
+                    <ID>ControllerName</ID>
+                    <Default>Values</Default>
+                    <ToolTip>Controller name</ToolTip>
+                </Literal>
+            </Declarations>
+            <Imports>
+                <Import>
+                    <Namespace>Controller = WebAPI.Controllers.Controller</Namespace>
+                </Import>
+                <Import>
+                    <Namespace>Microsoft.AspNetCore.Mvc</Namespace>
+                </Import>
+            </Imports>
+        </Snippet>
+    </CodeSnippet>
+</CodeSnippets>

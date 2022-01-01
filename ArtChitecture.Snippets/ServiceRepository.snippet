@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+    <CodeSnippet Format="1.0.0">
+        <Header>
+            <Title>Service Repository</Title>
+            <Author></Author>
+            <Description>Creates a service repository</Description>
+            <Shortcut>service</Shortcut>
+        </Header>
+        <Snippet>
+            <Code Language="CSharp">
+                <![CDATA[
+public interface I$EntityName$Service : IServiceRepository<$EntityName$, $IDType$>
+{
+    $selected$ $end$
+}
+]]>
+            </Code>
+            <Declarations>
+                <Literal>
+                    <ID>EntityName</ID>
+                    <Default>Entity</Default>
+                    <ToolTip>Entity name</ToolTip>
+                </Literal>
+
+                <Literal>
+                    <ID>IDType</ID>
+                    <Default>int</Default>
+                    <ToolTip>Id type</ToolTip>
+                </Literal>
+            </Declarations>
+            <Imports>
+                <Import>
+                    <Namespace>Core.Business</Namespace>
+                </Import>
+                <Import>
+                    <Namespace>Core.Utilities.Results.Abstract</Namespace>
+                </Import>
+            </Imports>
+        </Snippet>
+    </CodeSnippet>
+</CodeSnippets>

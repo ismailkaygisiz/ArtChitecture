@@ -69,7 +69,18 @@ namespace Core.Extensions.Middlewares
             }
 
             httpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-            return httpContext.Response.WriteAsync(new ErrorDetails(httpContext.Response.StatusCode, CoreMessages.InternalServerError(), ExceptionType.SystemException).ToJson());
+            string exceptionMessage = "";
+            
+            try
+            {
+                exceptionMessage = CoreMessages.InternalServerError();
+            }
+            catch (Exception)
+            {
+                exceptionMessage = "Internal Server Error";
+            }
+
+            return httpContext.Response.WriteAsync(new ErrorDataResult<ErrorDetails>(new ErrorDetails(httpContext.Response.StatusCode, exceptionMessage, ExceptionType.SystemException), exceptionMessage).ToJson());
         }
     }
 }
