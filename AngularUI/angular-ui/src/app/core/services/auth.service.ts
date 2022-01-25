@@ -25,36 +25,30 @@ export class AuthService {
   login(user: LoginModel): Observable<SingleResponseModel<TokenModel>> {
     let newPath = apiUrl + 'auth/login';
 
-    let userForLoginDto = {
-      email: user.email,
-      password: user.password,
-      clientName: clientName,
-      clientId: this.tokenService.getClientId(),
-    };
-
-    return this.httpClient.post<SingleResponseModel<TokenModel>>(
-      newPath,
-      userForLoginDto
-    );
+    return this.httpClient.post<SingleResponseModel<TokenModel>>(newPath, user);
   }
 
   register(user: RegisterModel): Observable<SingleResponseModel<TokenModel>> {
     let newPath = apiUrl + 'auth/register';
 
-    let userForRegisterDto = {
-      firstName: user.firstName,
-      lastName: user.lastName,
-      email: user.email,
-      password: user.password,
-      clientName: clientName,
-    };
-
     return this.httpClient.post<SingleResponseModel<TokenModel>>(newPath, user);
+  }
+
+  changePassword(
+    user: LoginModel,
+    newPassword: string
+  ): Observable<SingleResponseModel<TokenModel>> {
+    let newPath = apiUrl + 'auth/changepassword?newPassword=' + newPassword;
+
+    return this.httpClient.post<SingleResponseModel<TokenModel>>(newPath, {
+      user,
+    });
   }
 
   logout() {
     if (this.isAuthenticated()) {
       this.tokenService.removeToken();
+      this.tokenService.removeRefreshToken();
       return true;
     }
 

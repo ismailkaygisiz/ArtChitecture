@@ -1,5 +1,4 @@
 import 'package:flutter_ui/core/models/delete_model.dart';
-import 'package:flutter_ui/core/models/operationClaim/operation_claim_add_model.dart';
 import 'package:flutter_ui/core/models/operationClaim/operation_claim_model.dart';
 import 'package:flutter_ui/core/models/response/list_response_model.dart';
 import 'package:flutter_ui/core/models/response/response_model.dart';
@@ -7,10 +6,9 @@ import 'package:flutter_ui/core/models/response/single_response_model.dart';
 import 'package:flutter_ui/core/utilities/dependency_resolver.dart';
 import 'package:flutter_ui/core/utilities/service_repository.dart';
 
-class OperationClaimService extends ServiceRepositoryWithAddModel<
-    OperationClaimAddModel, OperationClaimModel, int> {
-  Future<ResponseModel> add(
-      OperationClaimAddModel operationClaimAddModel) async {
+class OperationClaimService
+    extends ServiceRepository<OperationClaimModel, int> {
+  Future<ResponseModel> add(OperationClaimModel operationClaimAddModel) async {
     var response = await httpClient.post(
       "operationclaims/add",
       body: operationClaimAddModel.toJson(),

@@ -40,13 +40,13 @@ namespace Business.Concrete
         [SecuredOperation("", "entity.Id")]
         [TransactionScopeAspect]
         [CacheRemoveAspect("IUserService.Get")]
-        public IResult Delete(User entity)
+        public IResult Delete(DeleteModel entity)
         {
             var result = BusinessRules.Run();
 
             if (!result.Success) return result;
 
-            var entityToDelete = GetById(entity.Id).Data;
+            var entityToDelete = GetById(entity.ID).Data;
             _userDal.Delete(entityToDelete);
             return new SuccessResult();
         }
@@ -70,7 +70,7 @@ namespace Business.Concrete
         [SecuredOperation("", "id")]
         public IDataResult<User> GetById(int id)
         {
-            return new SuccessDataResult<User>(_userDal.Get(u => u.Id == id));
+            return new SuccessDataResult<User>(_userDal.Get(u => u.UserId == id));
         }
 
         [SecuredOperation("Admin")]
@@ -78,20 +78,6 @@ namespace Business.Concrete
         public IDataResult<List<User>> GetAll()
         {
             return new SuccessDataResult<List<User>>(_userDal.GetAll());
-        }
-
-        [SecuredOperation("Admin")]
-        [CacheAspect(10)]
-        public IDataResult<List<User>> GetByFirstName(string firstName)
-        {
-            return new SuccessDataResult<List<User>>(_userDal.GetAll(u => u.FirstName == firstName));
-        }
-
-        [SecuredOperation("Admin")]
-        [CacheAspect(10)]
-        public IDataResult<List<User>> GetByLastName(string lastName)
-        {
-            return new SuccessDataResult<List<User>>(_userDal.GetAll(u => u.LastName == lastName));
         }
 
         [SecuredOperation("Admin")]
@@ -112,13 +98,6 @@ namespace Business.Concrete
             return new SuccessDataResult<User>(_userDal.Get(u => u.Email == email));
         }
         
-        [SecuredOperation("Admin")]
-        [CacheAspect(10)]
-        public IDataResult<UserOperationClaimDetailDto> GetUserOperationClaims(int userId)
-        {
-            return new SuccessDataResult<UserOperationClaimDetailDto>(_userDal.GetUserOperationClaimsDetails(userId));
-        }
-
         public IDataResult<List<OperationClaim>> GetClaims(User user)
         {
             return new SuccessDataResult<List<OperationClaim>>(_userDal.GetClaims(user));
@@ -147,7 +126,7 @@ namespace Business.Concrete
 
         public IDataResult<User> GetByIdForAuth(int id)
         {
-            return new SuccessDataResult<User>(_userDal.Get(u => u.Id == id));
+            return new SuccessDataResult<User>(_userDal.Get(u => u.UserId == id));
         }
 
         private IResult CheckIfUserAlreadyExists(string email)

@@ -27,24 +27,24 @@ export class TokenService {
     this.localStorageService.removeItem('token');
   }
 
-  setRefreshToken(refreshToken: string): void {
-    this.localStorageService.setItem('refresh-token', refreshToken);
-  }
-
   getRefreshToken(): string {
     return this.localStorageService.getItem('refresh-token');
+  }
+
+  setRefreshToken(refreshToken: string): void {
+    this.localStorageService.setItem('refresh-token', refreshToken);
   }
 
   removeRefreshToken(): void {
     this.localStorageService.removeItem('refresh-token');
   }
 
-  setClientId(clientId: string): void {
-    this.localStorageService.setItem('client-id', clientId);
-  }
-
   getClientId(): string {
     return this.localStorageService.getItem('client-id');
+  }
+
+  setClientId(clientId: string): void {
+    this.localStorageService.setItem('client-id', clientId);
   }
 
   removeClientId(): void {
@@ -86,14 +86,11 @@ export class TokenService {
 
     if (token != null) {
       let userModel = {
-        id: +token[
-          Object.keys(token).filter((t) => t.endsWith('nameidentifier'))[0]
-        ],
+        userId:
+          +token[
+            Object.keys(token).filter((t) => t.endsWith('nameidentifier'))[0]
+          ],
         email: token.email,
-        firstName:
-          token[Object.keys(token).filter((t) => t.endsWith('name'))[0]],
-        lastName:
-          token[Object.keys(token).filter((t) => t.endsWith('surname'))[0]],
         status: Boolean(token.status),
       };
 

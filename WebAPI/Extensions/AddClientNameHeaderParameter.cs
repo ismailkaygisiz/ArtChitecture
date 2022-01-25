@@ -1,4 +1,5 @@
-﻿using Microsoft.OpenApi.Models;
+﻿using Microsoft.OpenApi.Any;
+using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Collections.Generic;
 
@@ -15,10 +16,11 @@ namespace WebAPI.Extensions
             {
                 Name = "ClientName",
                 In = ParameterLocation.Header,
-                Required = false,
+                Required = true,
                 Schema = new OpenApiSchema
                 {
-                    Type = "string"
+                    Type = "string",
+                    Default = new OpenApiString("Swagger")
                 }
             });
         }

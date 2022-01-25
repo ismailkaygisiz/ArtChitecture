@@ -36,13 +36,13 @@ namespace Business.Concrete
 
         [SecuredOperation("Admin")]
         [LogAspect(typeof(MsSqlLogger))]
-        public IResult Delete(Translate entity)
+        public IResult Delete(DeleteModel entity)
         {
             var result = BusinessRules.Run();
 
             if (!result.Success) return result;
 
-            var entityToDelete = GetById(entity.Id).Data;
+            var entityToDelete = GetById((int)entity.ID).Data;
             _translateDal.Delete(entityToDelete);
             return new SuccessResult();
         }
@@ -66,7 +66,7 @@ namespace Business.Concrete
 
         public IDataResult<Translate> GetById(int id)
         {
-            return new SuccessDataResult<Translate>(_translateDal.Get(t => t.Id == id));
+            return new SuccessDataResult<Translate>(_translateDal.Get(t => t.TranslateId == id));
         }
 
         public IDataResult<List<Translate>> GetByKey(string key)
@@ -84,9 +84,9 @@ namespace Business.Concrete
             var dictionary = new Dictionary<string, string>();
             var language = _languageService.GetByCode(languageCode).Data;
             if (language != null)
-                GetByLanguageId(language.Id).Data.ForEach(t => { dictionary.Add(t.Key, t.Value); });
+                GetByLanguageId(language.LanguageId).Data.ForEach(t => { dictionary.Add(t.Key, t.Value); });
             else
-                GetByLanguageId(_languageService.GetByCode("en-Us").Data.Id).Data
+                GetByLanguageId(_languageService.GetByCode("en-Us").Data.LanguageId).Data
                     .ForEach(t => { dictionary.Add(t.Key, t.Value); });
 
             return new SuccessDataResult<Dictionary<string, string>>(dictionary);

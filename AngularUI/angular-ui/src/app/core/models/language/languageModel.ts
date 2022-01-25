@@ -1,5 +1,5 @@
 export interface LanguageModel {
-  id: number;
+  languageId: number;
   languageCode: string;
   languageName: string;
 }

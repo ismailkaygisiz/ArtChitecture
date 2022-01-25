@@ -1,9 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Text.Encodings.Web;
-using System.Text.Json;
-using System.Text.Unicode;
-using Castle.DynamicProxy;
+﻿using Castle.DynamicProxy;
 using Core.Business;
 using Core.CrossCuttingConcerns.Logging;
 using Core.CrossCuttingConcerns.Logging.Serilog;
@@ -11,6 +6,8 @@ using Core.Utilities.Interceptors;
 using Core.Utilities.IoC;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
+using System;
+using System.Linq;
 
 namespace Core.Aspects.Autofac.Logging
 {
@@ -22,7 +19,7 @@ namespace Core.Aspects.Autofac.Logging
         public ExceptionLogAspect(Type loggerService)
         {
             if (loggerService.BaseType != typeof(LoggerServiceBase))
-                throw new ArgumentException("");
+                throw new ArgumentException();
 
             _loggerServiceBase = (LoggerServiceBase)Activator.CreateInstance(loggerService);
             _requestUserService = ServiceTool.ServiceProvider.GetService<IRequestUserService>();
@@ -44,18 +41,15 @@ namespace Core.Aspects.Autofac.Logging
             { Name = invocation.GetConcreteMethod().GetParameters()[i].Name, Value = t, Type = t.GetType().Name })
                 .ToList();
             var methodName = invocation.MethodInvocationTarget.DeclaringType.FullName + "." + invocation.Method.Name;
+
+            var requestUser = _requestUserService?.GetRequestUser().Data;
             return new LogDetailWithException
             {
                 MethodName = methodName,
-                User = JsonConvert.SerializeObject(_requestUserService.GetRequestUser().Data?.Email != null ? _requestUserService.GetRequestUser().Data : null),
-                FullName = (_requestUserService.GetRequestUser().Data == null ||
-                            _requestUserService.GetRequestUser().Data.FirstName == null
+                User = JsonConvert.SerializeObject(requestUser?.Email != null ? requestUser : null),
+                Email = requestUser?.Email == null
                                ? "?"
-                               : _requestUserService.GetRequestUser().Data.FirstName)
-                           + " " + (_requestUserService.GetRequestUser().Data == null ||
-                                    _requestUserService.GetRequestUser().Data.LastName == null
-                               ? "?"
-                               : _requestUserService.GetRequestUser().Data.LastName),
+                               : requestUser?.Email,
                 ExceptionMessage = e.Message
             };
         }

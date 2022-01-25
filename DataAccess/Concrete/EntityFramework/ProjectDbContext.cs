@@ -23,10 +23,9 @@ namespace DataAccess.Concrete.EntityFramework
         public DbSet<Language> Languages { get; set; }
         public DbSet<Translate> Translates { get; set; }
 
-
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(Configuration.GetConnectionString("MsSql"));
+            optionsBuilder.UseSqlServer(Configuration.GetConnectionString(Configuration.GetConnectionString("CurrentDB")));
         }
     }
 }

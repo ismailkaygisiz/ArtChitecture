@@ -52,16 +52,15 @@ class HttpInterceptor extends Interceptor {
 
       var parsedResponse = SingleResponseModel<TokenModel>.fromJson(response);
       if (parsedResponse.success) {
-        authService.onRefreshTokenSucceed(parsedResponse.data);
-
         tokenService.setToken(parsedResponse.data?.token);
         tokenService.setRefreshToken(
             parsedResponse.data?.refreshToken?.refreshTokenValue);
         tokenService.setClientId(parsedResponse.data?.refreshToken?.clientId);
+        authService.onRefreshTokenSucceed(parsedResponse.data);
       } else {
-        authService.onRefreshTokenFailed();
         tokenService.removeToken();
         tokenService.removeRefreshToken();
+        authService.onRefreshTokenFailed();
       }
     }
 

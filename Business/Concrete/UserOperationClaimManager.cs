@@ -42,13 +42,13 @@ namespace Business.Concrete
         [TransactionScopeAspect]
         [SecuredOperation("Admin")]
         [CacheRemoveAspect("IUserOperationClaimService.Get")]
-        public IResult Delete(UserOperationClaim entity)
+        public IResult Delete(DeleteModel entity)
         {
             var result = BusinessRules.Run();
 
             if (!result.Success) return result;
 
-            var entityToDelete = GetById(entity.Id).Data;
+            var entityToDelete = GetById((int)entity.ID).Data;
             _userOperationClaimDal.Delete(entityToDelete);
             return new SuccessResult();
         }
@@ -71,7 +71,7 @@ namespace Business.Concrete
         [CacheAspect]
         public IDataResult<UserOperationClaim> GetById(int id)
         {
-            return new SuccessDataResult<UserOperationClaim>(_userOperationClaimDal.Get(u => u.Id == id));
+            return new SuccessDataResult<UserOperationClaim>(_userOperationClaimDal.Get(u => u.UserOperationClaimId == id));
         }
 
         [SecuredOperation("Admin")]

@@ -3,29 +3,21 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { apiUrl } from 'src/api';
 import { DeleteModel } from '../models/deleteModel';
-import { OperationClaimAddModel } from '../models/operation-claim/operationClaimAddModel';
 import { OperationClaimModel } from '../models/operation-claim/operationClaimModel';
 import { ListResponseModel } from '../models/response/listResponseModel';
 import { ResponseModel } from '../models/response/responseModel';
 import { SingleResponseModel } from '../models/response/singleResponseModel';
-import { ServiceRepositoryWithAddModel } from './service-repository';
+import { ServiceRepository } from './service-repository';
 
 @Injectable({
   providedIn: 'root',
 })
 export class OperationClaimService
-  implements
-    ServiceRepositoryWithAddModel<
-      OperationClaimAddModel,
-      OperationClaimModel,
-      number
-    >
+  implements ServiceRepository<OperationClaimModel, number>
 {
   constructor(private httpClient: HttpClient) {}
 
-  add(
-    operationClaimAddModel: OperationClaimAddModel
-  ): Observable<ResponseModel> {
+  add(operationClaimAddModel: OperationClaimModel): Observable<ResponseModel> {
     let newPath = apiUrl + 'operationclaims/add';
     return this.httpClient.post<ResponseModel>(newPath, operationClaimAddModel);
   }

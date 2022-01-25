@@ -1,150 +1,22 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
-using System;
 
 namespace DataAccess.Migrations
 {
-    public partial class INITAL : Migration
+    public static class DefaultMigrationHelper
     {
-        protected override void Up(MigrationBuilder migrationBuilder)
+        public static void InsertDefaultData(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.CreateTable(
-                "Languages",
-                table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    LanguageCode = table.Column<string>(nullable: true),
-                    LanguageName = table.Column<string>(nullable: true)
-                },
-                constraints: table => { table.PrimaryKey("PK_Languages", x => x.Id); });
-
-            migrationBuilder.CreateTable(
-                "OperationClaims",
-                table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(nullable: true)
-                },
-                constraints: table => { table.PrimaryKey("PK_OperationClaims", x => x.Id); });
-
-            migrationBuilder.CreateTable(
-                "Users",
-                table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    FirstName = table.Column<string>(nullable: true),
-                    LastName = table.Column<string>(nullable: true),
-                    Email = table.Column<string>(nullable: true),
-                    PasswordSalt = table.Column<byte[]>(nullable: true),
-                    PasswordHash = table.Column<byte[]>(nullable: true),
-                    Status = table.Column<bool>(nullable: false)
-                },
-                constraints: table => { table.PrimaryKey("PK_Users", x => x.Id); });
-
-            migrationBuilder.CreateTable(
-                "Translates",
-                table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    LanguageId = table.Column<int>(nullable: false),
-                    Key = table.Column<string>(nullable: true),
-                    Value = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Translates", x => x.Id);
-                    table.ForeignKey(
-                        "FK_Translates_Languages_LanguageId",
-                        x => x.LanguageId,
-                        "Languages",
-                        "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                "RefreshTokens",
-                table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<int>(nullable: false),
-                    ClientId = table.Column<string>(nullable: true),
-                    ClientName = table.Column<string>(nullable: true),
-                    RefreshTokenValue = table.Column<string>(nullable: true),
-                    RefreshTokenEndDate = table.Column<DateTime>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_RefreshTokens", x => x.Id);
-                    table.ForeignKey(
-                        "FK_RefreshTokens_Users_UserId",
-                        x => x.UserId,
-                        "Users",
-                        "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                "UserOperationClaims",
-                table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<int>(nullable: false),
-                    OperationClaimId = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UserOperationClaims", x => x.Id);
-                    table.ForeignKey(
-                        "FK_UserOperationClaims_OperationClaims_OperationClaimId",
-                        x => x.OperationClaimId,
-                        "OperationClaims",
-                        "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        "FK_UserOperationClaims_Users_UserId",
-                        x => x.UserId,
-                        "Users",
-                        "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateIndex(
-                "IX_RefreshTokens_UserId",
-                "RefreshTokens",
-                "UserId");
-
-            migrationBuilder.CreateIndex(
-                "IX_Translates_LanguageId",
-                "Translates",
-                "LanguageId");
-
-            migrationBuilder.CreateIndex(
-                "IX_UserOperationClaims_OperationClaimId",
-                "UserOperationClaims",
-                "OperationClaimId");
-
-            migrationBuilder.CreateIndex(
-                "IX_UserOperationClaims_UserId",
-                "UserOperationClaims",
-                "UserId");
-
-
             // OperationClaims
-            migrationBuilder.InsertData("OperationClaims", new[] { "Id", "Name" },
+            migrationBuilder.InsertData("OperationClaims", new[] { "OperationClaimId", "Name" },
                 new object[] { 1, "Admin" });
-            migrationBuilder.InsertData("OperationClaims", new[] { "Id", "Name" },
+            migrationBuilder.InsertData("OperationClaims", new[] { "OperationClaimId", "Name" },
                 new object[] { 2, "User" });
 
 
             // Languages
-            migrationBuilder.InsertData("Languages", new[] { "Id", "LanguageCode", "LanguageName" },
+            migrationBuilder.InsertData("Languages", new[] { "LanguageId", "LanguageCode", "LanguageName" },
                 new object[] { 1, "tr-Tr", "Türkçe" });
-            migrationBuilder.InsertData("Languages", new[] { "Id", "LanguageCode", "LanguageName" },
+            migrationBuilder.InsertData("Languages", new[] { "LanguageId", "LanguageCode", "LanguageName" },
                 new object[] { 2, "en-Us", "English" });
 
 
@@ -312,86 +184,6 @@ namespace DataAccess.Migrations
                 {
                     2, "Role_Name_Must_Be_At_Least_2_Characters_Long", "Role Name Must be at Least 2 Characters Long"
                 });
-
-
-            // AngularUI
-            migrationBuilder.InsertData("Translates", new[] { "LanguageId", "Key", "Value" },
-                new object[] { 1, "Login_Title_Key", "Giriş Yap" });
-            migrationBuilder.InsertData("Translates", new[] { "LanguageId", "Key", "Value" },
-                new object[] { 2, "Login_Title_Key", "Login" });
-
-            migrationBuilder.InsertData("Translates", new[] { "LanguageId", "Key", "Value" },
-                new object[] { 1, "Sign_Up_Title_Key", "Kayıt Ol" });
-            migrationBuilder.InsertData("Translates", new[] { "LanguageId", "Key", "Value" },
-                new object[] { 2, "Sign_Up_Title_Key", "Sign Up" });
-
-            migrationBuilder.InsertData("Translates", new[] { "LanguageId", "Key", "Value" },
-                new object[] { 1, "Placeholder_Name_Key", "Ad" });
-            migrationBuilder.InsertData("Translates", new[] { "LanguageId", "Key", "Value" },
-                new object[] { 2, "Placeholder_Name_Key", "Name" });
-
-            migrationBuilder.InsertData("Translates", new[] { "LanguageId", "Key", "Value" },
-                new object[] { 1, "Placeholder_Surname_Key", "Soyad" });
-            migrationBuilder.InsertData("Translates", new[] { "LanguageId", "Key", "Value" },
-                new object[] { 2, "Placeholder_Surname_Key", "Surname" });
-
-            migrationBuilder.InsertData("Translates", new[] { "LanguageId", "Key", "Value" },
-                new object[] { 1, "Placeholder_Email_Key", "E-Posta" });
-            migrationBuilder.InsertData("Translates", new[] { "LanguageId", "Key", "Value" },
-                new object[] { 2, "Placeholder_Email_Key", "Email" });
-
-            migrationBuilder.InsertData("Translates", new[] { "LanguageId", "Key", "Value" },
-                new object[] { 1, "Placeholder_Password_Key", "Parola" });
-            migrationBuilder.InsertData("Translates", new[] { "LanguageId", "Key", "Value" },
-                new object[] { 2, "Placeholder_Password_Key", "Password" });
-
-
-            // FlutterUI
-            migrationBuilder.InsertData("Translates", new[] { "LanguageId", "Key", "Value" },
-                new object[] { 1, "Hello_World_Key", "Merhaba Dünya" });
-            migrationBuilder.InsertData("Translates", new[] { "LanguageId", "Key", "Value" },
-                new object[] { 2, "Hello_World_Key", "Hello World" });
-
-            migrationBuilder.InsertData("Translates", new[] { "LanguageId", "Key", "Value" },
-                new object[] { 1, "Welcome_Key", "ArtChitecture'a Hoş Geldiniz" });
-            migrationBuilder.InsertData("Translates", new[] { "LanguageId", "Key", "Value" },
-                new object[] { 2, "Welcome_Key", "Welcome to ArtChitecture" });
-
-            migrationBuilder.InsertData("Translates", new[] { "LanguageId", "Key", "Value" },
-                new object[] { 1, "Increment_Key", "Artır" });
-            migrationBuilder.InsertData("Translates", new[] { "LanguageId", "Key", "Value" },
-                new object[] { 2, "Increment_Key", "Increase" });
-
-            migrationBuilder.InsertData("Translates", new[] { "LanguageId", "Key", "Value" },
-                new object[] { 1, "Value_Key", "Değer" });
-            migrationBuilder.InsertData("Translates", new[] { "LanguageId", "Key", "Value" },
-                new object[] { 2, "Value_Key", "Value" });
-
-            migrationBuilder.InsertData("Translates", new[] { "LanguageId", "Key", "Value" },
-                new object[] { 1, "Reset_Key", "Sıfırla" });
-            migrationBuilder.InsertData("Translates", new[] { "LanguageId", "Key", "Value" },
-                new object[] { 2, "Reset_Key", "Reset" });
-        }
-
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.DropTable(
-                "RefreshTokens");
-
-            migrationBuilder.DropTable(
-                "Translates");
-
-            migrationBuilder.DropTable(
-                "UserOperationClaims");
-
-            migrationBuilder.DropTable(
-                "Languages");
-
-            migrationBuilder.DropTable(
-                "OperationClaims");
-
-            migrationBuilder.DropTable(
-                "Users");
         }
     }
 }

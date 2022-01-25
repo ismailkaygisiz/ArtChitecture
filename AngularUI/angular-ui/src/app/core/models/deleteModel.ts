@@ -1,3 +1,4 @@
-﻿export interface DeleteModel {
+export interface DeleteModel {
   id: number;
+  uuid: string;
 }

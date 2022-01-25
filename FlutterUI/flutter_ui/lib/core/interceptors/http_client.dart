@@ -18,7 +18,7 @@ class HttpClient {
       validateStatus: (status) => true,
     );
 
-    _httpClient.interceptors.add(HttpInterceptor());
+    addInterceptor(HttpInterceptor());
   }
 
   void addInterceptor(Interceptor interceptor) {

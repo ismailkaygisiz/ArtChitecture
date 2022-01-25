@@ -1,10 +1,8 @@
 ﻿using Castle.DynamicProxy;
-using Core.Business;
 using Core.CrossCuttingConcerns.Logging;
 using Core.CrossCuttingConcerns.Logging.Serilog;
 using Core.Utilities.Interceptors;
 using Core.Utilities.IoC;
-using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -18,7 +16,7 @@ namespace Core.Aspects.Autofac.Logging
         public LogAspect(Type loggerService)
         {
             if (loggerService.BaseType != typeof(LoggerServiceBase))
-                throw new ArgumentException("Logger can't be null");
+                throw new ArgumentException();
 
             _loggerServiceBase = (LoggerServiceBase)ServiceTool.ServiceProvider.GetService(loggerService);
         }
@@ -40,19 +38,16 @@ namespace Core.Aspects.Autofac.Logging
                 });
 
             var methodName = invocation.MethodInvocationTarget.DeclaringType.FullName + "." + invocation.Method.Name;
+
+            var requestUser = RequestUserService.GetRequestUser().Data;
             var logDetail = new LogDetail
             {
                 MethodName = methodName,
                 Parameters = logParameters,
-                User = JsonConvert.SerializeObject(RequestUserService.GetRequestUser().Data?.Email != null ? RequestUserService.GetRequestUser().Data : null),
-                FullName = (RequestUserService.GetRequestUser().Data == null ||
-                            RequestUserService.GetRequestUser().Data.FirstName == null
+                User = JsonConvert.SerializeObject(requestUser?.Email != null ? requestUser : null),
+                Email = (requestUser.Email == null
                                ? "?"
-                               : RequestUserService.GetRequestUser().Data.FirstName)
-                           + " " + (RequestUserService.GetRequestUser().Data == null ||
-                                    RequestUserService.GetRequestUser().Data.LastName == null
-                               ? "?"
-                               : RequestUserService.GetRequestUser().Data.LastName)
+                               : requestUser?.Email)
             };
 
             return JsonConvert.SerializeObject(logDetail);

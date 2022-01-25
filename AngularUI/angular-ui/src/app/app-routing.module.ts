@@ -11,20 +11,6 @@ import { AdminLayoutComponent } from './core/layouts/admin-layout/admin-layout.c
 import { AuthLayoutComponent } from './core/layouts/auth-layout/auth-layout.component';
 import { MainLayoutComponent } from './core/layouts/main-layout/main-layout.component';
 
-// error
-import { ErrorComponent } from './core/components/error/error.component';
-
-// admin
-import { DashboardComponent } from './core/components/admin/dashboard/dashboard.component';
-
-// auth
-import { AuthComponent } from './core/components/auth/auth/auth.component';
-import { LoginComponent } from './core/components/auth/login/login.component';
-import { RegisterComponent } from './core/components/auth/register/register.component';
-
-// main
-
-
 const routes: Routes = [
   {
     path: '',
@@ -35,22 +21,12 @@ const routes: Routes = [
     path: 'admin',
     component: AdminLayoutComponent,
     canActivate: [AdminGuard],
-    children: [
-      { path: '', component: DashboardComponent }
-    ],
+    children: [],
   },
   {
     path: 'auth',
     component: AuthLayoutComponent,
-    children: [
-      { path: '', component: AuthComponent },
-      { path: 'login', component: LoginComponent, canActivate: [LoginDisableGuard] },
-      { path: 'register', component: RegisterComponent, canActivate: [LoginDisableGuard] },
-    ],
-  },
-  {
-    path: '**',
-    component: ErrorComponent,
+    children: [],
   },
 ];
 

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_ui/components/platform_progress_indicator.dart';
 import 'package:flutter_ui/core/utilities/responsive_design.dart';
-import 'package:flutter_ui/pages/main/homePage/home_page_screen.dart';
-import 'package:flutter_ui/pages/main/loadingPage/loading_page_screen.dart';
 
 import 'core/utilities/current_platform.dart';
 import 'core/utilities/dependency_resolver.dart';
@@ -55,7 +54,28 @@ class _HomeState extends State<Home> {
 
     /// "return translates != null ? YourCustomHomeScreen() : YourCustomLoadingScreen();"
     /// If you don't want to use translates you can use "return YourCustomHomePageScreen();"
-    return translates != null ? HomePageScreen() : LoadingPageScreen();
+    return translates != null
+        ? Scaffold(
+            body: SingleChildScrollView(
+              child: Center(
+                child: Column(
+                  children: [
+                    Text("Hello World"),
+                  ],
+                ),
+              ),
+            ),
+          )
+        : Scaffold(
+            body: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  PlatformProgressIndicator(),
+                ],
+              ),
+            ),
+          );
   }
 
   // This area for necessary private methods

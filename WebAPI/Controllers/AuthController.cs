@@ -17,8 +17,7 @@ namespace WebAPI.Controllers
         private readonly IRequestUserService _requestUserService;
         private readonly IUserService _userService;
 
-        public AuthController(IAuthService authService, IUserService userService,
-            IRefreshTokenService refreshTokenService)
+        public AuthController(IAuthService authService, IUserService userService, IRefreshTokenService refreshTokenService)
         {
             _authService = authService;
             _userService = userService;
@@ -38,7 +37,7 @@ namespace WebAPI.Controllers
         [HttpPost("[action]")]
         public IActionResult Register(UserForRegisterDto userForRegisterDto)
         {
-            var result = _authService.Register(userForRegisterDto, userForRegisterDto.Password);
+            var result = _authService.Register(userForRegisterDto);
             if (result.Success) return Ok(result);
 
             return BadRequest(result);
@@ -52,38 +51,14 @@ namespace WebAPI.Controllers
 
             return BadRequest(result);
         }
-        
+
         [HttpPost("[action]")]
         public IActionResult RefreshToken()
         {
-            string refreshToken = HttpContext.Request.Headers["RefreshToken"];
+            var result = _authService.RefreshToken();
+            if (result.Success)
+                return Ok(result);
 
-            var newRefreshToken = _refreshTokenService.GetByRefreshToken(refreshToken).Data;
-            if (newRefreshToken != null)
-            {
-                var user = _userService.GetByIdForAuth(newRefreshToken.UserId).Data;
-                if (_authService.UseRefreshTokenEndDate)
-                {
-                    if (newRefreshToken.RefreshTokenEndDate > DateTime.Now)
-                        return RefreshTokenControl(user);
-
-                    _requestUserService.SetRequestUser(null);
-                    return BadRequest(new ErrorResult());
-                }
-
-                return RefreshTokenControl(user);
-            }
-
-            _requestUserService.SetRequestUser(null);
-            return BadRequest(new ErrorResult());
-        }
-
-        private IActionResult RefreshTokenControl(User user)
-        {
-            var result = _authService.CreateAccessToken(user);
-            if (result.Success) return Ok(result);
-
-            _requestUserService.SetRequestUser(null);
             return BadRequest(result);
         }
     }

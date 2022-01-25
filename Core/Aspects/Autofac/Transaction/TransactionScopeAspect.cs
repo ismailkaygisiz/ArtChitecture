@@ -10,7 +10,6 @@ namespace Core.Aspects.Autofac.Transaction
     {
         public TransactionScopeAspect()
         {
-            Priority = 1;
         }
 
         public override void Intercept(IInvocation invocation)
@@ -27,11 +26,17 @@ namespace Core.Aspects.Autofac.Transaction
                     transactionScope.Dispose();
 
                     if (e.GetType() == typeof(ValidationException))
+                    {
                         throw e;
-
+                    }
                     else if (e.GetType() == typeof(AuthorizationDeniedException))
+                    {
                         throw e;
-
+                    }
+                    else if (e.GetType() == typeof(LoginRequiredException))
+                    {
+                        throw e;
+                    }
                     else
                     {
                         var transactionError = TranslateContext.Translates["Transaction_Error_Key"];

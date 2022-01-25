@@ -1,7 +1,8 @@
 ﻿using Core.Extensions.Middlewares;
 using Microsoft.AspNetCore.Builder;
+using WebAPI.Extensions.Middlewares;
 
-namespace Core.Extensions
+namespace WebAPI.Extensions
 {
     public static class RequestUserMiddlewareExtensions
     {

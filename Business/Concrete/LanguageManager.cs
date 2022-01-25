@@ -34,13 +34,13 @@ namespace Business.Concrete
 
         [SecuredOperation("Admin")]
         [LogAspect(typeof(MsSqlLogger))]
-        public IResult Delete(Language entity)
+        public IResult Delete(DeleteModel entity)
         {
             var result = BusinessRules.Run();
 
             if (!result.Success) return result;
 
-            var entityToDelete = GetById(entity.Id).Data;
+            var entityToDelete = GetById(entity.ID).Data;
 
             _languageDal.Delete(entityToDelete);
             return new SuccessResult();
@@ -65,7 +65,7 @@ namespace Business.Concrete
 
         public IDataResult<Language> GetById(int id)
         {
-            return new SuccessDataResult<Language>(_languageDal.Get(l => l.Id == id));
+            return new SuccessDataResult<Language>(_languageDal.Get(l => l.LanguageId == id));
         }
 
         public IDataResult<Language> GetByName(string name)

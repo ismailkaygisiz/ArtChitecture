@@ -8,7 +8,7 @@ import 'package:flutter_ui/core/services/token_service.dart';
 import 'package:flutter_ui/core/services/translate_service.dart';
 import 'package:flutter_ui/core/services/user_operation_claim_service.dart';
 import 'package:flutter_ui/core/services/user_service.dart';
-import 'package:flutter_ui/core/services/validation_service.dart';
+import 'package:flutter_ui/services/validation_service.dart';
 
 final HttpClient httpClient = HttpClient();
 final AuthService authService = AuthService();

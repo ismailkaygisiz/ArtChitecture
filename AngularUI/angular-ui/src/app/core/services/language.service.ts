@@ -1,25 +1,23 @@
 import { SingleResponseModel } from './../models/response/singleResponseModel';
 import { apiUrl } from './../../../api';
 import { ResponseModel } from './../models/response/responseModel';
-import { LanguageAddModel } from './../models/language/languageAddModel';
-import { ServiceRepositoryWithAddModel } from './service-repository';
+import { ServiceRepository } from './service-repository';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { LanguageModel } from '../models/language/languageModel';
 import { Observable } from 'rxjs';
-import { DeleteModel } from '../models/deleteModel';
 import { ListResponseModel } from '../models/response/listResponseModel';
+import { DeleteModel } from '../models/deleteModel';
 
 @Injectable({
   providedIn: 'root',
 })
 export class LanguageService
-  implements
-    ServiceRepositoryWithAddModel<LanguageAddModel, LanguageModel, number>
+  implements ServiceRepository<LanguageModel, number>
 {
   constructor(private httpClient: HttpClient) {}
 
-  add(addModel: LanguageAddModel): Observable<ResponseModel> {
+  add(addModel: LanguageModel): Observable<ResponseModel> {
     let newPath = apiUrl + 'languages/add';
     return this.httpClient.post<ResponseModel>(newPath, addModel);
   }

@@ -6,25 +6,19 @@ import { DeleteModel } from '../models/deleteModel';
 import { ListResponseModel } from '../models/response/listResponseModel';
 import { ResponseModel } from '../models/response/responseModel';
 import { SingleResponseModel } from '../models/response/singleResponseModel';
-import { UserOperationClaimAddModel } from '../models/user-operation-claim/userOperationClaimAddModel';
 import { UserOperationClaimModel } from '../models/user-operation-claim/userOperationClaimModel';
-import { ServiceRepositoryWithAddModel } from './service-repository';
+import { ServiceRepository } from './service-repository';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserOperationClaimService
-  implements
-    ServiceRepositoryWithAddModel<
-      UserOperationClaimAddModel,
-      UserOperationClaimModel,
-      number
-    >
+  implements ServiceRepository<UserOperationClaimModel, number>
 {
   constructor(private httpClient: HttpClient) {}
 
   add(
-    userOperationClaimAddModel: UserOperationClaimAddModel
+    userOperationClaimAddModel: UserOperationClaimModel
   ): Observable<ResponseModel> {
     let newPath = apiUrl + 'useroperationclaims/add';
     return this.httpClient.post<ResponseModel>(

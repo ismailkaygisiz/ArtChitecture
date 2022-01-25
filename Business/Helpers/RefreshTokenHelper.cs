@@ -56,15 +56,7 @@ namespace Business.Helpers
 
             var newRefreshToken = new RefreshToken
             {
-                UserId = user.Id,
-                User = new User()
-                {
-                    Id = user.Id,
-                    Email = user.Email,
-                    FirstName = user.FirstName,
-                    LastName = user.LastName,
-                    Status = user.Status
-                },
+                UserId = user.UserId,
                 ClientName = _clientName,
                 ClientId = _clientId,
                 RefreshTokenValue = CreateRefreshToken(),
@@ -75,7 +67,7 @@ namespace Business.Helpers
 
             if (oldRefreshToken != null)
             {
-                newRefreshToken.Id = oldRefreshToken.Id;
+                newRefreshToken.RefreshTokenId = oldRefreshToken.RefreshTokenId;
                 _refreshTokenService.Update(newRefreshToken);
             }
             else

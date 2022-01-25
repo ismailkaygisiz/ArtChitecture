@@ -5,8 +5,7 @@ namespace Core.Utilities.Helpers.InterceptorHelpers
 {
     public static class AutofacInterceptorHelper
     {
-        public static void ChangeReturnValue(IInvocation invocation, Type returnType, dynamic error,
-            string message)
+        public static void ChangeReturnValue(IInvocation invocation, Type returnType, dynamic error, string message)
         {
             if (invocation.MethodInvocationTarget.ReturnType.GenericTypeArguments.Length > 0)
             {

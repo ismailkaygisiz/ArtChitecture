@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { CryptoService } from './crypto.service';
 
 @Injectable({
   providedIn: 'root',
@@ -7,16 +6,16 @@ import { CryptoService } from './crypto.service';
 export class LocalStorageService {
   localStorage: Storage;
 
-  constructor(private cryptoService: CryptoService) {
+  constructor() {
     this.localStorage = window.localStorage;
   }
 
   getItem(key: string) {
-    return this.cryptoService.get(this.localStorage.getItem(key));
+    return this.localStorage.getItem(key);
   }
 
   setItem(key: string, value: string) {
-    this.localStorage.setItem(key, this.cryptoService.set(value));
+    this.localStorage.setItem(key, value);
   }
 
   removeItem(key: string) {

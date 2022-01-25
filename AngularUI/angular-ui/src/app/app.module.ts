@@ -17,16 +17,6 @@ import { AdminLayoutComponent } from './core/layouts/admin-layout/admin-layout.c
 import { AuthLayoutComponent } from './core/layouts/auth-layout/auth-layout.component';
 import { MainLayoutComponent } from './core/layouts/main-layout/main-layout.component';
 
-// error
-import { ErrorComponent } from './core/components/error/error.component';
-
-// admin
-import { DashboardComponent } from './core/components/admin/dashboard/dashboard.component';
-
-// auth
-import { AuthComponent } from './core/components/auth/auth/auth.component';
-import { LoginComponent } from './core/components/auth/login/login.component';
-import { RegisterComponent } from './core/components/auth/register/register.component';
 import { ArtchitectureComponent } from './components/artchitecture/artchitecture.component';
 
 // main
@@ -37,11 +27,6 @@ import { ArtchitectureComponent } from './components/artchitecture/artchitecture
     AdminLayoutComponent,
     AuthLayoutComponent,
     MainLayoutComponent,
-    ErrorComponent,
-    AuthComponent,
-    LoginComponent,
-    RegisterComponent,
-    DashboardComponent,
     ArtchitectureComponent,
   ],
   imports: [

@@ -1,17 +1,14 @@
 import 'package:flutter_ui/core/models/delete_model.dart';
-import 'package:flutter_ui/core/models/language/language_add_model.dart';
 import 'package:flutter_ui/core/models/language/language_model.dart';
 import 'package:flutter_ui/core/models/response/list_response_model.dart';
 import 'package:flutter_ui/core/models/response/response_model.dart';
 import 'package:flutter_ui/core/models/response/single_response_model.dart';
 import 'package:flutter_ui/core/utilities/dependency_resolver.dart';
 import 'package:flutter_ui/core/utilities/service_repository.dart';
-import 'package:flutter_ui/environments/api.dart';
 
-class LanguageService extends ServiceRepositoryWithAddModel<LanguageAddModel,
-    LanguageModel, int> {
+class LanguageService extends ServiceRepository<LanguageModel, int> {
   @override
-  Future<ResponseModel> add(LanguageAddModel addModel) async {
+  Future<ResponseModel> add(LanguageModel addModel) async {
     var response = await httpClient.post(
       "languages/add",
       body: addModel.toJson(),
@@ -49,7 +46,7 @@ class LanguageService extends ServiceRepositoryWithAddModel<LanguageAddModel,
 
   Future<SingleResponseModel<LanguageModel>> getByName(String name) async {
     var response = await httpClient.get(
-      Environments.API_URL + "languages/getbyname",
+      "languages/getbyname",
       queryParameters: {"name": name},
     );
 

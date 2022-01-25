@@ -27,8 +27,6 @@ namespace Business.Extensions.Middlewares
             var user = new User
             {
                 Email = "admin@admin.com",
-                FirstName = "Admin",
-                LastName = "System Secure Admin",
                 PasswordHash = passwordHash,
                 PasswordSalt = passwordSalt,
                 Status = true
@@ -39,7 +37,7 @@ namespace Business.Extensions.Middlewares
                 _userOperationClaimService.AddForSuperUser(new UserOperationClaim
                 {
                     OperationClaimId = 1,
-                    UserId = newUser.Data.Id
+                    UserId = newUser.Data.UserId
                 });
 
             await _next.Invoke(context);

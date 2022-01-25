@@ -5,7 +5,6 @@ import {
   HttpHandler,
   HttpEvent,
   HttpInterceptor,
-  HttpResponse,
   HttpErrorResponse,
   HttpClient,
 } from '@angular/common/http';
@@ -58,7 +57,7 @@ export class AuthInterceptor implements HttpInterceptor {
   private addToken(req: HttpRequest<any>) {
     return req.clone({
       setHeaders: {
-        Authorization: `Bearer ${this.tokenService.getToken() ?? ''}`,
+        Authorization: `Bearer ${this.token ?? ''}`,
         lang: localStorage.getItem('lang') ?? '',
         ClientId: this.clientId ?? '',
         RefreshToken: this.refreshToken ?? '',
@@ -104,32 +103,33 @@ export class AuthInterceptor implements HttpInterceptor {
               this.tokenService.setClientId(
                 response.data.refreshToken.clientId
               );
+              this.authService.onRefreshTokenSucceed(response.data);
             }
           }),
           catchError((error) => {
-            this.authService.onRefreshTokenFailed();
             this.tokenService.removeRefreshToken();
             this.tokenService.removeToken();
+            this.authService.onRefreshTokenFailed();
             return throwError(error);
           })
         )
         .pipe(
           switchMap((response: any) => {
-            this.authService.onRefreshTokenSucceed(response.data);
             this.tokenService.setToken(response.data.token);
             this.tokenService.setRefreshToken(
               response.data.refreshToken.refreshTokenValue
             );
             this.tokenService.setClientId(response.data.refreshToken.clientId);
+            this.authService.onRefreshTokenSucceed(response.data);
 
             this.isRefreshing = false;
             this.refreshTokenSubject.next(response.data.token);
             return next.handle(this.addToken(request));
           }),
           catchError((error) => {
-            this.authService.onRefreshTokenFailed();
             this.tokenService.removeRefreshToken();
             this.tokenService.removeToken();
+            this.authService.onRefreshTokenFailed();
             return throwError(error);
           })
         );

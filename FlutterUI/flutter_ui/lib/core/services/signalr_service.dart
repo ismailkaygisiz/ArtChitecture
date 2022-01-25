@@ -1,9 +1,8 @@
-import 'package:flutter_ui/core/utilities/service.dart';
 import 'package:flutter_ui/environments/api.dart';
 import 'package:signalr_netcore/hub_connection.dart';
 import 'package:signalr_netcore/hub_connection_builder.dart';
 
-class SignalRService extends Service {
+class SignalRService {
   late HubConnection _hubConnection;
 
   Future<void> start(String hubUrl) async {

@@ -18,7 +18,7 @@ namespace Core.Aspects.Autofac.Authorization
 
         public SecuredOperation(string roles)
         {
-            Priority = 2;
+            Priority = 0;
             _roles = roles.Split(',');
         }
 

@@ -2,15 +2,13 @@ import 'package:flutter_ui/core/models/delete_model.dart';
 import 'package:flutter_ui/core/models/response/list_response_model.dart';
 import 'package:flutter_ui/core/models/response/response_model.dart';
 import 'package:flutter_ui/core/models/response/single_response_model.dart';
-import 'package:flutter_ui/core/models/translate/translate_add_model.dart';
 import 'package:flutter_ui/core/models/translate/translate_model.dart';
 import 'package:flutter_ui/core/utilities/dependency_resolver.dart';
 import 'package:flutter_ui/core/utilities/service_repository.dart';
 
-class TranslateService extends ServiceRepositoryWithAddModel<TranslateAddModel,
-    TranslateModel, int> {
+class TranslateService extends ServiceRepository<TranslateModel, int> {
   @override
-  Future<ResponseModel> add(TranslateAddModel addModel) async {
+  Future<ResponseModel> add(TranslateModel addModel) async {
     var response = await httpClient.post(
       "translates/add",
       body: addModel.toJson(),

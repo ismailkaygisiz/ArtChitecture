@@ -1,31 +1,23 @@
 import { TranslateModel } from './../models/translate/translateModel';
-import { ServiceRepositoryWithAddModel } from './service-repository';
-import { LocalStorageService } from './local-storage.service';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { TranslateAddModel } from '../models/translate/translateAddModel';
 import { Observable } from 'rxjs';
-import { DeleteModel } from '../models/deleteModel';
 import { ListResponseModel } from '../models/response/listResponseModel';
 import { ResponseModel } from '../models/response/responseModel';
 import { SingleResponseModel } from '../models/response/singleResponseModel';
 import { apiUrl } from 'src/api';
-import { ValidationService } from './validation.service';
+import { ServiceRepository } from './service-repository';
+import { DeleteModel } from '../models/deleteModel';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TranslateService
-  implements
-    ServiceRepositoryWithAddModel<TranslateAddModel, TranslateModel, number>
+  implements ServiceRepository<TranslateModel, number>
 {
-  constructor(
-    private httpClient: HttpClient,
-    private localStorageService: LocalStorageService,
-    private validationService: ValidationService
-  ) {}
+  constructor(private httpClient: HttpClient) {}
 
-  add(addModel: TranslateAddModel): Observable<ResponseModel> {
+  add(addModel: TranslateModel): Observable<ResponseModel> {
     let newPath = apiUrl + 'translates/add';
     return this.httpClient.post<ResponseModel>(newPath, addModel);
   }

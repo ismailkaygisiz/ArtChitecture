@@ -11,19 +11,23 @@ using Core.Utilities.Results.Abstract;
 using Core.Utilities.Results.Concrete;
 using Core.Utilities.Security.Hashing;
 using Core.Utilities.Security.JWT;
+using System;
+using System.Linq;
 
 namespace Business.Concrete
 {
     public class AuthManager : BusinessService, IAuthService
     {
         private readonly IRefreshTokenHelper _refreshTokenHelper;
+        private readonly IRefreshTokenService _refreshTokenService;
         private readonly IUserService _userService;
         private readonly IUserOperationClaimService _userOperationClaimService;
 
-        public AuthManager(IUserService userService, IRefreshTokenHelper refreshTokenHelper, IUserOperationClaimService userOperationClaimService)
+        public AuthManager(IUserService userService, IRefreshTokenHelper refreshTokenHelper, IUserOperationClaimService userOperationClaimService, IRefreshTokenService refreshTokenService)
         {
             _userService = userService;
             _refreshTokenHelper = refreshTokenHelper;
+            _refreshTokenService = refreshTokenService;
             _userOperationClaimService = userOperationClaimService;
         }
 
@@ -49,6 +53,30 @@ namespace Business.Concrete
             return new SuccessDataResult<AccessToken>(accessToken);
         }
 
+        public IDataResult<AccessToken> RefreshToken()
+        {
+            string refreshToken = HttpContextAccessor.HttpContext.Request.Headers["RefreshToken"];
+
+            var newRefreshToken = _refreshTokenService.GetByRefreshToken(refreshToken).Data;
+            if (newRefreshToken != null)
+            {
+                var user = _userService.GetByIdForAuth(newRefreshToken.UserId).Data;
+                if (UseRefreshTokenEndDate)
+                {
+                    if (newRefreshToken.RefreshTokenEndDate > DateTime.Now)
+                        return RefreshTokenControl(user);
+
+                    RequestUserService.SetRequestUser(null);
+                    return new ErrorDataResult<AccessToken>();
+                }
+
+                return RefreshTokenControl(user);
+            }
+
+            RequestUserService.SetRequestUser(null);
+            return new ErrorDataResult<AccessToken>();
+        }
+
         [TransactionScopeAspect]
         [LoginRequired]
         [SecuredOperation("", "userForLoginDto.Email")]
@@ -67,16 +95,28 @@ namespace Business.Concrete
 
             var user = new User
             {
-                Id = oldUser.Id,
+                UserId = oldUser.UserId,
                 Email = oldUser.Email,
-                FirstName = oldUser.FirstName,
-                LastName = oldUser.LastName,
                 PasswordHash = passwordHash,
                 PasswordSalt = passwordSalt,
                 Status = true
             };
 
             _userService.Update(user);
+
+            string refreshToken = HttpContextAccessor.HttpContext.Request.Headers["RefreshToken"];
+            string clientId = HttpContextAccessor.HttpContext.Request.Headers["ClientId"];
+            string clientName = HttpContextAccessor.HttpContext.Request.Headers["ClientName"];
+
+            _refreshTokenService.GetByUserId(user.UserId).Data
+                .Where(r => r.ClientId != clientId || r.ClientName != clientName || r.RefreshTokenValue != refreshToken)
+                .ToList().ForEach(token =>
+                    _refreshTokenService.Delete(new DeleteModel()
+                    {
+                        ID = token.RefreshTokenId
+                    })
+                );
+
             return new SuccessDataResult<AccessToken>(CreateAccessToken(user).Data, BusinessMessages.PasswordChanged());
         }
 
@@ -97,7 +137,7 @@ namespace Business.Concrete
 
         [TransactionScopeAspect]
         [ValidationAspect(typeof(RegisterValidator))]
-        public IDataResult<AccessToken> Register(UserForRegisterDto userForRegisterDto, string password)
+        public IDataResult<AccessToken> Register(UserForRegisterDto userForRegisterDto)
         {
             var result = BusinessRules.Run(
                 CheckIfUserIsAlreadyExists(userForRegisterDto.Email)
@@ -106,12 +146,10 @@ namespace Business.Concrete
             if (!result.Success)
                 return new ErrorDataResult<AccessToken>(result.Message);
 
-            HashingHelper.CreatePasswordHash(password, out var passwordHash, out var passwordSalt);
+            HashingHelper.CreatePasswordHash(userForRegisterDto.Password, out var passwordHash, out var passwordSalt);
             var user = new User
             {
                 Email = userForRegisterDto.Email,
-                FirstName = userForRegisterDto.FirstName,
-                LastName = userForRegisterDto.LastName,
                 PasswordHash = passwordHash,
                 PasswordSalt = passwordSalt,
                 Status = true
@@ -121,7 +159,7 @@ namespace Business.Concrete
 
             _userOperationClaimService.AddForSuperUser(new UserOperationClaim()
             {
-                UserId = user.Id,
+                UserId = user.UserId,
                 OperationClaimId = 2
             });
 
@@ -140,18 +178,12 @@ namespace Business.Concrete
         {
             var user = _userService.GetByEmailForAuth(userForLoginDto.Email).Data;
             if (user == null)
-            {
-                MsSqlLogger.Warn("Hatalı Giriş Denemesi Yapıldı");
                 return new ErrorResult(BusinessMessages.UserIsNotExists());
-            }
 
             if (user != null)
             {
                 if (!HashingHelper.VerifyPasswordHash(userForLoginDto.Password, user.PasswordHash, user.PasswordSalt))
-                {
-                    MsSqlLogger.Warn("Hatalı Giriş Denemesi Yapıldı");
                     return new ErrorResult(BusinessMessages.PasswordIsNotTrue());
-                }
             }
 
             return new SuccessResult();
@@ -163,6 +195,15 @@ namespace Business.Concrete
                 return new ErrorResult(BusinessMessages.NewPasswordCannotBeTheSameAsTheOldPassword());
 
             return new SuccessResult();
+        }
+
+        private IDataResult<AccessToken> RefreshTokenControl(User user)
+        {
+            var result = CreateAccessToken(user);
+            if (result.Success) return result;
+
+            RequestUserService.SetRequestUser(null);
+            return result;
         }
     }
 }

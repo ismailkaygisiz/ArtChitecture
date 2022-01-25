@@ -1,7 +1,5 @@
 ﻿export interface UserModel {
-  id: number;
-  firstName: string;
-  lastName: string;
+  userId: number;
   email: string;
   status: boolean;
 }

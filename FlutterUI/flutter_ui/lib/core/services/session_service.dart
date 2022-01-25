@@ -1,9 +1,7 @@
 import 'package:encrypted_shared_preferences/encrypted_shared_preferences.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../utilities/service.dart';
-
-class SessionService extends Service {
+class SessionService {
   late EncryptedSharedPreferences encryptedSharedPreferences;
 
   SessionService() {

@@ -1,5 +1,5 @@
 export interface TranslateModel {
-  id: number;
+  translateId: number;
   languageId: number;
   key: string;
   value: string;

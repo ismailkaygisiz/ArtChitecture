@@ -1,9 +1,8 @@
 import 'package:flutter_ui/core/models/user/user_model.dart';
 import 'package:flutter_ui/core/utilities/dependency_resolver.dart';
-import 'package:flutter_ui/core/utilities/service.dart';
 import 'package:jwt_decode/jwt_decode.dart';
 
-class TokenService extends Service {
+class TokenService {
   decodeToken(String? token) {
     if (token != null && token != "") {
       return Jwt.parseJwt(token);
@@ -59,7 +58,6 @@ class TokenService extends Service {
   Future<DateTime?> getTokenExpirationDate() async {
     var token = await getToken();
 
-    print(token);
     if (token != null && token != "") {
       return Jwt.getExpiryDate(token);
     }
@@ -106,10 +104,6 @@ class TokenService extends Service {
 
         if (k.endsWith("/nameidentifier")) {
           userModel.id = int.parse(value.toString());
-        } else if (k.endsWith("/name")) {
-          userModel.firstName = value.toString();
-        } else if (k.endsWith("/surname")) {
-          userModel.lastName = value.toString();
         } else if (k.endsWith("email")) {
           userModel.email = value.toString();
         } else if (k.endsWith("status")) {

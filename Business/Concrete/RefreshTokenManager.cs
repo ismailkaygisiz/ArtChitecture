@@ -1,5 +1,6 @@
 ﻿using Business.Abstract;
 using Core.Aspects.Autofac.Logging;
+using Core.Business;
 using Core.CrossCuttingConcerns.Logging.SeriLog.Loggers;
 using Core.Entities.Concrete;
 using Core.Utilities.Results.Abstract;
@@ -25,9 +26,9 @@ namespace Business.Concrete
         }
 
         [LogAspect(typeof(MsSqlLogger))]
-        public IResult Delete(RefreshToken entity)
+        public IResult Delete(DeleteModel entity)
         {
-            var entityToDelete = GetById(entity.Id).Data;
+            var entityToDelete = GetById((int)entity.ID).Data;
             _refreshTokenDal.Delete(entityToDelete);
             return new SuccessResult();
         }
@@ -44,7 +45,7 @@ namespace Business.Concrete
 
         public IDataResult<RefreshToken> GetById(int id)
         {
-            return new SuccessDataResult<RefreshToken>(_refreshTokenDal.Get(r => r.Id == id));
+            return new SuccessDataResult<RefreshToken>(_refreshTokenDal.Get(r => r.RefreshTokenId == id));
         }
 
         public IDataResult<RefreshToken> GetByRefreshToken(string refreshToken)
@@ -52,16 +53,20 @@ namespace Business.Concrete
             return new SuccessDataResult<RefreshToken>(_refreshTokenDal.Get(r => r.RefreshTokenValue == refreshToken));
         }
 
+        public IDataResult<RefreshToken> GetByRefreshTokenAndClientIdAndClientName(string refreshToken, string clientId, string clientName)
+        {
+            return new SuccessDataResult<RefreshToken>(_refreshTokenDal.Get(r => r.RefreshTokenValue == refreshToken && r.ClientId == clientId && r.ClientName == clientName));
+        }
+
+        public IDataResult<List<RefreshToken>> GetByUserId(int userId)
+        {
+            return new SuccessDataResult<List<RefreshToken>>(_refreshTokenDal.GetAll(r => r.UserId == userId));
+        }
+
         public IResult Update(RefreshToken entity)
         {
             _refreshTokenDal.Update(entity);
             return new SuccessResult();
-        }
-
-        public IDataResult<RefreshToken> GetByClientNameAndUserId(string clientName, int userId)
-        {
-            return new SuccessDataResult<RefreshToken>(_refreshTokenDal.Get(r =>
-                r.ClientName == clientName && r.UserId == userId));
         }
     }
 }

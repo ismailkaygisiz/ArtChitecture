@@ -26,7 +26,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("[action]")]
-        public virtual IActionResult Delete(TEntity entity)
+        public virtual IActionResult Delete(DeleteModel entity)
         {
             var result = _serviceRepository.Delete(entity);
             if (result.Success)

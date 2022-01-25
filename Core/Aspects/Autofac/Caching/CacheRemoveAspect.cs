@@ -13,7 +13,6 @@ namespace Core.Aspects.Autofac.Caching
 
         public CacheRemoveAspect(string pattern)
         {
-            Priority = 5;
             _pattern = pattern;
             _cacheManager = ServiceTool.ServiceProvider.GetService<ICacheManager>();
         }

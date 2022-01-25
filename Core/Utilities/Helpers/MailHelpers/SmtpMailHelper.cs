@@ -29,10 +29,10 @@ namespace Core.Utilities.Helpers.MailHelpers
             mailMessage.IsBodyHtml = isBodyHtml;
             mailMessage.Body = message;
 
+            smtp.Host = smtpConfiguration.Host;
             smtp.Port = smtpConfiguration.Port;
-            smtp.Host = "smtp.gmail.com";
-            smtp.EnableSsl = true;
-            smtp.UseDefaultCredentials = false;
+            smtp.EnableSsl = smtpConfiguration.EnableSsl;
+            smtp.UseDefaultCredentials = smtpConfiguration.UseDefaultCredentials;
             smtp.Credentials = new NetworkCredential(smtpConfiguration.Email, smtpConfiguration.Password);
             smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
             smtp.Send(mailMessage);
@@ -42,8 +42,11 @@ namespace Core.Utilities.Helpers.MailHelpers
     public class SmtpMailConfiguration
     {
         public string Email { get; set; }
+        public string Host { get; set; }
         public string Password { get; set; }
         public string DisplayName { get; set; }
         public int Port { get; set; }
+        public bool EnableSsl { get; set; }
+        public bool UseDefaultCredentials { get; set; }
     }
 }

@@ -4,9 +4,8 @@ import 'package:flutter_ui/core/models/user/login_model.dart';
 import 'package:flutter_ui/core/models/user/register_model.dart';
 import 'package:flutter_ui/core/models/user/token_model.dart';
 import 'package:flutter_ui/core/utilities/dependency_resolver.dart';
-import 'package:flutter_ui/core/utilities/service.dart';
 
-class AuthService extends Service {
+class AuthService {
   Function? _refreshTokenFailedEvent;
   Function? _refreshTokenSucceedEvent;
 
@@ -23,6 +22,17 @@ class AuthService extends Service {
     var response = await httpClient.post(
       "auth/register",
       body: user.toJson(),
+    );
+
+    return SingleResponseModel<TokenModel>.fromJson(response);
+  }
+
+  Future<SingleResponseModel<TokenModel>> changePassword(
+      LoginModel user, String newPassword) async {
+    var response = await httpClient.post(
+      "auth/changepassword",
+      body: user.toJson(),
+      queryParameters: {"newPassword": newPassword},
     );
 
     return SingleResponseModel<TokenModel>.fromJson(response);

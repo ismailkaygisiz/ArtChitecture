@@ -1,5 +1,5 @@
 ﻿export interface UserOperationClaimModel {
-  id: number;
+  userOperationClaimId: number;
   userId: number;
   operationClaimId: number;
 }
