@@ -2,10 +2,14 @@ import '../entity.dart';
 
 @entity
 class RefreshTokenModel {
-  String? refreshTokenValue;
-  String? refreshTokenEndDate;
+  int? refreshTokenId;
+  int? userId;
   String? clientId;
   String? clientName;
+  String? tokenValue;
+  String? refreshTokenValue;
+  String? refreshTokenEndDate;
+
   Map<String, dynamic>? jsonData;
 
   RefreshTokenModel(
@@ -16,19 +20,25 @@ class RefreshTokenModel {
   );
 
   RefreshTokenModel.withJson(
-    this.refreshTokenValue,
-    this.refreshTokenEndDate,
+    this.refreshTokenId,
+    this.userId,
     this.clientId,
     this.clientName,
+    this.tokenValue,
+    this.refreshTokenValue,
+    this.refreshTokenEndDate,
     this.jsonData,
   );
 
   factory RefreshTokenModel.fromJson(Map<String, dynamic> json) {
     return RefreshTokenModel.withJson(
-      json["refreshTokenValue"] as String?,
-      json["refreshTokenEndDate"] as String?,
+      json["refreshTokenId"] as int?,
+      json["userId"] as int?,
       json["clientId"] as String?,
       json["clientName"] as String?,
+      json["tokenValue"] as String?,
+      json["refreshTokenValue"] as String?,
+      json["refreshTokenEndDate"] as String?,
       json,
     );
   }

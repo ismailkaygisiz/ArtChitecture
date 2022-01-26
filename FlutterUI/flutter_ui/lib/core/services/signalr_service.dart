@@ -33,7 +33,7 @@ class SignalRService {
     return _hubConnection;
   }
 
-  Future<Object> invoke(String methodName, List<Object> args) async {
+  Future<Object?> invoke(String methodName, List<Object> args) async {
     return await _hubConnection.invoke(methodName, args: args);
   }
 

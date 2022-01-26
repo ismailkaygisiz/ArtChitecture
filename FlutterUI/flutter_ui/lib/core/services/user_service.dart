@@ -7,15 +7,17 @@ import 'package:flutter_ui/core/utilities/dependency_resolver.dart';
 import 'package:flutter_ui/core/utilities/service_repository.dart';
 
 class UserService extends ServiceRepository<UserModel, int> {
-  Future<ResponseModel> add(UserModel userAddModel) async {
+  @override
+  Future<ResponseModel> add(UserModel addModel) async {
     var response = await httpClient.post(
       "users/add",
-      body: userAddModel.toJson(),
+      body: addModel.toJson(),
     );
 
     return ResponseModel.fromJson(response);
   }
 
+  @override
   Future<ResponseModel> delete(DeleteModel deleteModel) async {
     var response = await httpClient.post(
       "users/delete",
@@ -25,21 +27,24 @@ class UserService extends ServiceRepository<UserModel, int> {
     return ResponseModel.fromJson(response);
   }
 
-  Future<ResponseModel> update(UserModel userModel) async {
+  @override
+  Future<ResponseModel> update(UserModel updateModel) async {
     var response = await httpClient.post(
       "users/update",
-      body: userModel.toJson(),
+      body: updateModel.toJson(),
     );
 
     return ResponseModel.fromJson(response);
   }
 
+  @override
   Future<ListResponseModel<UserModel>> getAll() async {
     var response = await httpClient.get("users/getall");
 
     return ListResponseModel<UserModel>.fromJson(response);
   }
 
+  @override
   Future<SingleResponseModel<UserModel>> getById(int id) async {
     var response = await httpClient.get(
       "users/getbyid",

@@ -8,7 +8,6 @@
   <ItemGroup>
     <Folder Include="angular-ui\src\app\components\" />
     <Folder Include="angular-ui\src\app\models\" />
-    <Folder Include="angular-ui\src\app\services\" />
   </ItemGroup>
 
 </Project>

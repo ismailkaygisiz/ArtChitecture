@@ -43,7 +43,7 @@ namespace Business.Helpers
                 refreshToken.RefreshTokenEndDate = null;
         }
 
-        public RefreshToken CreateNewRefreshToken(User user)
+        public RefreshToken CreateNewRefreshToken(User user, string tokenValue)
         {
             _clientId = HttpContextAccessor.HttpContext.Request.Headers["ClientId"];
             _clientName = HttpContextAccessor.HttpContext.Request.Headers["ClientName"];
@@ -60,6 +60,7 @@ namespace Business.Helpers
                 ClientName = _clientName,
                 ClientId = _clientId,
                 RefreshTokenValue = CreateRefreshToken(),
+                TokenValue = tokenValue
             };
 
             CreateDifferentRefreshToken(newRefreshToken);
@@ -78,7 +79,7 @@ namespace Business.Helpers
             return newRefreshToken;
         }
 
-        public RefreshToken UpdateOldRefreshToken()
+        public RefreshToken UpdateOldRefreshToken(string tokenValue)
         {
             _clientId = HttpContextAccessor.HttpContext.Request.Headers["ClientId"];
             _clientName = HttpContextAccessor.HttpContext.Request.Headers["ClientName"];
@@ -92,6 +93,7 @@ namespace Business.Helpers
                 newRefreshToken?.ClientId == _clientId)
             {
                 CreateDifferentRefreshToken(newRefreshToken);
+                newRefreshToken.TokenValue = tokenValue;
                 _refreshTokenService.Update(newRefreshToken);
                 return newRefreshToken;
             }

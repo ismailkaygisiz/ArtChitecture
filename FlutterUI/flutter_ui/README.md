@@ -1,6 +1,6 @@
 # flutter_ui
 
-A new Flutter application.
+A new Flutter project from ArtChitecture.
 
 ## Getting Started
 

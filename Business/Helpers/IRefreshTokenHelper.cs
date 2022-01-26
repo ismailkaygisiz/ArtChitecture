@@ -6,8 +6,8 @@ namespace Business.Helpers
     {
         bool UseRefreshTokenEndDate { get; set; }
         string CreateRefreshToken();
-        RefreshToken CreateNewRefreshToken(User user);
-        RefreshToken UpdateOldRefreshToken();
+        RefreshToken CreateNewRefreshToken(User user, string tokenValue);
+        RefreshToken UpdateOldRefreshToken(string tokenValue);
         void CreateDifferentRefreshToken(RefreshToken refreshToken);
         bool Control(params string[] args);
     }

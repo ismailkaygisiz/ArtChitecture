@@ -8,15 +8,17 @@ import 'package:flutter_ui/core/utilities/service_repository.dart';
 
 class OperationClaimService
     extends ServiceRepository<OperationClaimModel, int> {
-  Future<ResponseModel> add(OperationClaimModel operationClaimAddModel) async {
+  @override
+  Future<ResponseModel> add(OperationClaimModel addModel) async {
     var response = await httpClient.post(
       "operationclaims/add",
-      body: operationClaimAddModel.toJson(),
+      body: addModel.toJson(),
     );
 
     return ResponseModel.fromJson(response);
   }
 
+  @override
   Future<ResponseModel> delete(DeleteModel deleteModel) async {
     var response = await httpClient.post(
       "operationclaims/delete",
@@ -26,15 +28,17 @@ class OperationClaimService
     return ResponseModel.fromJson(response);
   }
 
-  Future<ResponseModel> update(OperationClaimModel operationClaimModel) async {
+  @override
+  Future<ResponseModel> update(OperationClaimModel updateModel) async {
     var response = await httpClient.post(
       "operationclaims/update",
-      body: operationClaimModel.toJson(),
+      body: updateModel.toJson(),
     );
 
     return ResponseModel.fromJson(response);
   }
 
+  @override
   Future<ListResponseModel<OperationClaimModel>> getAll() async {
     var response = await httpClient.get(
       "operationclaims/getall",
@@ -43,6 +47,7 @@ class OperationClaimService
     return ListResponseModel<OperationClaimModel>.fromJson(response);
   }
 
+  @override
   Future<SingleResponseModel<OperationClaimModel>> getById(int id) async {
     var response = await httpClient.get(
       "operationclaims/getbyid",

@@ -11,39 +11,39 @@ class TokenService {
   }
 
   Future<String?> getToken() async {
-    return await sessionService.get("token");
+    return await storageService.get("token");
   }
 
   Future<void> setToken(String? token) async {
-    await sessionService.set('token', token);
+    await storageService.set('token', token);
   }
 
   Future<void> removeToken() async {
-    await sessionService.remove('token');
+    await storageService.remove('token');
   }
 
   Future<String?> getRefreshToken() async {
-    return await sessionService.get("refresh-token");
+    return await storageService.get("refresh-token");
   }
 
   Future<void> setRefreshToken(String? token) async {
-    await sessionService.set('refresh-token', token);
+    await storageService.set('refresh-token', token);
   }
 
   Future<void> removeRefreshToken() async {
-    await sessionService.remove('refresh-token');
+    await storageService.remove('refresh-token');
   }
 
   Future<String?> getClientId() async {
-    return await sessionService.get("client-id");
+    return await storageService.get("client-id");
   }
 
   Future<void> setClientId(String? clientId) async {
-    await sessionService.set('client-id', clientId);
+    await storageService.set('client-id', clientId);
   }
 
   Future<void> removeClientId() async {
-    await sessionService.remove('client-id');
+    await storageService.remove('client-id');
   }
 
   Future<bool> isTokenExpired() async {
@@ -52,7 +52,7 @@ class TokenService {
     bool? isExpired;
     if (token != null && token != "") isExpired = Jwt.isExpired(token);
 
-    return isExpired != null ? isExpired : true;
+    return isExpired ?? true;
   }
 
   Future<DateTime?> getTokenExpirationDate() async {
@@ -67,8 +67,6 @@ class TokenService {
 
   Future<List<String>> getUserRolesWithJWT() async {
     var token = decodeToken(await getToken());
-
-    print(token);
     List<String> _roles = [];
 
     if (token != null) {
@@ -79,8 +77,9 @@ class TokenService {
           if (t[element] is String) {
             _roles.add(t[element]);
           } else if (t[element] is List) {
-            for (int i = 0; i < t[element].length; i++)
+            for (int i = 0; i < t[element].length; i++) {
               _roles.add(t[element][i]);
+            }
           }
         }
       });
@@ -94,9 +93,8 @@ class TokenService {
   Future<UserModel?> getUserWithJWT() async {
     var token = decodeToken(await getToken());
 
-    print(token);
     if (token != null) {
-      UserModel userModel = UserModel(0, "", "", "", true);
+      UserModel userModel = UserModel(0, "", true);
       Map t = token;
 
       t.forEach((key, dynamic value) {

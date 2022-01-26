@@ -53,9 +53,9 @@ namespace Business.Concrete
             return new SuccessDataResult<RefreshToken>(_refreshTokenDal.Get(r => r.RefreshTokenValue == refreshToken));
         }
 
-        public IDataResult<RefreshToken> GetByRefreshTokenAndClientIdAndClientName(string refreshToken, string clientId, string clientName)
+        public IDataResult<RefreshToken> GetByTokenAndRefreshTokenAndClientIdAndClientName(string token, string refreshToken, string clientId, string clientName)
         {
-            return new SuccessDataResult<RefreshToken>(_refreshTokenDal.Get(r => r.RefreshTokenValue == refreshToken && r.ClientId == clientId && r.ClientName == clientName));
+            return new SuccessDataResult<RefreshToken>(_refreshTokenDal.Get(r => r.TokenValue == token && r.RefreshTokenValue == refreshToken && r.ClientId == clientId && r.ClientName == clientName));
         }
 
         public IDataResult<List<RefreshToken>> GetByUserId(int userId)

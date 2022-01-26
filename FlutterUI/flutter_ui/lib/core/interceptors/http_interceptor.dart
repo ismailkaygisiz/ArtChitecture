@@ -23,7 +23,7 @@ class HttpInterceptor extends Interceptor {
   /// It sets headers for http requests
   Future<Map<String, dynamic>> setHeaders() async {
     var tokenModel = await getTokens();
-    var lang = await sessionService.get("lang");
+    var lang = await storageService.get("lang");
     Map<String, String> headers;
 
     headers = {
@@ -68,9 +68,9 @@ class HttpInterceptor extends Interceptor {
   }
 
   Future<TokenModel> getTokens() async {
-    var token = await sessionService.get("token");
-    var refreshToken = await sessionService.get("refresh-token");
-    var clientId = await sessionService.get("client-id");
+    var token = await storageService.get("token");
+    var refreshToken = await storageService.get("refresh-token");
+    var clientId = await storageService.get("client-id");
 
     return TokenModel(
       token,

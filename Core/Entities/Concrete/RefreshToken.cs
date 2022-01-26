@@ -13,6 +13,7 @@ namespace Core.Entities.Concrete
         public int UserId { get; set; }
         public string ClientId { get; set; }
         public string ClientName { get; set; }
+        public string TokenValue { get; set; }
         public string RefreshTokenValue { get; set; }
         public DateTime? RefreshTokenEndDate { get; set; }
     }

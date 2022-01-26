@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_ui/components/platform_progress_indicator.dart';
-import 'package:flutter_ui/core/utilities/responsive_design.dart';
+import 'package:flutter_ui/core/utilities/responsive.dart';
 
 import 'core/utilities/current_platform.dart';
 import 'core/utilities/dependency_resolver.dart';
@@ -19,8 +19,6 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
-
-    //
 
     print("Platform Name : ${CurrentPlatform.getPlatform()}");
     print("Platform Locale Name : ${CurrentPlatform.getLocaleName()}\n\n");
@@ -44,8 +42,8 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     _translateControl();
 
-    print("Screen Width : ${ResponsiveDesign.getDeviceSize(context).width}");
-    print("Screen Height : ${ResponsiveDesign.getDeviceSize(context).height}");
+    print("Screen Width : ${Responsive.getDeviceSize(context).width}");
+    print("Screen Height : ${Responsive.getDeviceSize(context).height}");
 
     // print("Desktop : ${Responsive.isDesktop(context)}");
     // print("Tablet : ${Responsive.isTablet(context)}");
@@ -59,7 +57,7 @@ class _HomeState extends State<Home> {
             body: SingleChildScrollView(
               child: Center(
                 child: Column(
-                  children: [
+                  children: const [
                     Text("Hello World"),
                   ],
                 ),
@@ -86,7 +84,6 @@ class _HomeState extends State<Home> {
   ///
   ///
   ///
-
   /// Sets [refreshTokenEvents] in [authService] for [HttpInterceptor]
   void _setRefreshTokenEvents() {
     authService.setRefreshTokenEvents(
@@ -100,13 +97,13 @@ class _HomeState extends State<Home> {
   /// It controls translates
   /// If [lang] in session equals null it runs [_getTranslates]
   Future<void> _translateControl() async {
-    var lang = await sessionService.get("lang");
+    var lang = await storageService.get("lang");
     if (_lang != lang) _getTranslates();
   }
 
   /// Sets [translates] in [Environments]
   Future<void> _getTranslates() async {
-    var lang = await sessionService.get("lang");
+    var lang = await storageService.get("lang");
     _lang = lang;
 
     Map? _translates = await translateService.getTranslates(lang);
@@ -115,8 +112,9 @@ class _HomeState extends State<Home> {
 
   /// Changes default language if [lang] in session returns null
   Future<void> _setLang() async {
-    var lang = await sessionService.get("lang");
-    if (lang == null)
-      sessionService.set("lang", CurrentPlatform.getLocaleName());
+    var lang = await storageService.get("lang");
+    if (lang == null) {
+      storageService.set("lang", CurrentPlatform.getLocaleName());
+    }
   }
 }

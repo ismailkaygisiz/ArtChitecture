@@ -42,10 +42,10 @@ namespace Business.Concrete
             UseRefreshTokenEndDate = _refreshTokenHelper.UseRefreshTokenEndDate;
 
             string refreshToken = HttpContextAccessor.HttpContext.Request.Headers["RefreshToken"];
-            if (_refreshTokenHelper.Control(refreshToken))
-                accessToken.RefreshToken = _refreshTokenHelper.UpdateOldRefreshToken();
+            if (_refreshTokenHelper.Control(refreshToken) && _refreshTokenService.GetByRefreshToken(refreshToken).Data != null)
+                accessToken.RefreshToken = _refreshTokenHelper.UpdateOldRefreshToken(accessToken.Token);
             else
-                accessToken.RefreshToken = _refreshTokenHelper.CreateNewRefreshToken(user);
+                accessToken.RefreshToken = _refreshTokenHelper.CreateNewRefreshToken(user, accessToken.Token);
 
             if (accessToken.RefreshToken == null)
                 return new ErrorDataResult<AccessToken>();

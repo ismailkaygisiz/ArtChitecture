@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
 /// You can add custom Widget for device size
-class ResponsiveDesign extends StatelessWidget {
+class Responsive extends StatelessWidget {
   final Widget? mobile;
   final Widget? mobileLarge;
   final Widget? tablet;
   final Widget? desktop;
 
-  const ResponsiveDesign({
+  const Responsive({
     Key? key,
     this.mobile,
     this.tablet,
@@ -34,12 +34,13 @@ class ResponsiveDesign extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (ResponsiveDesign.isDesktop(context) && desktop != null) return desktop!;
+    if (Responsive.isDesktop(context) && desktop != null) return desktop!;
 
-    if (ResponsiveDesign.isTablet(context) && tablet != null) return tablet!;
+    if (Responsive.isTablet(context) && tablet != null) return tablet!;
 
-    if (ResponsiveDesign.isMobileLarge(context) && mobileLarge != null)
+    if (Responsive.isMobileLarge(context) && mobileLarge != null) {
       return mobileLarge!;
+    }
 
     if (mobile == null) throw Exception("Mobile was null");
 

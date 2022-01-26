@@ -1,8 +1,9 @@
 export interface RefreshTokenModel {
   refreshTokenId: number;
   userId: number;
-  refreshTokenValue: string;
-  refreshTokenEndDate: Date;
   clientId: string;
   clientName: string;
+  tokenValue: string;
+  refreshTokenValue: string;
+  refreshTokenEndDate: Date;
 }

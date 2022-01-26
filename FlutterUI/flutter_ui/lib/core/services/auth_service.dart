@@ -52,7 +52,7 @@ class AuthService {
   Future<bool> isAuthenticated() async {
     bool token;
 
-    var data = await sessionService.get("token");
+    var data = await storageService.get("token");
     data != null ? token = true : token = false;
 
     return token;
