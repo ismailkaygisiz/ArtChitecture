@@ -30,7 +30,8 @@ namespace WebAPI.Extensions.Middlewares
             if (token != null && token != "" && token != "null")
             {
                 var tokens = token.Split(" ");
-                token = tokens[1];
+                if (tokens.Length > 1)
+                    token = tokens[1];
             }
 
             string refreshToken = context.Request.Headers["RefreshToken"];
